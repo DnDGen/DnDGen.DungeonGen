@@ -29,6 +29,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stress|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Stress\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;STRESS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Albatross.Expression, Version=1.1.5700.39687, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Albatross.Expression.1.1.5700.39687\lib\net40\Albatross.Expression.dll</HintPath>
@@ -184,11 +193,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StressAttribute.cs" />
+    <Compile Include="StressTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\DungeonGen.Common.csproj">
+      <Project>{f69c2793-63f9-4411-9e7d-e4e17030cc83}</Project>
+      <Name>DungeonGen.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Generators\Contracts\DungeonGen.Generators.csproj">
+      <Project>{f9d7c4f5-3467-4216-9e2b-8aaf3cf0271b}</Project>
+      <Name>DungeonGen.Generators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\DungeonGen.Tests.Integration.Common.csproj">
+      <Project>{f70cbfed-51bc-4308-b3cf-93ad35eb1c64}</Project>
+      <Name>DungeonGen.Tests.Integration.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
