@@ -49,8 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="PercentileSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mappers\Contracts\DungeonGen.Mappers.csproj">
+      <Project>{c2d1a832-5060-4823-9510-abb430e907b9}</Project>
+      <Name>DungeonGen.Mappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contracts\DungeonGen.Selectors.csproj">
+      <Project>{4634066c-bc05-4c59-bdbe-5f49503ede4c}</Project>
+      <Name>DungeonGen.Selectors</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

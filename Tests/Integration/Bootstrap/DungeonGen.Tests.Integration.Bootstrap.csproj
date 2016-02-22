@@ -195,7 +195,6 @@
   <ItemGroup>
     <Compile Include="BootstrapAttribute.cs" />
     <Compile Include="BootstrapTests.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Modules\GeneratorModuleTests.cs" />
     <Compile Include="Modules\MapperModuleTests.cs" />
     <Compile Include="Modules\SelectorModuleTests.cs" />
@@ -250,6 +249,9 @@
       <Project>{f70cbfed-51bc-4308-b3cf-93ad35eb1c64}</Project>
       <Name>DungeonGen.Tests.Integration.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DungeonGenModuleLoader.cs" />
+    <Compile Include="Factories\PercentileMapperFactory.cs" />
     <Compile Include="Modules\GeneratorsModule.cs" />
     <Compile Include="Modules\MappersModule.cs" />
     <Compile Include="Modules\SelectorsModule.cs" />
@@ -62,6 +63,40 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Generators\Contracts\DungeonGen.Generators.csproj">
+      <Project>{f9d7c4f5-3467-4216-9e2b-8aaf3cf0271b}</Project>
+      <Name>DungeonGen.Generators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Generators\Domain\DungeonGen.Generators.Domain.csproj">
+      <Project>{6ec90917-0022-431b-af79-f205f28a156b}</Project>
+      <Name>DungeonGen.Generators.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mappers\Contracts\DungeonGen.Mappers.csproj">
+      <Project>{c2d1a832-5060-4823-9510-abb430e907b9}</Project>
+      <Name>DungeonGen.Mappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mappers\Domain\DungeonGen.Mappers.Domain.csproj">
+      <Project>{52991d21-2698-4191-bcd3-2e544b32a4a2}</Project>
+      <Name>DungeonGen.Mappers.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selectors\Contracts\DungeonGen.Selectors.csproj">
+      <Project>{4634066c-bc05-4c59-bdbe-5f49503ede4c}</Project>
+      <Name>DungeonGen.Selectors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selectors\Domain\DungeonGen.Selectors.Domain.csproj">
+      <Project>{30689d32-67de-4870-9da1-c80937cfaf2e}</Project>
+      <Name>DungeonGen.Selectors.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tables\Contracts\DungeonGen.Tables.csproj">
+      <Project>{8e542c50-c9a8-4fc7-acbb-202a61bcc9ae}</Project>
+      <Name>DungeonGen.Tables</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tables\Domain\DungeonGen.Tables.Domain.csproj">
+      <Project>{4562e7fa-ec19-49af-b59a-ce86e2b53212}</Project>
+      <Name>DungeonGen.Tables.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

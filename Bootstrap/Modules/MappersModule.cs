@@ -1,5 +1,6 @@
-﻿using Ninject.Modules;
-using System;
+﻿using DungeonGen.Bootstrap.Factories;
+using DungeonGen.Mappers;
+using Ninject.Modules;
 
 namespace DungeonGen.Bootstrap.Modules
 {
@@ -7,7 +8,7 @@ namespace DungeonGen.Bootstrap.Modules
     {
         public override void Load()
         {
-            throw new NotImplementedException();
+            Bind<PercentileMapper>().ToMethod(c => PercentileMapperFactory.Create(c.Kernel)).InSingletonScope();
         }
     }
 }

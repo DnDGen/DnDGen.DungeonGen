@@ -49,8 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DungeonGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\DungeonGen.Common.csproj">
+      <Project>{f69c2793-63f9-4411-9e7d-e4e17030cc83}</Project>
+      <Name>DungeonGen.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Selectors\Contracts\DungeonGen.Selectors.csproj">
+      <Project>{4634066c-bc05-4c59-bdbe-5f49503ede4c}</Project>
+      <Name>DungeonGen.Selectors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contracts\DungeonGen.Generators.csproj">
+      <Project>{f9d7c4f5-3467-4216-9e2b-8aaf3cf0271b}</Project>
+      <Name>DungeonGen.Generators</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,6 @@
-﻿using Ninject.Modules;
-using System;
+﻿using DungeonGen.Tables;
+using DungeonGen.Tables.Domain;
+using Ninject.Modules;
 
 namespace DungeonGen.Bootstrap.Modules
 {
@@ -7,7 +8,7 @@ namespace DungeonGen.Bootstrap.Modules
     {
         public override void Load()
         {
-            throw new NotImplementedException();
+            Bind<StreamLoader>().To<EmbeddedResourceStreamLoader>();
         }
     }
 }

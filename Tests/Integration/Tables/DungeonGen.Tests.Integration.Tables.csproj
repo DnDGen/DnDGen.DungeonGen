@@ -193,11 +193,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="AreaPercentileTests.cs" />
+    <Compile Include="Areas\DungeonAreaFromHallTests.cs" />
+    <Compile Include="EmbeddedResourceStreamLoaderTests.cs" />
+    <Compile Include="PercentileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableAttribute.cs" />
+    <Compile Include="TableTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Mappers\Contracts\DungeonGen.Mappers.csproj">
+      <Project>{c2d1a832-5060-4823-9510-abb430e907b9}</Project>
+      <Name>DungeonGen.Mappers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Tables\Contracts\DungeonGen.Tables.csproj">
+      <Project>{8e542c50-c9a8-4fc7-acbb-202a61bcc9ae}</Project>
+      <Name>DungeonGen.Tables</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\DungeonGen.Tests.Integration.Common.csproj">
+      <Project>{f70cbfed-51bc-4308-b3cf-93ad35eb1c64}</Project>
+      <Name>DungeonGen.Tests.Integration.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
