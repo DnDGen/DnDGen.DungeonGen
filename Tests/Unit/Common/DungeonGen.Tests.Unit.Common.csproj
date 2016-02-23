@@ -82,7 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaTests.cs" />
+    <Compile Include="AreaTypeConstantsTests.cs" />
     <Compile Include="ContentsTests.cs" />
+    <Compile Include="ContentsTypeConstantsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

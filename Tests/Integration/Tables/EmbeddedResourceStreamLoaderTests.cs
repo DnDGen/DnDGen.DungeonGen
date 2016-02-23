@@ -36,16 +36,16 @@ namespace DungeonGen.Tests.Integration.Tables
                 Assert.That(table[i], Is.EqualTo("Chamber"));
 
             for (var i = 65; i > 50; i--)
-                Assert.That(table[i], Is.EqualTo("Turn{0x30}"));
+                Assert.That(table[i], Is.EqualTo("Turn{30x0}"));
 
             for (var i = 50; i > 25; i--)
-                Assert.That(table[i], Is.EqualTo("Side passage{0x30}"));
+                Assert.That(table[i], Is.EqualTo("Side passage{30x0}"));
 
             for (var i = 25; i > 10; i--)
                 Assert.That(table[i], Is.EqualTo("Door(1d3)"));
 
             for (var i = 10; i > 0; i--)
-                Assert.That(table[i], Is.EqualTo("Hall{0x30}"));
+                Assert.That(table[i], Is.EqualTo("Hall{30x0}"));
         }
 
         private Dictionary<int, string> Load(string filename)

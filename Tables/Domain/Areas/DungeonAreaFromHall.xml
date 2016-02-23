@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Hall{30x0}</content>
+        <upper>10</upper>
+    </object>
+    <object>
+        <lower>11</lower>
+        <content>Door(1d3)</content>
+        <upper>25</upper>
+    </object>
+    <object>
+        <lower>26</lower>
+        <content>Side passage{30x0}</content>
+        <upper>50</upper>
+    </object>
+    <object>
+        <lower>51</lower>
+        <content>Turn{30x0}</content>
+        <upper>65</upper>
+    </object>
+    <object>
+        <lower>66</lower>
+        <content>Chamber</content>
+        <upper>80</upper>
+    </object>
+  <object>
+    <lower>81</lower>
+    <content>Stairs</content>
+    <upper>85</upper>
+  </object>
+    <object>
+        <lower>86</lower>
+        <content>Dead end(Check for secret doors along already mapped walls)</content>
+        <upper>90</upper>
+    </object>
+    <object>
+        <lower>91</lower>
+        <content>Roll again[Trap]</content>
+        <upper>95</upper>
+    </object>
+  <object>
+    <lower>96</lower>
+    <content>Roll again[Encounter]</content>
+    <upper>100</upper>
+  </object>
+</percentile>
