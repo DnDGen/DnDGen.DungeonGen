@@ -9,7 +9,7 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
         [Test]
         public void StreamLoaderIsNotASingleton()
         {
-            AssertNotSingleton<StreamLoader>();
+            AssertInjected<StreamLoader>();
         }
     }
 }

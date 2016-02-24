@@ -3,6 +3,7 @@ using DungeonGen.Generators;
 using Ninject;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace DungeonGen.Tests.Integration.Stress
 {
@@ -22,24 +23,32 @@ namespace DungeonGen.Tests.Integration.Stress
 
         protected override void MakeAssertions()
         {
-            var area = GenerateFromHall();
-            AssertArea(area);
+            var areas = GenerateFromHall();
+            AssertAreas(areas);
         }
 
-        private Area GenerateFromHall()
+        private IEnumerable<Area> GenerateFromHall()
         {
             var level = Random.Next(20) + 1;
             return DungeonGenerator.GenerateFromHall(level);
         }
 
-        private void AssertArea(Area area)
+        private void AssertAreas(IEnumerable<Area> areas)
         {
-            Assert.That(area, Is.Not.Null);
-            Assert.That(area.Type, Is.Not.Empty);
-            Assert.That(area.Length, Is.Positive);
-            Assert.That(area.Width, Is.Positive);
-            Assert.That(area.Contents, Is.Not.Null);
-            Assert.That(area.Description, Is.Not.Null);
+            foreach (var area in areas)
+            {
+                Assert.That(area, Is.Not.Null);
+                Assert.That(area.Type, Is.Not.Empty);
+                Assert.That(area.Length, Is.Positive);
+                Assert.That(area.Width, Is.Positive);
+                Assert.That(area.Contents, Is.Not.Null);
+                Assert.That(area.Description, Is.Not.Null);
+
+                if (area.Type == AreaTypeConstants.General)
+                {
+                    Assert.That(area.Contents.IsEmpty, Is.False);
+                }
+            }
         }
 
         [Test]
@@ -51,8 +60,8 @@ namespace DungeonGen.Tests.Integration.Stress
         private void AssertFromDoor()
         {
             var level = Random.Next(20) + 1;
-            var area = DungeonGenerator.GenerateFromDoor(level);
-            AssertArea(area);
+            var areas = DungeonGenerator.GenerateFromDoor(level);
+            AssertAreas(areas);
         }
     }
 }

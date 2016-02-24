@@ -39,6 +39,22 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CharacterGen.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CharacterGen.3.5\lib\CharacterGen.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CharacterGen.Generators, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CharacterGen.3.5\lib\CharacterGen.Generators.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EncounterGen.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EncounterGen.0.1\lib\EncounterGen.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EncounterGen.Generators, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EncounterGen.0.1\lib\EncounterGen.Generators.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
@@ -55,13 +71,46 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TreasureGen.Common, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EquipmentGen.3.5\lib\TreasureGen.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TreasureGen.Generators, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\EquipmentGen.3.5\lib\TreasureGen.Generators.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\DungeonGen.Common.csproj">
+      <Project>{f69c2793-63f9-4411-9e7d-e4e17030cc83}</Project>
+      <Name>DungeonGen.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Generators\Contracts\DungeonGen.Generators.csproj">
+      <Project>{f9d7c4f5-3467-4216-9e2b-8aaf3cf0271b}</Project>
+      <Name>DungeonGen.Generators</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Generators\Domain\DungeonGen.Generators.Domain.csproj">
+      <Project>{6ec90917-0022-431b-af79-f205f28a156b}</Project>
+      <Name>DungeonGen.Generators.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Selectors\Contracts\DungeonGen.Selectors.csproj">
+      <Project>{4634066c-bc05-4c59-bdbe-5f49503ede4c}</Project>
+      <Name>DungeonGen.Selectors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Tables\Contracts\DungeonGen.Tables.csproj">
+      <Project>{8e542c50-c9a8-4fc7-acbb-202a61bcc9ae}</Project>
+      <Name>DungeonGen.Tables</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

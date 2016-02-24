@@ -49,10 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaPercentileSelector.cs" />
     <Compile Include="PercentileSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\DungeonGen.Common.csproj">
+      <Project>{f69c2793-63f9-4411-9e7d-e4e17030cc83}</Project>
+      <Name>DungeonGen.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mappers\Contracts\DungeonGen.Mappers.csproj">
       <Project>{c2d1a832-5060-4823-9510-abb430e907b9}</Project>
       <Name>DungeonGen.Mappers</Name>

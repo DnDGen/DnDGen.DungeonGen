@@ -1,10 +1,11 @@
 ﻿using DungeonGen.Common;
+using System.Collections.Generic;
 
 namespace DungeonGen.Generators
 {
     public interface IDungeonGenerator
     {
-        Area GenerateFromHall(int level);
-        Area GenerateFromDoor(int level);
+        IEnumerable<Area> GenerateFromHall(int level);
+        IEnumerable<Area> GenerateFromDoor(int level);
     }
 }

@@ -9,7 +9,13 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
         [Test]
         public void PercentileSelectorIsNotASingleton()
         {
-            AssertNotSingleton<IPercentileSelector>();
+            AssertInjected<IPercentileSelector>();
+        }
+
+        [Test]
+        public void AreaPercentileSelectorIsNotASingleton()
+        {
+            AssertInjected<IAreaPercentileSelector>();
         }
     }
 }

@@ -28,8 +28,8 @@ namespace DungeonGen.Tests.Integration.Tables.Areas
         [TestCase(66, 80, AreaTypeConstants.Chamber, "", "", 0, 0)]
         [TestCase(81, 85, AreaTypeConstants.Stairs, "", "", 0, 0)]
         [TestCase(86, 90, AreaTypeConstants.DeadEnd, "Check for secret doors along already mapped walls", "", 0, 0)]
-        [TestCase(91, 95, AreaTypeConstants.RollAgain, "", ContentsTypeConstants.Trap, 0, 0)]
-        [TestCase(96, 100, AreaTypeConstants.RollAgain, "", ContentsTypeConstants.Encounter, 0, 0)]
+        [TestCase(91, 95, AreaTypeConstants.General, "", ContentsTypeConstants.Trap, 0, 0)]
+        [TestCase(96, 100, AreaTypeConstants.General, "", ContentsTypeConstants.Encounter, 0, 0)]
         public override void AreaPercentile(int lower, int upper, string areaType, string description, string contents, int length, int width)
         {
             base.AreaPercentile(lower, upper, areaType, description, contents, length, width);

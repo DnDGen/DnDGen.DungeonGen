@@ -21,10 +21,10 @@ namespace DungeonGen.Tests.Integration.Tables
             var table = Load("DungeonAreaFromHall.xml");
 
             for (var i = 100; i > 95; i--)
-                Assert.That(table[i], Is.EqualTo("Roll again[Encounter]"));
+                Assert.That(table[i], Is.EqualTo("General[Encounter]"));
 
             for (var i = 95; i > 90; i--)
-                Assert.That(table[i], Is.EqualTo("Roll again[Trap]"));
+                Assert.That(table[i], Is.EqualTo("General[Trap]"));
 
             for (var i = 90; i > 85; i--)
                 Assert.That(table[i], Is.EqualTo("Dead end(Check for secret doors along already mapped walls)"));

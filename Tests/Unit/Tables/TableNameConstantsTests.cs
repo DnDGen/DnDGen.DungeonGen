@@ -7,6 +7,7 @@ namespace DungeonGen.Tests.Unit.Tables
     public class TableNameConstantsTests
     {
         [TestCase(TableNameConstants.DungeonAreaFromHall, "DungeonAreaFromHall")]
+        [TestCase(TableNameConstants.DungeonAreaFromDoor, "DungeonAreaFromDoor")]
         public void Constant(string constant, string value)
         {
             Assert.That(constant, Is.EqualTo(value));

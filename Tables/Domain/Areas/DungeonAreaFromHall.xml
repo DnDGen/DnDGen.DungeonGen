@@ -38,12 +38,12 @@
     </object>
     <object>
         <lower>91</lower>
-        <content>Roll again[Trap]</content>
+        <content>General[Trap]</content>
         <upper>95</upper>
     </object>
   <object>
     <lower>96</lower>
-    <content>Roll again[Encounter]</content>
+    <content>General[Encounter]</content>
     <upper>100</upper>
   </object>
 </percentile>

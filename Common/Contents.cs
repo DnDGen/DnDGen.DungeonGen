@@ -7,17 +7,28 @@ namespace DungeonGen.Common
 {
     public class Contents
     {
-        public Encounter Encounter { get; set; }
+        public IEnumerable<Encounter> Encounters { get; set; }
         public Treasure Treasure { get; set; }
         public string TreasureContainer { get; set; }
         public IEnumerable<string> Miscellaneous { get; set; }
+        public IEnumerable<Trap> Traps { get; set; }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                return !Encounters.Any() && string.IsNullOrEmpty(TreasureContainer) && !Miscellaneous.Any() && !Traps.Any()
+                    && Treasure.Coin.Quantity == 0 && !Treasure.Goods.Any() && !Treasure.Items.Any();
+            }
+        }
 
         public Contents()
         {
             Treasure = new Treasure();
-            Encounter = new Encounter();
+            Encounters = Enumerable.Empty<Encounter>();
             TreasureContainer = string.Empty;
             Miscellaneous = Enumerable.Empty<string>();
+            Traps = Enumerable.Empty<Trap>();
         }
     }
 }

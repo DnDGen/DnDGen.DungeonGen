@@ -1,4 +1,5 @@
 ﻿using DungeonGen.Generators;
+using DungeonGen.Generators.Domain.RuntimeFactories;
 using NUnit.Framework;
 
 namespace DungeonGen.Tests.Integration.Bootstrap.Modules
@@ -7,9 +8,21 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
     public class GeneratorModuleTests : BootstrapTests
     {
         [Test]
-        public void DungeonGeneratorIsNotASingleton()
+        public void DungeonGeneratorIsInjected()
         {
-            AssertNotSingleton<IDungeonGenerator>();
+            AssertInjected<IDungeonGenerator>();
+        }
+
+        [Test]
+        public void AreaGeneratorFactoryIsInjected()
+        {
+            AssertInjected<IAreaGeneratorFactory>();
+        }
+
+        [Test]
+        public void TrapGeneratorIsInjected()
+        {
+            AssertInjected<ITrapGenerator>();
         }
     }
 }
