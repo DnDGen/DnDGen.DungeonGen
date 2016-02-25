@@ -73,6 +73,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaGenerators\ChamberGenerator.cs" />
+    <Compile Include="AreaGenerators\DoorGenerator.cs" />
+    <Compile Include="AreaGenerators\HallGenerator.cs" />
+    <Compile Include="AreaGenerators\SidePassageGenerator.cs" />
+    <Compile Include="AreaGenerators\StairsGenerator.cs" />
+    <Compile Include="AreaGenerators\TurnGenerator.cs" />
     <Compile Include="DungeonGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeFactories\Domain\AreaGeneratorFactory.cs" />

@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDungeonGenerator.cs" />
-    <Compile Include="IAreaGenerator.cs" />
+    <Compile Include="AreaGenerator.cs" />
     <Compile Include="ITrapGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

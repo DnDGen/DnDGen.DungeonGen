@@ -8,6 +8,7 @@ using EncounterGen.Common;
 using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace DungeonGen.Tests.Unit.Generators
@@ -120,7 +121,7 @@ namespace DungeonGen.Tests.Unit.Generators
             areaFromHall.Type = "area type";
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -132,6 +133,30 @@ namespace DungeonGen.Tests.Unit.Generators
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GenerateMultipleSpecificAreasFromHall()
+        {
+            var areaFromHall = new Area();
+            areaFromHall.Type = "area type";
+            areaFromHall.Description = "92d66";
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
+
+            var mockAreaGenerator = new Mock<AreaGenerator>();
+            mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
+            mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
+
+            var specificArea = new Area();
+            var otherSpecificArea = new Area();
+            mockAreaGenerator.Setup(g => g.Generate(9266)).Returns(new[] { specificArea, otherSpecificArea });
+
+            var areas = dungeonGenerator.GenerateFromHall(9266);
+            Assert.That(areas, Contains.Item(specificArea));
+            Assert.That(areas, Contains.Item(otherSpecificArea));
+            Assert.That(areas.Count(), Is.EqualTo(2));
+
+            throw new NotImplementedException();
         }
 
         [Test]
@@ -147,7 +172,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
                 .Returns(generalArea).Returns(areaFromHall);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -175,7 +200,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
                 .Returns(generalArea).Returns(areaFromHall);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -213,7 +238,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
                 .Returns(generalArea).Returns(areaFromHall);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -241,28 +266,28 @@ namespace DungeonGen.Tests.Unit.Generators
         [Test]
         public void GenerateDoorAreasFromTable()
         {
-            var areaFromHall = new Area();
-            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromHall);
+            var areaFromDoor = new Area();
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromDoor);
 
             var areas = dungeonGenerator.GenerateFromDoor(9266);
-            Assert.That(areas, Contains.Item(areaFromHall));
+            Assert.That(areas, Contains.Item(areaFromDoor));
             Assert.That(areas.Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void GenerateGeneralAreaFromDoor()
         {
-            var areaFromHall = new Area();
+            var areaFromDoor = new Area();
             var areaReroll = new Area();
 
             areaReroll.Type = AreaTypeConstants.General;
             areaReroll.Contents.Miscellaneous = new[] { "contents 1", "contents 2" };
 
-            areaFromHall.Type = "area type";
-            areaFromHall.Contents.Miscellaneous = new[] { "contents 3", "contents 4" };
+            areaFromDoor.Type = "area type";
+            areaFromDoor.Contents.Miscellaneous = new[] { "contents 3", "contents 4" };
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
-                .Returns(areaReroll).Returns(areaFromHall);
+                .Returns(areaReroll).Returns(areaFromDoor);
 
             var areas = dungeonGenerator.GenerateFromDoor(9266);
             var firstArea = areas.First();
@@ -285,7 +310,7 @@ namespace DungeonGen.Tests.Unit.Generators
         [Test]
         public void GenerateMultipleGeneralAreasFromDoor()
         {
-            var areaFromHall = new Area();
+            var areaFromDoor = new Area();
             var areaReroll = new Area();
             var otherAreaReroll = new Area();
 
@@ -295,11 +320,11 @@ namespace DungeonGen.Tests.Unit.Generators
             otherAreaReroll.Type = AreaTypeConstants.General;
             otherAreaReroll.Contents.Miscellaneous = new[] { "contents a", "contents b" };
 
-            areaFromHall.Type = "area type";
-            areaFromHall.Contents.Miscellaneous = new[] { "contents 3", "contents 4" };
+            areaFromDoor.Type = "area type";
+            areaFromDoor.Contents.Miscellaneous = new[] { "contents 3", "contents 4" };
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
-                .Returns(areaReroll).Returns(otherAreaReroll).Returns(areaFromHall);
+                .Returns(areaReroll).Returns(otherAreaReroll).Returns(areaFromDoor);
 
             var areas = dungeonGenerator.GenerateFromDoor(9266).ToList();
             Assert.That(areas.Count, Is.EqualTo(3));
@@ -323,11 +348,11 @@ namespace DungeonGen.Tests.Unit.Generators
         [Test]
         public void GenerateSpecificAreaFromDoor()
         {
-            var areaFromHall = new Area();
-            areaFromHall.Type = "area type";
-            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromHall);
+            var areaFromDoor = new Area();
+            areaFromDoor.Type = "area type";
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromDoor);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -342,19 +367,43 @@ namespace DungeonGen.Tests.Unit.Generators
         }
 
         [Test]
+        public void GenerateMultipleSpecificAreasFromDoor()
+        {
+            var areaFromDoor = new Area();
+            areaFromDoor.Type = "area type";
+            areaFromDoor.Description = "92d66";
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromDoor);
+
+            var mockAreaGenerator = new Mock<AreaGenerator>();
+            mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
+            mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
+
+            var specificArea = new Area();
+            var otherSpecificArea = new Area();
+            mockAreaGenerator.Setup(g => g.Generate(9266)).Returns(new[] { specificArea, otherSpecificArea });
+
+            var areas = dungeonGenerator.GenerateFromDoor(9266);
+            Assert.That(areas, Contains.Item(specificArea));
+            Assert.That(areas, Contains.Item(otherSpecificArea));
+            Assert.That(areas.Count(), Is.EqualTo(2));
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
         public void GenerateGeneralAndSpecificAreasFromDoor()
         {
             var generalArea = new Area();
             generalArea.Type = AreaTypeConstants.General;
             generalArea.Contents.Miscellaneous = new[] { "contents 1", "contents 2" };
 
-            var areaFromHall = new Area();
-            areaFromHall.Type = "area type";
+            var areaFromDoor = new Area();
+            areaFromDoor.Type = "area type";
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
-                .Returns(generalArea).Returns(areaFromHall);
+                .Returns(generalArea).Returns(areaFromDoor);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -376,13 +425,13 @@ namespace DungeonGen.Tests.Unit.Generators
             generalArea.Type = AreaTypeConstants.General;
             generalArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, ContentsTypeConstants.Encounter };
 
-            var areaFromHall = new Area();
-            areaFromHall.Type = "area type";
+            var areaFromDoor = new Area();
+            areaFromDoor.Type = "area type";
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
-                .Returns(generalArea).Returns(areaFromHall);
+                .Returns(generalArea).Returns(areaFromDoor);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
@@ -414,13 +463,13 @@ namespace DungeonGen.Tests.Unit.Generators
             generalArea.Type = AreaTypeConstants.General;
             generalArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Trap, ContentsTypeConstants.Trap };
 
-            var areaFromHall = new Area();
-            areaFromHall.Type = "area type";
+            var areaFromDoor = new Area();
+            areaFromDoor.Type = "area type";
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
-                .Returns(generalArea).Returns(areaFromHall);
+                .Returns(generalArea).Returns(areaFromDoor);
 
-            var mockAreaGenerator = new Mock<IAreaGenerator>();
+            var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 

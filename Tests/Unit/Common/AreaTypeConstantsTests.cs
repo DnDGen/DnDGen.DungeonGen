@@ -11,6 +11,7 @@ namespace DungeonGen.Tests.Unit.Common
         [TestCase(AreaTypeConstants.Door, "Door")]
         [TestCase(AreaTypeConstants.Hall, "Hall")]
         [TestCase(AreaTypeConstants.General, "General")]
+        [TestCase(AreaTypeConstants.Room, "Room")]
         [TestCase(AreaTypeConstants.SidePassage, "Side passage")]
         [TestCase(AreaTypeConstants.Stairs, "Stairs")]
         [TestCase(AreaTypeConstants.Turn, "Turn")]

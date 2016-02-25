@@ -3,6 +3,6 @@
     public interface IAreaGeneratorFactory
     {
         bool HasSpecificGenerator(string areaType);
-        IAreaGenerator Build(string areaType);
+        AreaGenerator Build(string areaType);
     }
 }
