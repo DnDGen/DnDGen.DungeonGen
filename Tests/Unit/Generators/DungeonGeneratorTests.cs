@@ -156,7 +156,7 @@ namespace DungeonGen.Tests.Unit.Generators
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("Need RollGen 10.1");
         }
 
         [Test]
@@ -387,7 +387,7 @@ namespace DungeonGen.Tests.Unit.Generators
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
 
-            throw new NotImplementedException();
+            throw new NotImplementedException("Need RollGen 10.1");
         }
 
         [Test]
