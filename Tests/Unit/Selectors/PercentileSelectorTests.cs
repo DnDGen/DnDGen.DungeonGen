@@ -48,7 +48,7 @@ namespace DungeonGen.Tests.Unit.Selectors
         [TestCase(10, "10")]
         public void GetPercentile(int roll, string content)
         {
-            mockDice.Setup(d => d.Roll(1).Percentile()).Returns(roll);
+            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { roll });
             var result = selector.SelectFrom(tableName);
             Assert.That(result, Is.EqualTo(content));
         }
@@ -56,7 +56,7 @@ namespace DungeonGen.Tests.Unit.Selectors
         [Test]
         public void IfRollNotPresentInTable_ThrowException()
         {
-            mockDice.Setup(d => d.Roll(1).Percentile()).Returns(11);
+            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 11 });
             Assert.That(() => selector.SelectFrom(tableName), Throws.InstanceOf<ArgumentException>().With.Message.EqualTo("11 is not a valid entry in the table table name"));
         }
     }

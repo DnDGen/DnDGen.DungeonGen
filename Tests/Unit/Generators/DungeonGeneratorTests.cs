@@ -8,7 +8,7 @@ using EncounterGen.Common;
 using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
-using System;
+using RollGen;
 using System.Linq;
 
 namespace DungeonGen.Tests.Unit.Generators
@@ -21,6 +21,7 @@ namespace DungeonGen.Tests.Unit.Generators
         private Mock<IAreaGeneratorFactory> mockAreaGeneratorFactory;
         private Mock<IEncounterGenerator> mockEncounterGenerator;
         private Mock<ITrapGenerator> mockTrapGenerator;
+        private Mock<Dice> mockDice;
 
         [SetUp]
         public void Setup()
@@ -29,7 +30,8 @@ namespace DungeonGen.Tests.Unit.Generators
             mockEncounterGenerator = new Mock<IEncounterGenerator>();
             mockAreaGeneratorFactory = new Mock<IAreaGeneratorFactory>();
             mockTrapGenerator = new Mock<ITrapGenerator>();
-            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockEncounterGenerator.Object, mockTrapGenerator.Object);
+            mockDice = new Mock<Dice>();
+            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockEncounterGenerator.Object, mockTrapGenerator.Object, mockDice.Object);
         }
 
         [Test]
@@ -127,6 +129,7 @@ namespace DungeonGen.Tests.Unit.Generators
 
             var specificArea = new Area();
             var otherSpecificArea = new Area();
+
             mockAreaGenerator.Setup(g => g.Generate(9266)).Returns(new[] { specificArea, otherSpecificArea });
 
             var areas = dungeonGenerator.GenerateFromHall(9266);
@@ -143,20 +146,28 @@ namespace DungeonGen.Tests.Unit.Generators
             areaFromHall.Description = "92d66";
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
 
+            mockDice.Setup(d => d.ContainsRoll("92d66")).Returns(true);
+            mockDice.Setup(d => d.Roll("92d66")).Returns(2);
+
             var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
             var specificArea = new Area();
             var otherSpecificArea = new Area();
-            mockAreaGenerator.Setup(g => g.Generate(9266)).Returns(new[] { specificArea, otherSpecificArea });
+            var thirdSpecificArea = new Area();
+            var fourthSpecificArea = new Area();
+
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266))
+                .Returns(new[] { specificArea, otherSpecificArea })
+                .Returns(new[] { thirdSpecificArea, fourthSpecificArea });
 
             var areas = dungeonGenerator.GenerateFromHall(9266);
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
-            Assert.That(areas.Count(), Is.EqualTo(2));
-
-            throw new NotImplementedException("Need RollGen 10.1");
+            Assert.That(areas, Contains.Item(thirdSpecificArea));
+            Assert.That(areas, Contains.Item(fourthSpecificArea));
+            Assert.That(areas.Count(), Is.EqualTo(4));
         }
 
         [Test]
@@ -374,20 +385,28 @@ namespace DungeonGen.Tests.Unit.Generators
             areaFromDoor.Description = "92d66";
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromDoor);
 
+            mockDice.Setup(d => d.ContainsRoll("92d66")).Returns(true);
+            mockDice.Setup(d => d.Roll("92d66")).Returns(2);
+
             var mockAreaGenerator = new Mock<AreaGenerator>();
             mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
             mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
 
             var specificArea = new Area();
             var otherSpecificArea = new Area();
-            mockAreaGenerator.Setup(g => g.Generate(9266)).Returns(new[] { specificArea, otherSpecificArea });
+            var thirdSpecificArea = new Area();
+            var fourthSpecificArea = new Area();
+
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266))
+                .Returns(new[] { specificArea, otherSpecificArea })
+                .Returns(new[] { thirdSpecificArea, fourthSpecificArea });
 
             var areas = dungeonGenerator.GenerateFromDoor(9266);
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
-            Assert.That(areas.Count(), Is.EqualTo(2));
-
-            throw new NotImplementedException("Need RollGen 10.1");
+            Assert.That(areas, Contains.Item(thirdSpecificArea));
+            Assert.That(areas, Contains.Item(fourthSpecificArea));
+            Assert.That(areas.Count(), Is.EqualTo(4));
         }
 
         [Test]

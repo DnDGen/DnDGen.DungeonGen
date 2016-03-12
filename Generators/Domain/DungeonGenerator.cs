@@ -4,6 +4,7 @@ using DungeonGen.Selectors;
 using DungeonGen.Tables;
 using EncounterGen.Common;
 using EncounterGen.Generators;
+using RollGen;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,13 +16,15 @@ namespace DungeonGen.Generators.Domain
         private IAreaGeneratorFactory areaGeneratorFactory;
         private IEncounterGenerator encounterGenerator;
         private ITrapGenerator trapGenerator;
+        private Dice dice;
 
-        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, IAreaGeneratorFactory areaGeneratorFactory, IEncounterGenerator encounterGenerator, ITrapGenerator trapGenerator)
+        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, IAreaGeneratorFactory areaGeneratorFactory, IEncounterGenerator encounterGenerator, ITrapGenerator trapGenerator, Dice dice)
         {
             this.areaGeneratorFactory = areaGeneratorFactory;
             this.areaPercentileSelector = areaPercentileSelector;
             this.encounterGenerator = encounterGenerator;
             this.trapGenerator = trapGenerator;
+            this.dice = dice;
         }
 
         public IEnumerable<Area> GenerateFromDoor(int level)
@@ -61,7 +64,19 @@ namespace DungeonGen.Generators.Domain
                 return new[] { area };
 
             var areaGenerator = areaGeneratorFactory.Build(area.Type);
-            var specificAreas = areaGenerator.Generate(level);
+
+            var quantity = 1;
+            if (dice.ContainsRoll(area.Description))
+                quantity = dice.Roll(area.Description);
+
+            var specificAreas = new List<Area>();
+
+            while (quantity-- > 0)
+            {
+                var newAreas = areaGenerator.Generate(level);
+                specificAreas.AddRange(newAreas);
+            }
+
             return specificAreas;
         }
 
