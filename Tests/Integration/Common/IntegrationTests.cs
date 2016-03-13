@@ -44,5 +44,10 @@ namespace DungeonGen.Tests.Integration.Common
         {
             return kernel.Get<T>();
         }
+
+        protected T GetNewInstanceOf<T>(string name)
+        {
+            return kernel.Get<T>(name);
+        }
     }
 }

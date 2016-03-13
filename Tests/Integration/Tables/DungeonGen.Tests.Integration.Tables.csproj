@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaPercentileTests.cs" />
+    <Compile Include="Areas\ChambersTests.cs" />
     <Compile Include="Areas\DungeonAreaFromDoorTests.cs" />
     <Compile Include="Areas\DungeonAreaFromHallTests.cs" />
     <Compile Include="EmbeddedResourceStreamLoaderTests.cs" />

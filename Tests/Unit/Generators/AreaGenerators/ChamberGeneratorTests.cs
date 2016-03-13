@@ -25,7 +25,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
             mockSpecialChamberGenerator = new Mock<AreaGenerator>();
             mockExitGenerator = new Mock<ExitGenerator>();
-            chamberGenerator = new ChamberGenerator();
+            mockContentsGenerator = new Mock<ContentsGenerator>();
+            chamberGenerator = new ChamberGenerator(mockAreaPercentileSelector.Object, mockSpecialChamberGenerator.Object, mockExitGenerator.Object, mockContentsGenerator.Object);
 
             selectedChamber = new Area();
             selectedChamber.Length = 9266;
@@ -75,7 +76,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateSpecialChamber()
         {
-            selectedChamber.Description = "Special";
+            selectedChamber.Type = AreaTypeConstants.Special;
             var firstSpecialChamber = new Area();
             var secondSpecialArea = new Area();
             var specialChambers = new[] { firstSpecialChamber, secondSpecialArea };

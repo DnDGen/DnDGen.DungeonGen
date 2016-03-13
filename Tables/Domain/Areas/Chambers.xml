@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Chamber{20x20}</content>
+        <upper>20</upper>
+    </object>
+  <object>
+    <lower>21</lower>
+    <content>Chamber{30x30}</content>
+    <upper>30</upper>
+  </object>
+    <object>
+        <lower>31</lower>
+        <content>Chamber{40x40}</content>
+        <upper>40</upper>
+    </object>
+    <object>
+        <lower>41</lower>
+        <content>Chamber{20x30}</content>
+        <upper>65</upper>
+    </object>
+    <object>
+        <lower>66</lower>
+        <content>Chamber{30x50}</content>
+        <upper>75</upper>
+    </object>
+    <object>
+        <lower>76</lower>
+        <content>Chamber{40x60}</content>
+        <upper>85</upper>
+    </object>
+  <object>
+    <lower>86</lower>
+    <content>Special</content>
+    <upper>100</upper>
+    </object>
+</percentile>

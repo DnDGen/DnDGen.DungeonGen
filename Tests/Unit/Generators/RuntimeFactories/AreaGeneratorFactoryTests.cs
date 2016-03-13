@@ -1,7 +1,10 @@
 ﻿using DungeonGen.Common;
+using DungeonGen.Generators;
 using DungeonGen.Generators.Domain.AreaGenerators;
 using DungeonGen.Generators.Domain.RuntimeFactories;
 using DungeonGen.Generators.Domain.RuntimeFactories.Domain;
+using DungeonGen.Selectors;
+using Moq;
 using NUnit.Framework;
 
 namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
@@ -10,11 +13,20 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
     public class AreaGeneratorFactoryTests
     {
         private IAreaGeneratorFactory areaGeneratorFactory;
+        private Mock<AreaGenerator> mockHallGenerator;
 
         [SetUp]
         public void Setup()
         {
-            areaGeneratorFactory = new AreaGeneratorFactory();
+            var mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
+            var mockSpecialChamberGenerator = new Mock<AreaGenerator>();
+            var mockChamberExitGenerator = new Mock<ExitGenerator>();
+            var mockContentsGenerator = new Mock<ContentsGenerator>();
+            mockHallGenerator = new Mock<AreaGenerator>();
+            var mockPercentileSelector = new Mock<IPercentileSelector>();
+
+            areaGeneratorFactory = new AreaGeneratorFactory(mockAreaPercentileSelector.Object, mockSpecialChamberGenerator.Object, mockChamberExitGenerator.Object, mockContentsGenerator.Object,
+                mockHallGenerator.Object, mockPercentileSelector.Object);
         }
 
         [Test]
@@ -62,7 +74,7 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         {
             var generator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
             Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.InstanceOf<HallGenerator>());
+            Assert.That(generator, Is.EqualTo(mockHallGenerator.Object));
         }
 
         [TestCase(AreaTypeConstants.Chamber, true)]

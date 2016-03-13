@@ -24,7 +24,10 @@ namespace DungeonGen.Tests.Integration.Stress
         protected override void MakeAssertions()
         {
             var areas = GenerateFromHall();
-            AssertAreas(areas);
+            Assert.That(areas, Is.Not.Empty);
+
+            foreach (var area in areas)
+                AssertArea(area);
         }
 
         private IEnumerable<Area> GenerateFromHall()
@@ -33,21 +36,21 @@ namespace DungeonGen.Tests.Integration.Stress
             return DungeonGenerator.GenerateFromHall(level);
         }
 
-        private void AssertAreas(IEnumerable<Area> areas)
+        private void AssertArea(Area area)
         {
-            foreach (var area in areas)
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.Not.Empty);
+            Assert.That(area.Contents, Is.Not.Null);
+            Assert.That(area.Description, Is.Not.Null);
+
+            if (area.Type == AreaTypeConstants.General)
             {
-                Assert.That(area, Is.Not.Null);
-                Assert.That(area.Type, Is.Not.Empty);
+                Assert.That(area.Contents.IsEmpty, Is.False);
+            }
+            else
+            {
                 Assert.That(area.Length, Is.Positive);
                 Assert.That(area.Width, Is.Positive);
-                Assert.That(area.Contents, Is.Not.Null);
-                Assert.That(area.Description, Is.Not.Null);
-
-                if (area.Type == AreaTypeConstants.General)
-                {
-                    Assert.That(area.Contents.IsEmpty, Is.False);
-                }
             }
         }
 
@@ -61,7 +64,10 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             var level = Random.Next(20) + 1;
             var areas = DungeonGenerator.GenerateFromDoor(level);
-            AssertAreas(areas);
+            Assert.That(areas, Is.Not.Empty);
+
+            foreach (var area in areas)
+                AssertArea(area);
         }
     }
 }

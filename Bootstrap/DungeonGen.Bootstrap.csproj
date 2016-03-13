@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DungeonGenModuleLoader.cs" />
+    <Compile Include="Factories\AreaGeneratorFactoryFactory.cs" />
     <Compile Include="Factories\PercentileMapperFactory.cs" />
     <Compile Include="Modules\GeneratorsModule.cs" />
     <Compile Include="Modules\MappersModule.cs" />
@@ -65,6 +66,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\DungeonGen.Common.csproj">
+      <Project>{f69c2793-63f9-4411-9e7d-e4e17030cc83}</Project>
+      <Name>DungeonGen.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Generators\Contracts\DungeonGen.Generators.csproj">
       <Project>{f9d7c4f5-3467-4216-9e2b-8aaf3cf0271b}</Project>
       <Name>DungeonGen.Generators</Name>

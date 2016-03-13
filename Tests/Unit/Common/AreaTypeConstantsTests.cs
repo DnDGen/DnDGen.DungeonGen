@@ -13,6 +13,7 @@ namespace DungeonGen.Tests.Unit.Common
         [TestCase(AreaTypeConstants.General, "General")]
         [TestCase(AreaTypeConstants.Room, "Room")]
         [TestCase(AreaTypeConstants.SidePassage, "Side passage")]
+        [TestCase(AreaTypeConstants.Special, "Special")]
         [TestCase(AreaTypeConstants.Stairs, "Stairs")]
         [TestCase(AreaTypeConstants.Turn, "Turn")]
         public void Constant(string constant, string value)

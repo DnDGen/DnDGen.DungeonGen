@@ -18,6 +18,18 @@ namespace DungeonGen.Tests.Integration.Bootstrap
             AssertInstanceOf<T, T>();
         }
 
+        protected void AssertInjected<T>(string name)
+        {
+            AssertInstanceOf<T, T>(name);
+        }
+
+        protected void AssertInstanceOf<I, T>(string name)
+        {
+            var instance = GetNewInstanceOf<I>(name);
+            Assert.That(instance, Is.Not.Null);
+            Assert.That(instance, Is.InstanceOf<T>());
+        }
+
         protected void AssertInstanceOf<I, T>()
         {
             var instance = GetNewInstanceOf<I>();
