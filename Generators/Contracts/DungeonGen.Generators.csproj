@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContentsGenerator.cs" />
+    <Compile Include="ExitGenerator.cs" />
     <Compile Include="IDungeonGenerator.cs" />
     <Compile Include="AreaGenerator.cs" />
     <Compile Include="ITrapGenerator.cs" />

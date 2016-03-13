@@ -5,7 +5,7 @@ using DungeonGen.Selectors;
 using DungeonGen.Tables;
 using Moq;
 using NUnit.Framework;
-using System;
+using System.Linq;
 
 namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 {
@@ -15,11 +15,16 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private AreaGenerator chamberGenerator;
         private Mock<IAreaPercentileSelector> mockAreaPercentileSelector;
         private Area selectedChamber;
+        private Mock<AreaGenerator> mockSpecialChamberGenerator;
+        private Mock<ExitGenerator> mockExitGenerator;
+        private Mock<ContentsGenerator> mockContentsGenerator;
 
         [SetUp]
         public void Setup()
         {
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
+            mockSpecialChamberGenerator = new Mock<AreaGenerator>();
+            mockExitGenerator = new Mock<ExitGenerator>();
             chamberGenerator = new ChamberGenerator();
 
             selectedChamber = new Area();
@@ -32,33 +37,53 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateChamber()
         {
-            var chamber = chamberGenerator.Generate(9266);
-            Assert.That(chamber, Is.Not.Null);
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Is.Not.Null);
+            Assert.That(chambers, Is.Not.Empty);
         }
 
         [Test]
         public void GenerateChamberFromSelector()
         {
-            var chamber = chamberGenerator.Generate(9266);
-            Assert.That(chamber, Is.EqualTo(selectedChamber));
-        }
-
-        [Test]
-        public void GenerateSpecialChamber()
-        {
-            throw new NotImplementedException();
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers.Single(), Is.EqualTo(selectedChamber));
         }
 
         [Test]
         public void GenerateChamberExits()
         {
-            throw new NotImplementedException();
+            var firstExit = new Area();
+            var secondExit = new Area();
+            mockExitGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { firstExit, secondExit });
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Contains.Item(selectedChamber));
+            Assert.That(chambers, Contains.Item(firstExit));
+            Assert.That(chambers, Contains.Item(secondExit));
         }
 
         [Test]
         public void GenerateChamberContents()
         {
-            throw new NotImplementedException();
+            var contents = new Contents();
+            mockContentsGenerator.Setup(g => g.Generate(42)).Returns(contents);
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers.Single().Contents, Is.EqualTo(contents));
+        }
+
+        [Test]
+        public void GenerateSpecialChamber()
+        {
+            selectedChamber.Description = "Special";
+            var firstSpecialChamber = new Area();
+            var secondSpecialArea = new Area();
+            var specialChambers = new[] { firstSpecialChamber, secondSpecialArea };
+
+            mockSpecialChamberGenerator.Setup(g => g.Generate(42)).Returns(specialChambers);
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Is.EqualTo(specialChambers));
         }
     }
 }
