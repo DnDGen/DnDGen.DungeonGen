@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Common;
-using System;
+using RollGen;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DungeonGen.Selectors.Domain
@@ -7,10 +8,12 @@ namespace DungeonGen.Selectors.Domain
     public class AreaPercentileSelector : IAreaPercentileSelector
     {
         private IPercentileSelector innerSelector;
+        private Dice dice;
 
-        public AreaPercentileSelector(IPercentileSelector innerSelector)
+        public AreaPercentileSelector(IPercentileSelector innerSelector, Dice dice)
         {
             this.innerSelector = innerSelector;
+            this.dice = dice;
         }
 
         public Area SelectFrom(string tableName)
@@ -19,13 +22,10 @@ namespace DungeonGen.Selectors.Domain
             var area = new Area();
 
             area.Type = GetAreaType(result);
-            area.Description = GetDescription(result);
+            area.Descriptions = GetDescriptions(result);
             area.Length = GetLength(result);
             area.Width = GetWidth(result);
-
-            var contents = GetContents(result);
-            if (string.IsNullOrEmpty(contents) == false)
-                area.Contents.Miscellaneous = area.Contents.Miscellaneous.Union(new[] { contents });
+            area.Contents.Miscellaneous = GetContents(result);
 
             return area;
         }
@@ -47,15 +47,17 @@ namespace DungeonGen.Selectors.Domain
             return areaType;
         }
 
-        private string GetDescription(string result)
+        private IEnumerable<string> GetDescriptions(string result)
         {
             var descriptionStartIndex = result.IndexOf('(');
             var descriptionEndIndex = result.IndexOf(')');
 
             if (descriptionStartIndex < 0)
-                return string.Empty;
+                return Enumerable.Empty<string>();
 
-            return result.Substring(descriptionStartIndex + 1, descriptionEndIndex - descriptionStartIndex - 1);
+            var descriptions = result.Substring(descriptionStartIndex + 1, descriptionEndIndex - descriptionStartIndex - 1);
+
+            return descriptions.Split('/');
         }
 
         private int GetLength(string result)
@@ -67,7 +69,7 @@ namespace DungeonGen.Selectors.Domain
             var lengthEndIndex = result.IndexOf('x', lengthStartIndex);
             var length = result.Substring(lengthStartIndex + 1, lengthEndIndex - lengthStartIndex - 1);
 
-            return Convert.ToInt32(length);
+            return dice.Roll(length);
         }
 
         private int GetWidth(string result)
@@ -80,18 +82,20 @@ namespace DungeonGen.Selectors.Domain
             var widthEndIndex = result.IndexOf('}');
             var width = result.Substring(widthStartIndex + 1, widthEndIndex - widthStartIndex - 1);
 
-            return Convert.ToInt32(width);
+            return dice.Roll(width);
         }
 
-        private string GetContents(string result)
+        private IEnumerable<string> GetContents(string result)
         {
             var contentsStartIndex = result.IndexOf('[');
             var contentsEndIndex = result.IndexOf(']');
 
             if (contentsStartIndex < 0)
-                return string.Empty;
+                return Enumerable.Empty<string>();
 
-            return result.Substring(contentsStartIndex + 1, contentsEndIndex - contentsStartIndex - 1);
+            var contents = result.Substring(contentsStartIndex + 1, contentsEndIndex - contentsStartIndex - 1);
+
+            return contents.Split('/');
         }
     }
 }

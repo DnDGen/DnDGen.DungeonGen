@@ -4,7 +4,6 @@ using DungeonGen.Selectors;
 using DungeonGen.Tables;
 using EncounterGen.Common;
 using EncounterGen.Generators;
-using RollGen;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,15 +15,15 @@ namespace DungeonGen.Generators.Domain
         private IAreaGeneratorFactory areaGeneratorFactory;
         private IEncounterGenerator encounterGenerator;
         private ITrapGenerator trapGenerator;
-        private Dice dice;
+        private IPercentileSelector percentileSelector;
 
-        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, IAreaGeneratorFactory areaGeneratorFactory, IEncounterGenerator encounterGenerator, ITrapGenerator trapGenerator, Dice dice)
+        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, IAreaGeneratorFactory areaGeneratorFactory, IEncounterGenerator encounterGenerator, ITrapGenerator trapGenerator, IPercentileSelector percentileSelector)
         {
             this.areaGeneratorFactory = areaGeneratorFactory;
             this.areaPercentileSelector = areaPercentileSelector;
             this.encounterGenerator = encounterGenerator;
             this.trapGenerator = trapGenerator;
-            this.dice = dice;
+            this.percentileSelector = percentileSelector;
         }
 
         public IEnumerable<Area> GenerateFromDoor(int level)
@@ -49,6 +48,12 @@ namespace DungeonGen.Generators.Domain
 
             foreach (var area in areas)
             {
+                if (area.Type == AreaTypeConstants.Door)
+                {
+                    var doorLocation = percentileSelector.SelectFrom(TableNameConstants.DoorLocations);
+                    area.Descriptions = area.Descriptions.Union(new[] { doorLocation });
+                }
+
                 area.Contents.Encounters = GenerateEncounters(area, level);
                 area.Contents.Traps = GenerateTraps(area, level);
             }
@@ -64,14 +69,9 @@ namespace DungeonGen.Generators.Domain
                 return new[] { area };
 
             var areaGenerator = areaGeneratorFactory.Build(area.Type);
-
-            var quantity = 1;
-            if (dice.ContainsRoll(area.Description))
-                quantity = dice.Roll(area.Description);
-
             var specificAreas = new List<Area>();
 
-            while (quantity-- > 0)
+            while (area.Width-- > 0)
             {
                 var newAreas = areaGenerator.Generate(level);
                 specificAreas.AddRange(newAreas);

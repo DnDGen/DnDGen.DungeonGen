@@ -34,10 +34,10 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         private IEnumerable<Area> GenerateYIntersection(int level)
         {
             var leftPassage = hallGenerator.Generate(level).Single();
-            leftPassage.Description = SidePassageConstants.Left45DegreesAhead;
+            leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesAhead });
 
             var rightPassage = hallGenerator.Generate(level).Single();
-            rightPassage.Description = SidePassageConstants.Right45DegreesAhead;
+            rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right45DegreesAhead });
 
             return new[] { leftPassage, rightPassage };
         }
@@ -45,16 +45,16 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         private IEnumerable<Area> GenerateXIntersection(int level)
         {
             var leftBehindPassage = hallGenerator.Generate(level).Single();
-            leftBehindPassage.Description = SidePassageConstants.Left45DegreesBehind;
+            leftBehindPassage.Descriptions = leftBehindPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesBehind });
 
             var leftAheadPassage = hallGenerator.Generate(level).Single();
-            leftAheadPassage.Description = SidePassageConstants.Left45DegreesAhead;
+            leftAheadPassage.Descriptions = leftAheadPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesAhead });
 
             var rightAheadPassage = hallGenerator.Generate(level).Single();
-            rightAheadPassage.Description = SidePassageConstants.Right45DegreesAhead;
+            rightAheadPassage.Descriptions = rightAheadPassage.Descriptions.Union(new[] { SidePassageConstants.Right45DegreesAhead });
 
             var rightBehindPassage = hallGenerator.Generate(level).Single();
-            rightBehindPassage.Description = SidePassageConstants.Right45DegreesBehind;
+            rightBehindPassage.Descriptions = rightBehindPassage.Descriptions.Union(new[] { SidePassageConstants.Right45DegreesBehind });
 
             return new[] { leftBehindPassage, leftAheadPassage, rightAheadPassage, rightBehindPassage };
         }
@@ -62,10 +62,10 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         private IEnumerable<Area> GenerateTIntersection(int level)
         {
             var leftPassage = hallGenerator.Generate(level).Single();
-            leftPassage.Description = SidePassageConstants.Left90Degrees;
+            leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
 
             var rightPassage = hallGenerator.Generate(level).Single();
-            rightPassage.Description = SidePassageConstants.Right90Degrees;
+            rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right90Degrees });
 
             return new[] { leftPassage, rightPassage };
         }
@@ -75,10 +75,10 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
             var originalHall = GetOriginalHall();
 
             var leftPassage = hallGenerator.Generate(level).Single();
-            leftPassage.Description = SidePassageConstants.Left90Degrees;
+            leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
 
             var rightPassage = hallGenerator.Generate(level).Single();
-            rightPassage.Description = SidePassageConstants.Right90Degrees;
+            rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right90Degrees });
 
             return new[] { leftPassage, originalHall, rightPassage };
         }
@@ -88,7 +88,7 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
             var originalHall = GetOriginalHall();
 
             var sidePassage = hallGenerator.Generate(level).Single();
-            sidePassage.Description = sidePassageType;
+            sidePassage.Descriptions = sidePassage.Descriptions.Union(new[] { sidePassageType });
 
             return new[] { originalHall, sidePassage };
         }

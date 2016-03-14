@@ -85,9 +85,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaGenerators\ChamberExitGeneratorTests.cs" />
     <Compile Include="AreaGenerators\ChamberGeneratorTests.cs" />
+    <Compile Include="AreaGenerators\DoorGeneratorTests.cs" />
     <Compile Include="AreaGenerators\HallGeneratorTests.cs" />
+    <Compile Include="AreaGenerators\RoomGeneratorTests.cs" />
     <Compile Include="AreaGenerators\SidePassageGeneratorTests.cs" />
+    <Compile Include="AreaGenerators\TurnGeneratorTests.cs" />
     <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeFactories\AreaGeneratorFactoryTests.cs" />

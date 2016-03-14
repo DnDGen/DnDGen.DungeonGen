@@ -34,6 +34,7 @@ namespace DungeonGen.Tests.Unit.Selectors
                 table.Add(i, i.ToString());
 
             mockPercentileMapper.Setup(p => p.Map(tableName)).Returns(table);
+            mockDice.Setup(d => d.ReplaceExpressionWithTotal(It.IsAny<string>())).Returns((string s) => s);
         }
 
         [TestCase(1, "content")]
@@ -58,6 +59,17 @@ namespace DungeonGen.Tests.Unit.Selectors
         {
             mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 11 });
             Assert.That(() => selector.SelectFrom(tableName), Throws.InstanceOf<ArgumentException>().With.Message.EqualTo("11 is not a valid entry in the table table name"));
+        }
+
+        [Test]
+        public void ReplaceRollsInResult()
+        {
+            table[3] = "1d6+4 things";
+            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 3 });
+            mockDice.Setup(d => d.ReplaceExpressionWithTotal("1d6+4 things")).Returns("rolls replaced");
+
+            var result = selector.SelectFrom(tableName);
+            Assert.That(result, Is.EqualTo("rolls replaced"));
         }
     }
 }

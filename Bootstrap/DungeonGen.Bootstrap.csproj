@@ -55,7 +55,12 @@
   <ItemGroup>
     <Compile Include="DungeonGenModuleLoader.cs" />
     <Compile Include="Factories\AreaGeneratorFactoryFactory.cs" />
+    <Compile Include="Factories\RoomExitGeneratorFactory.cs" />
+    <Compile Include="Factories\ChamberExitGeneratorFactory.cs" />
+    <Compile Include="Factories\RoomGeneratorFactory.cs" />
+    <Compile Include="Factories\ChamberGeneratorFactory.cs" />
     <Compile Include="Factories\PercentileMapperFactory.cs" />
+    <Compile Include="Factories\SidePassageGeneratorFactory.cs" />
     <Compile Include="Modules\GeneratorsModule.cs" />
     <Compile Include="Modules\MappersModule.cs" />
     <Compile Include="Modules\SelectorsModule.cs" />

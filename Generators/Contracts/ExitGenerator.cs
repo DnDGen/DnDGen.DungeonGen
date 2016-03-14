@@ -5,6 +5,6 @@ namespace DungeonGen.Generators
 {
     public interface ExitGenerator
     {
-        IEnumerable<Area> Generate(int length, int width);
+        IEnumerable<Area> Generate(int level, int length, int width);
     }
 }

@@ -3,32 +3,32 @@
 <percentile>
   <object>
         <lower>1</lower>
-        <content>Hall(Parallel passage){30x0}</content>
+        <content>Hall(Parallel passage){30x1}</content>
         <upper>20</upper>
     </object>
     <object>
         <lower>21</lower>
-        <content>Hall(Straight ahead){30x0}</content>
+        <content>Hall(Straight ahead){30x1}</content>
         <upper>40</upper>
     </object>
     <object>
         <lower>41</lower>
-        <content>Hall(45 degrees left){30x0}</content>
+        <content>Hall(45 degrees left){30x1}</content>
         <upper>45</upper>
     </object>
     <object>
         <lower>46</lower>
-        <content>Hall(45 degrees right){30x0}</content>
+        <content>Hall(45 degrees right){30x1}</content>
         <upper>50</upper>
     </object>
     <object>
         <lower>51</lower>
-        <content>Room</content>
+        <content>Room{0x1}</content>
         <upper>90</upper>
     </object>
   <object>
     <lower>91</lower>
-    <content>Chamber</content>
+    <content>Chamber{0x1}</content>
     <upper>100</upper>
     </object>
 </percentile>

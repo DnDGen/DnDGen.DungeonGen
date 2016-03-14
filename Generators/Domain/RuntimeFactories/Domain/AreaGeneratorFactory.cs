@@ -1,47 +1,32 @@
 ﻿using DungeonGen.Common;
-using DungeonGen.Generators.Domain.AreaGenerators;
-using DungeonGen.Selectors;
+using System.Collections.Generic;
 
 namespace DungeonGen.Generators.Domain.RuntimeFactories.Domain
 {
     public class AreaGeneratorFactory : IAreaGeneratorFactory
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private AreaGenerator specialChamberGenerator;
-        private ExitGenerator chamberExitGenerator;
-        private ContentsGenerator contentsGenerator;
-        private AreaGenerator hallGenerator;
-        private IPercentileSelector percentileSelector;
+        private readonly Dictionary<string, AreaGenerator> areaGenerators;
 
-        public AreaGeneratorFactory(IAreaPercentileSelector areaPercentileSelector, AreaGenerator specialChamberGenerator, ExitGenerator chamberExitGenerator, ContentsGenerator contentsGenerator,
-            AreaGenerator hallGenerator, IPercentileSelector percentileSelector)
+        public AreaGeneratorFactory(AreaGenerator chamberGenerator, AreaGenerator doorGenerator, AreaGenerator hallGenerator, AreaGenerator roomGenerator, AreaGenerator sidePassageGenerator, AreaGenerator stairsGenerator, AreaGenerator turnGenerator)
         {
-            this.areaPercentileSelector = areaPercentileSelector;
-            this.specialChamberGenerator = specialChamberGenerator;
-            this.chamberExitGenerator = chamberExitGenerator;
-            this.contentsGenerator = contentsGenerator;
-            this.hallGenerator = hallGenerator;
-            this.percentileSelector = percentileSelector;
+            areaGenerators = new Dictionary<string, AreaGenerator>();
+            areaGenerators[AreaTypeConstants.Chamber] = chamberGenerator;
+            areaGenerators[AreaTypeConstants.Door] = doorGenerator;
+            areaGenerators[AreaTypeConstants.Hall] = hallGenerator;
+            areaGenerators[AreaTypeConstants.Room] = roomGenerator;
+            areaGenerators[AreaTypeConstants.SidePassage] = sidePassageGenerator;
+            areaGenerators[AreaTypeConstants.Stairs] = stairsGenerator;
+            areaGenerators[AreaTypeConstants.Turn] = turnGenerator;
         }
 
         public AreaGenerator Build(string areaType)
         {
-            switch (areaType)
-            {
-                case AreaTypeConstants.Chamber: return new ChamberGenerator(areaPercentileSelector, specialChamberGenerator, chamberExitGenerator, contentsGenerator);
-                case AreaTypeConstants.Door: return new DoorGenerator();
-                case AreaTypeConstants.Hall: return hallGenerator;
-                case AreaTypeConstants.SidePassage: return new SidePassageGenerator(percentileSelector, hallGenerator);
-                case AreaTypeConstants.Stairs: return new StairsGenerator();
-                case AreaTypeConstants.Turn: return new TurnGenerator();
-                default: return null;
-            }
+            return areaGenerators[areaType];
         }
 
         public bool HasSpecificGenerator(string areaType)
         {
-            var generator = Build(areaType);
-            return generator != null;
+            return areaGenerators.ContainsKey(areaType);
         }
     }
 }

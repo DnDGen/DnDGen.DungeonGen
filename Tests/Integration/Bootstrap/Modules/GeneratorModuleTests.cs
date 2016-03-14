@@ -33,9 +33,45 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
         }
 
         [Test]
+        public void ChamberGeneratorIsInjected()
+        {
+            AssertInjected<AreaGenerator>(AreaTypeConstants.Chamber);
+        }
+
+        [Test]
+        public void DoorGeneratorIsInjected()
+        {
+            AssertInjected<AreaGenerator>(AreaTypeConstants.Door);
+        }
+
+        [Test]
         public void HallGeneratorIsInjected()
         {
             AssertInjected<AreaGenerator>(AreaTypeConstants.Hall);
+        }
+
+        [Test]
+        public void RoomGeneratorIsInjected()
+        {
+            AssertInjected<AreaGenerator>(AreaTypeConstants.Room);
+        }
+
+        [Test]
+        public void SidePassageGeneratorIsInjected()
+        {
+            AssertInjected<AreaGenerator>(AreaTypeConstants.SidePassage);
+        }
+
+        [Test]
+        public void StairsGeneratorIsInjected()
+        {
+            AssertInjected<AreaGenerator>(AreaTypeConstants.Stairs);
+        }
+
+        [Test]
+        public void TurnGeneratorIsInjected()
+        {
+            AssertInjected<AreaGenerator>(AreaTypeConstants.Turn);
         }
 
         [Test]

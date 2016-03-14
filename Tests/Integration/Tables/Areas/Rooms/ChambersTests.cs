@@ -2,7 +2,7 @@
 using DungeonGen.Tables;
 using NUnit.Framework;
 
-namespace DungeonGen.Tests.Integration.Tables.Areas
+namespace DungeonGen.Tests.Integration.Tables.Areas.Rooms
 {
     public class ChambersTests : AreaPercentileTests
     {

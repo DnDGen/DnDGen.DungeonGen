@@ -9,14 +9,14 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
     public class ChamberGenerator : AreaGenerator
     {
         private IAreaPercentileSelector areaPercentileSelector;
-        private AreaGenerator specialChamberGenerator;
+        private AreaGenerator specialAreaGenerator;
         private ExitGenerator exitGenerator;
         private ContentsGenerator contentsGenerator;
 
         public ChamberGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGenerator specialChamberGenerator, ExitGenerator exitGenerator, ContentsGenerator contentsGenerator)
         {
             this.areaPercentileSelector = areaPercentileSelector;
-            this.specialChamberGenerator = specialChamberGenerator;
+            this.specialAreaGenerator = specialChamberGenerator;
             this.exitGenerator = exitGenerator;
             this.contentsGenerator = contentsGenerator;
         }
@@ -26,9 +26,9 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
             var chamber = areaPercentileSelector.SelectFrom(TableNameConstants.Chambers);
 
             if (chamber.Type == AreaTypeConstants.Special)
-                return specialChamberGenerator.Generate(level);
+                chamber = specialAreaGenerator.Generate(level).Single();
 
-            var exits = exitGenerator.Generate(chamber.Length, chamber.Width);
+            var exits = exitGenerator.Generate(level, chamber.Length, chamber.Width);
             chamber.Contents = contentsGenerator.Generate(level);
 
             return new[] { chamber }.Union(exits);

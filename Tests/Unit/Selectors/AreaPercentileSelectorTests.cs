@@ -2,6 +2,8 @@
 using DungeonGen.Selectors.Domain;
 using Moq;
 using NUnit.Framework;
+using RollGen;
+using System;
 using System.Linq;
 
 namespace DungeonGen.Tests.Unit.Selectors
@@ -11,12 +13,25 @@ namespace DungeonGen.Tests.Unit.Selectors
     {
         private IAreaPercentileSelector areaPercentileSelector;
         private Mock<IPercentileSelector> mockInnerSelector;
+        private Mock<Dice> mockDice;
 
         [SetUp]
         public void Setup()
         {
             mockInnerSelector = new Mock<IPercentileSelector>();
-            areaPercentileSelector = new AreaPercentileSelector(mockInnerSelector.Object);
+            mockDice = new Mock<Dice>();
+            areaPercentileSelector = new AreaPercentileSelector(mockInnerSelector.Object, mockDice.Object);
+
+            mockDice.Setup(d => d.Roll(It.IsAny<string>())).Returns((string s) => ParseRoll(s));
+        }
+
+        private int ParseRoll(string s)
+        {
+            var result = 0;
+            if (int.TryParse(s, out result))
+                return result;
+
+            throw new ArgumentException(s + " is not set up to be rolled");
         }
 
         [Test]
@@ -27,7 +42,7 @@ namespace DungeonGen.Tests.Unit.Selectors
             var area = areaPercentileSelector.SelectFrom("table name");
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.EqualTo("area type"));
-            Assert.That(area.Description, Is.Empty);
+            Assert.That(area.Descriptions, Is.Empty);
             Assert.That(area.Length, Is.EqualTo(0));
             Assert.That(area.Width, Is.EqualTo(0));
             Assert.That(area.Contents.IsEmpty, Is.True);
@@ -41,7 +56,23 @@ namespace DungeonGen.Tests.Unit.Selectors
             var area = areaPercentileSelector.SelectFrom("table name");
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.EqualTo("area type"));
-            Assert.That(area.Description, Is.EqualTo("description"));
+            Assert.That(area.Descriptions.Single(), Is.EqualTo("description"));
+            Assert.That(area.Length, Is.EqualTo(0));
+            Assert.That(area.Width, Is.EqualTo(0));
+            Assert.That(area.Contents.IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void ReturnMultipleDescriptionsFromInnerSelector()
+        {
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type(description/other description)");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Contains.Item("description"));
+            Assert.That(area.Descriptions, Contains.Item("other description"));
+            Assert.That(area.Descriptions.Count(), Is.EqualTo(2));
             Assert.That(area.Length, Is.EqualTo(0));
             Assert.That(area.Width, Is.EqualTo(0));
             Assert.That(area.Contents.IsEmpty, Is.True);
@@ -55,7 +86,22 @@ namespace DungeonGen.Tests.Unit.Selectors
             var area = areaPercentileSelector.SelectFrom("table name");
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.EqualTo("area type"));
-            Assert.That(area.Description, Is.Empty);
+            Assert.That(area.Descriptions, Is.Empty);
+            Assert.That(area.Length, Is.EqualTo(9266));
+            Assert.That(area.Width, Is.EqualTo(0));
+            Assert.That(area.Contents.IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void ReturnRandomLength()
+        {
+            mockDice.Setup(d => d.Roll("1d2")).Returns(9266);
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type{1d2x0}");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Is.Empty);
             Assert.That(area.Length, Is.EqualTo(9266));
             Assert.That(area.Width, Is.EqualTo(0));
             Assert.That(area.Contents.IsEmpty, Is.True);
@@ -69,7 +115,22 @@ namespace DungeonGen.Tests.Unit.Selectors
             var area = areaPercentileSelector.SelectFrom("table name");
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.EqualTo("area type"));
-            Assert.That(area.Description, Is.Empty);
+            Assert.That(area.Descriptions, Is.Empty);
+            Assert.That(area.Length, Is.EqualTo(0));
+            Assert.That(area.Width, Is.EqualTo(90210));
+            Assert.That(area.Contents.IsEmpty, Is.True);
+        }
+
+        [Test]
+        public void ReturnRandomWidth()
+        {
+            mockDice.Setup(d => d.Roll("3d4")).Returns(90210);
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type{0x3d4}");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Is.Empty);
             Assert.That(area.Length, Is.EqualTo(0));
             Assert.That(area.Width, Is.EqualTo(90210));
             Assert.That(area.Contents.IsEmpty, Is.True);
@@ -83,7 +144,7 @@ namespace DungeonGen.Tests.Unit.Selectors
             var area = areaPercentileSelector.SelectFrom("table name");
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.EqualTo("area type"));
-            Assert.That(area.Description, Is.Empty);
+            Assert.That(area.Descriptions, Is.Empty);
             Assert.That(area.Length, Is.EqualTo(0));
             Assert.That(area.Width, Is.EqualTo(0));
             Assert.That(area.Contents.Encounters, Is.Empty);
@@ -98,20 +159,50 @@ namespace DungeonGen.Tests.Unit.Selectors
         }
 
         [Test]
-        public void ReturnFullAreaFromInnerSelector()
+        public void ReturnMultipleContentsFromInnerSelector()
         {
-            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type(description)[contents]{9266x90210}");
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type[contents/more contents/even more contents]");
 
             var area = areaPercentileSelector.SelectFrom("table name");
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.EqualTo("area type"));
-            Assert.That(area.Description, Is.EqualTo("description"));
+            Assert.That(area.Descriptions, Is.Empty);
+            Assert.That(area.Length, Is.EqualTo(0));
+            Assert.That(area.Width, Is.EqualTo(0));
+            Assert.That(area.Contents.Encounters, Is.Empty);
+            Assert.That(area.Contents.IsEmpty, Is.False);
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("contents"));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("more contents"));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("even more contents"));
+            Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(3));
+            Assert.That(area.Contents.Traps, Is.Empty);
+            Assert.That(area.Contents.Treasure.Coin.Quantity, Is.EqualTo(0));
+            Assert.That(area.Contents.Treasure.Goods, Is.Empty);
+            Assert.That(area.Contents.Treasure.Items, Is.Empty);
+            Assert.That(area.Contents.TreasureContainer, Is.Empty);
+        }
+
+        [Test]
+        public void ReturnFullAreaFromInnerSelector()
+        {
+            mockDice.Setup(d => d.Roll("1d2")).Returns(9266);
+            mockDice.Setup(d => d.Roll("3d4")).Returns(90210);
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type(description/other description)[contents/more contents/even more contents]{1d2x3d4}");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Contains.Item("description"));
+            Assert.That(area.Descriptions, Contains.Item("other description"));
+            Assert.That(area.Descriptions.Count(), Is.EqualTo(2));
             Assert.That(area.Length, Is.EqualTo(9266));
             Assert.That(area.Width, Is.EqualTo(90210));
             Assert.That(area.Contents.Encounters, Is.Empty);
             Assert.That(area.Contents.IsEmpty, Is.False);
             Assert.That(area.Contents.Miscellaneous, Contains.Item("contents"));
-            Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(1));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("more contents"));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("even more contents"));
+            Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(3));
             Assert.That(area.Contents.Traps, Is.Empty);
             Assert.That(area.Contents.Treasure.Coin.Quantity, Is.EqualTo(0));
             Assert.That(area.Contents.Treasure.Goods, Is.Empty);

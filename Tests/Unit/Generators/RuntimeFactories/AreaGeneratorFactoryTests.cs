@@ -1,9 +1,7 @@
 ﻿using DungeonGen.Common;
 using DungeonGen.Generators;
-using DungeonGen.Generators.Domain.AreaGenerators;
 using DungeonGen.Generators.Domain.RuntimeFactories;
 using DungeonGen.Generators.Domain.RuntimeFactories.Domain;
-using DungeonGen.Selectors;
 using Moq;
 using NUnit.Framework;
 
@@ -13,28 +11,27 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
     public class AreaGeneratorFactoryTests
     {
         private IAreaGeneratorFactory areaGeneratorFactory;
+        private Mock<AreaGenerator> mockChamberGenerator;
+        private Mock<AreaGenerator> mockDoorGenerator;
         private Mock<AreaGenerator> mockHallGenerator;
+        private Mock<AreaGenerator> mockRoomGenerator;
+        private Mock<AreaGenerator> mockSidePassageGenerator;
+        private Mock<AreaGenerator> mockStairsGenerator;
+        private Mock<AreaGenerator> mockTurnGenerator;
 
         [SetUp]
         public void Setup()
         {
-            var mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
-            var mockSpecialChamberGenerator = new Mock<AreaGenerator>();
-            var mockChamberExitGenerator = new Mock<ExitGenerator>();
-            var mockContentsGenerator = new Mock<ContentsGenerator>();
+            mockChamberGenerator = new Mock<AreaGenerator>();
+            mockDoorGenerator = new Mock<AreaGenerator>();
             mockHallGenerator = new Mock<AreaGenerator>();
-            var mockPercentileSelector = new Mock<IPercentileSelector>();
+            mockRoomGenerator = new Mock<AreaGenerator>();
+            mockSidePassageGenerator = new Mock<AreaGenerator>();
+            mockStairsGenerator = new Mock<AreaGenerator>();
+            mockTurnGenerator = new Mock<AreaGenerator>();
 
-            areaGeneratorFactory = new AreaGeneratorFactory(mockAreaPercentileSelector.Object, mockSpecialChamberGenerator.Object, mockChamberExitGenerator.Object, mockContentsGenerator.Object,
-                mockHallGenerator.Object, mockPercentileSelector.Object);
-        }
-
-        [Test]
-        public void BuildDoorGenerator()
-        {
-            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Door);
-            Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.InstanceOf<DoorGenerator>());
+            areaGeneratorFactory = new AreaGeneratorFactory(mockChamberGenerator.Object, mockDoorGenerator.Object, mockHallGenerator.Object, mockRoomGenerator.Object,
+                mockSidePassageGenerator.Object, mockStairsGenerator.Object, mockTurnGenerator.Object);
         }
 
         [Test]
@@ -42,31 +39,15 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         {
             var generator = areaGeneratorFactory.Build(AreaTypeConstants.Chamber);
             Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.InstanceOf<ChamberGenerator>());
+            Assert.That(generator, Is.EqualTo(mockChamberGenerator.Object));
         }
 
         [Test]
-        public void BuildSidePassageGenerator()
+        public void BuildDoorGenerator()
         {
-            var generator = areaGeneratorFactory.Build(AreaTypeConstants.SidePassage);
+            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Door);
             Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.InstanceOf<SidePassageGenerator>());
-        }
-
-        [Test]
-        public void BuildStairsGenerator()
-        {
-            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Stairs);
-            Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.InstanceOf<StairsGenerator>());
-        }
-
-        [Test]
-        public void BuildTurnGenerator()
-        {
-            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Turn);
-            Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.InstanceOf<TurnGenerator>());
+            Assert.That(generator, Is.EqualTo(mockDoorGenerator.Object));
         }
 
         [Test]
@@ -77,12 +58,46 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
             Assert.That(generator, Is.EqualTo(mockHallGenerator.Object));
         }
 
+        [Test]
+        public void BuildRoomGenerator()
+        {
+            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Room);
+            Assert.That(generator, Is.Not.Null);
+            Assert.That(generator, Is.EqualTo(mockRoomGenerator.Object));
+        }
+
+        [Test]
+        public void BuildSidePassageGenerator()
+        {
+            var generator = areaGeneratorFactory.Build(AreaTypeConstants.SidePassage);
+            Assert.That(generator, Is.Not.Null);
+            Assert.That(generator, Is.EqualTo(mockSidePassageGenerator.Object));
+        }
+
+        [Test]
+        public void BuildStairsGenerator()
+        {
+            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Stairs);
+            Assert.That(generator, Is.Not.Null);
+            Assert.That(generator, Is.EqualTo(mockStairsGenerator.Object));
+        }
+
+        [Test]
+        public void BuildTurnGenerator()
+        {
+            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Turn);
+            Assert.That(generator, Is.Not.Null);
+            Assert.That(generator, Is.EqualTo(mockTurnGenerator.Object));
+        }
+
         [TestCase(AreaTypeConstants.Chamber, true)]
         [TestCase(AreaTypeConstants.DeadEnd, false)]
         [TestCase(AreaTypeConstants.Door, true)]
         [TestCase(AreaTypeConstants.General, false)]
         [TestCase(AreaTypeConstants.Hall, true)]
+        [TestCase(AreaTypeConstants.Room, true)]
         [TestCase(AreaTypeConstants.SidePassage, true)]
+        [TestCase(AreaTypeConstants.Special, false)]
         [TestCase(AreaTypeConstants.Stairs, true)]
         [TestCase(AreaTypeConstants.Turn, true)]
         [TestCase("area type", false)]

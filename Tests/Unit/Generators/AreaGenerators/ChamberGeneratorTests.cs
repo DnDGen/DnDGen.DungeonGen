@@ -55,7 +55,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             var firstExit = new Area();
             var secondExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { firstExit, secondExit });
+            mockExitGenerator.Setup(g => g.Generate(42, 9266, 90210)).Returns(new[] { firstExit, secondExit });
 
             var chambers = chamberGenerator.Generate(42);
             Assert.That(chambers, Contains.Item(selectedChamber));

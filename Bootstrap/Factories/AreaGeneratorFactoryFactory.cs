@@ -2,7 +2,6 @@
 using DungeonGen.Generators;
 using DungeonGen.Generators.Domain.RuntimeFactories;
 using DungeonGen.Generators.Domain.RuntimeFactories.Domain;
-using DungeonGen.Selectors;
 using Ninject;
 
 namespace DungeonGen.Bootstrap.Factories
@@ -11,15 +10,15 @@ namespace DungeonGen.Bootstrap.Factories
     {
         public static IAreaGeneratorFactory Build(IKernel kernel)
         {
-            var areaPercentileSelector = kernel.Get<IAreaPercentileSelector>();
-            var specialAreaGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Special);
-            var chamberExitGenerator = kernel.Get<ExitGenerator>(AreaTypeConstants.Chamber);
-            var contentsGenerator = kernel.Get<ContentsGenerator>();
-            var percentileSelector = kernel.Get<IPercentileSelector>();
+            var chamberGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Chamber);
+            var doorGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Door);
             var hallGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Hall);
+            var roomGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Room);
+            var sidePassageGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.SidePassage);
+            var stairsGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Stairs);
+            var turnGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Turn);
 
-            return new AreaGeneratorFactory(areaPercentileSelector, specialAreaGenerator, chamberExitGenerator, contentsGenerator,
-                hallGenerator, percentileSelector);
+            return new AreaGeneratorFactory(chamberGenerator, doorGenerator, hallGenerator, roomGenerator, sidePassageGenerator, stairsGenerator, turnGenerator);
         }
     }
 }

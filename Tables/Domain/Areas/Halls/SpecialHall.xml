@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Hall[Columns down center]{30x40}</content>
+        <upper>20</upper>
+    </object>
+  <object>
+    <lower>21</lower>
+    <content>Hall[Double row of columns]{30x40}</content>
+    <upper>35</upper>
+  </object>
+  <object>
+    <lower>36</lower>
+    <content>Hall[Double row of columns]{30x50}</content>
+    <upper>50</upper>
+  </object>
+  <object>
+    <lower>51</lower>
+    <content>Hall[columns 10' on right and left, supporting 10' wide upper galleries 20' up]{30x50}</content>
+    <upper>60</upper>
+  </object>
+  <object>
+    <lower>61</lower>
+    <content>Hall[Stream bisects the passage]{30x10}</content>
+    <upper>75</upper>
+  </object>
+    <object>
+        <lower>76</lower>
+        <content>Hall[River bisects the passage]{40x10}</content>
+        <upper>85</upper>
+    </object>
+    <object>
+        <lower>86</lower>
+      <content>Hall[River bisects the passage]{60x10}</content>
+        <upper>90</upper>
+    </object>
+  <object>
+    <lower>91</lower>
+    <content>Hall[River bisects the passage]{80x10}</content>
+    <upper>95</upper>
+  </object>
+  <object>
+    <lower>96</lower>
+    <content>Hall[Chasm bisects the passage]{40x10}</content>
+    <upper>100</upper>
+    </object>
+</percentile>

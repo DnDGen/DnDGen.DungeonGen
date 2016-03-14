@@ -18,7 +18,7 @@ namespace DungeonGen.Tests.Unit.Common
         public void AreaInitialized()
         {
             Assert.That(area.Contents, Is.Not.Null);
-            Assert.That(area.Description, Is.Empty);
+            Assert.That(area.Descriptions, Is.Empty);
             Assert.That(area.Length, Is.EqualTo(0));
             Assert.That(area.Width, Is.EqualTo(0));
             Assert.That(area.Type, Is.Empty);

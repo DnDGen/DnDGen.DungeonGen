@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area.cs" />
+    <Compile Include="ContentsConstants.cs" />
     <Compile Include="SidePassageConstants.cs" />
     <Compile Include="ContentsTypeConstants.cs" />
     <Compile Include="AreaTypeConstants.cs" />

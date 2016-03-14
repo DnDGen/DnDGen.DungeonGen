@@ -43,7 +43,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(originalHall.Width, Is.EqualTo(0));
 
             Assert.That(sidePassage, Is.EqualTo(generatedSidePassage));
-            Assert.That(sidePassage.Description, Is.EqualTo("description"));
+            Assert.That(sidePassage.Descriptions.Single(), Is.EqualTo("description"));
         }
 
         [Test]
@@ -62,9 +62,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var last = sidePassages.Last();
 
             Assert.That(first, Is.EqualTo(leftHall));
-            Assert.That(first.Description, Is.EqualTo(SidePassageConstants.Left90Degrees));
+            Assert.That(first.Descriptions.Single(), Is.EqualTo(SidePassageConstants.Left90Degrees));
             Assert.That(last, Is.EqualTo(rightHall));
-            Assert.That(last.Description, Is.EqualTo(SidePassageConstants.Right90Degrees));
+            Assert.That(last.Descriptions.Single(), Is.EqualTo(SidePassageConstants.Right90Degrees));
         }
 
         [Test]
@@ -83,9 +83,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var last = sidePassages.Last();
 
             Assert.That(first, Is.EqualTo(leftHall));
-            Assert.That(first.Description, Is.EqualTo(SidePassageConstants.Left45DegreesAhead));
+            Assert.That(first.Descriptions.Single(), Is.EqualTo(SidePassageConstants.Left45DegreesAhead));
             Assert.That(last, Is.EqualTo(rightHall));
-            Assert.That(last.Description, Is.EqualTo(SidePassageConstants.Right45DegreesAhead));
+            Assert.That(last.Descriptions.Single(), Is.EqualTo(SidePassageConstants.Right45DegreesAhead));
         }
 
         [Test]
@@ -105,12 +105,12 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var last = sidePassages.Last();
 
             Assert.That(first, Is.EqualTo(leftHall));
-            Assert.That(first.Description, Is.EqualTo(SidePassageConstants.Left90Degrees));
+            Assert.That(first.Descriptions.Single(), Is.EqualTo(SidePassageConstants.Left90Degrees));
             Assert.That(middle.Type, Is.EqualTo(AreaTypeConstants.Hall));
             Assert.That(middle.Length, Is.EqualTo(30));
             Assert.That(middle.Width, Is.EqualTo(0));
             Assert.That(last, Is.EqualTo(rightHall));
-            Assert.That(last.Description, Is.EqualTo(SidePassageConstants.Right90Degrees));
+            Assert.That(last.Descriptions.Single(), Is.EqualTo(SidePassageConstants.Right90Degrees));
         }
 
         [Test]
@@ -130,13 +130,13 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(sidePassages.Length, Is.EqualTo(4));
 
             Assert.That(sidePassages[0], Is.EqualTo(leftBehindHall));
-            Assert.That(sidePassages[0].Description, Is.EqualTo(SidePassageConstants.Left45DegreesBehind));
+            Assert.That(sidePassages[0].Descriptions.Single(), Is.EqualTo(SidePassageConstants.Left45DegreesBehind));
             Assert.That(sidePassages[1], Is.EqualTo(leftAheadHall));
-            Assert.That(sidePassages[1].Description, Is.EqualTo(SidePassageConstants.Left45DegreesAhead));
+            Assert.That(sidePassages[1].Descriptions.Single(), Is.EqualTo(SidePassageConstants.Left45DegreesAhead));
             Assert.That(sidePassages[2], Is.EqualTo(rightAheadHall));
-            Assert.That(sidePassages[2].Description, Is.EqualTo(SidePassageConstants.Right45DegreesAhead));
+            Assert.That(sidePassages[2].Descriptions.Single(), Is.EqualTo(SidePassageConstants.Right45DegreesAhead));
             Assert.That(sidePassages[3], Is.EqualTo(rightBehindHall));
-            Assert.That(sidePassages[3].Description, Is.EqualTo(SidePassageConstants.Right45DegreesBehind));
+            Assert.That(sidePassages[3].Descriptions.Single(), Is.EqualTo(SidePassageConstants.Right45DegreesBehind));
         }
     }
 }

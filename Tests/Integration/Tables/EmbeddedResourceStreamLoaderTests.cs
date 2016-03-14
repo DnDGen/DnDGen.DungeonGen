@@ -21,31 +21,31 @@ namespace DungeonGen.Tests.Integration.Tables
             var table = Load("DungeonAreaFromHall.xml");
 
             for (var i = 100; i > 95; i--)
-                Assert.That(table[i], Is.EqualTo("General[Encounter]"));
+                Assert.That(table[i], Is.EqualTo("General[Encounter]{0x1}"));
 
             for (var i = 95; i > 90; i--)
-                Assert.That(table[i], Is.EqualTo("General[Trap]"));
+                Assert.That(table[i], Is.EqualTo("General[Trap]{0x1}"));
 
             for (var i = 90; i > 85; i--)
-                Assert.That(table[i], Is.EqualTo("Dead end(Check for secret doors along already mapped walls)"));
+                Assert.That(table[i], Is.EqualTo("Dead end(Check for secret doors along already mapped walls){0x1}"));
 
             for (var i = 85; i > 80; i--)
-                Assert.That(table[i], Is.EqualTo("Stairs"));
+                Assert.That(table[i], Is.EqualTo("Stairs{0x1}"));
 
             for (var i = 80; i > 65; i--)
-                Assert.That(table[i], Is.EqualTo("Chamber"));
+                Assert.That(table[i], Is.EqualTo("Chamber{0x1}"));
 
             for (var i = 65; i > 50; i--)
-                Assert.That(table[i], Is.EqualTo("Turn{30x0}"));
+                Assert.That(table[i], Is.EqualTo("Turn{30x1}"));
 
             for (var i = 50; i > 25; i--)
-                Assert.That(table[i], Is.EqualTo("Side passage{30x0}"));
+                Assert.That(table[i], Is.EqualTo("Side passage{30x1}"));
 
             for (var i = 25; i > 10; i--)
-                Assert.That(table[i], Is.EqualTo("Door(1d3)"));
+                Assert.That(table[i], Is.EqualTo("Door{0x1d3}"));
 
             for (var i = 10; i > 0; i--)
-                Assert.That(table[i], Is.EqualTo("Hall{30x0}"));
+                Assert.That(table[i], Is.EqualTo("Hall{30x1}"));
         }
 
         private Dictionary<int, string> Load(string filename)

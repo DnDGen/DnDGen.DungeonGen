@@ -6,7 +6,7 @@ namespace DungeonGen.Generators.Domain.ExitGenerators
 {
     public class RoomExitGenerator : ExitGenerator
     {
-        public IEnumerable<Area> Generate(int length, int width)
+        public IEnumerable<Area> Generate(int level, int length, int width)
         {
             throw new NotImplementedException();
         }

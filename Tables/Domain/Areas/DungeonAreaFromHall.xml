@@ -3,47 +3,47 @@
 <percentile>
   <object>
         <lower>1</lower>
-        <content>Hall{30x0}</content>
+        <content>Hall{30x1}</content>
         <upper>10</upper>
     </object>
     <object>
         <lower>11</lower>
-        <content>Door(1d3)</content>
+        <content>Door{0x1d3}</content>
         <upper>25</upper>
     </object>
     <object>
         <lower>26</lower>
-        <content>Side passage{30x0}</content>
+        <content>Side passage{30x1}</content>
         <upper>50</upper>
     </object>
     <object>
         <lower>51</lower>
-        <content>Turn{30x0}</content>
+        <content>Turn{30x1}</content>
         <upper>65</upper>
     </object>
     <object>
         <lower>66</lower>
-        <content>Chamber</content>
+        <content>Chamber{0x1}</content>
         <upper>80</upper>
     </object>
   <object>
     <lower>81</lower>
-    <content>Stairs</content>
+    <content>Stairs{0x1}</content>
     <upper>85</upper>
   </object>
     <object>
         <lower>86</lower>
-        <content>Dead end(Check for secret doors along already mapped walls)</content>
+        <content>Dead end(Check for secret doors along already mapped walls){0x1}</content>
         <upper>90</upper>
     </object>
     <object>
         <lower>91</lower>
-        <content>General[Trap]</content>
+        <content>General[Trap]{0x1}</content>
         <upper>95</upper>
     </object>
   <object>
     <lower>96</lower>
-    <content>General[Encounter]</content>
+    <content>General[Encounter]{0x1}</content>
     <upper>100</upper>
   </object>
 </percentile>

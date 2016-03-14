@@ -80,6 +80,7 @@
     <Compile Include="AreaGenerators\ChamberGenerator.cs" />
     <Compile Include="AreaGenerators\DoorGenerator.cs" />
     <Compile Include="AreaGenerators\HallGenerator.cs" />
+    <Compile Include="AreaGenerators\RoomGenerator.cs" />
     <Compile Include="AreaGenerators\SidePassageGenerator.cs" />
     <Compile Include="AreaGenerators\SpecialAreaGenerator.cs" />
     <Compile Include="AreaGenerators\StairsGenerator.cs" />

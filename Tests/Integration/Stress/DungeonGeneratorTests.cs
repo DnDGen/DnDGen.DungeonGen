@@ -41,16 +41,16 @@ namespace DungeonGen.Tests.Integration.Stress
             Assert.That(area, Is.Not.Null);
             Assert.That(area.Type, Is.Not.Empty);
             Assert.That(area.Contents, Is.Not.Null);
-            Assert.That(area.Description, Is.Not.Null);
+            Assert.That(area.Descriptions, Is.Not.Null);
 
             if (area.Type == AreaTypeConstants.General)
             {
                 Assert.That(area.Contents.IsEmpty, Is.False);
             }
-            else
+            else if (area.Type != AreaTypeConstants.DeadEnd)
             {
-                Assert.That(area.Length, Is.Positive);
-                Assert.That(area.Width, Is.Positive);
+                Assert.That(area.Length, Is.Positive, area.Type);
+                Assert.That(area.Width, Is.Not.Negative, area.Type);
             }
         }
 
