@@ -90,6 +90,7 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
             Assert.That(generator, Is.EqualTo(mockTurnGenerator.Object));
         }
 
+        [TestCase(AreaTypeConstants.Cave, false)]
         [TestCase(AreaTypeConstants.Chamber, true)]
         [TestCase(AreaTypeConstants.DeadEnd, false)]
         [TestCase(AreaTypeConstants.Door, true)]

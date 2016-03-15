@@ -13,16 +13,6 @@ namespace DungeonGen.Tests.Integration.Bootstrap
             Assert.That(first, Is.EqualTo(second));
         }
 
-        protected void AssertInjected<T>()
-        {
-            AssertInstanceOf<T, T>();
-        }
-
-        protected void AssertInjected<T>(string name)
-        {
-            AssertInstanceOf<T, T>(name);
-        }
-
         protected void AssertInstanceOf<I, T>(string name)
         {
             var instance = GetNewInstanceOf<I>(name);

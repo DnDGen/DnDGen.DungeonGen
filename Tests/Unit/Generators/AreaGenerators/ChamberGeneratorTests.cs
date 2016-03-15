@@ -3,6 +3,7 @@ using DungeonGen.Generators;
 using DungeonGen.Generators.Domain.AreaGenerators;
 using DungeonGen.Selectors;
 using DungeonGen.Tables;
+using EncounterGen.Common;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private AreaGenerator chamberGenerator;
         private Mock<IAreaPercentileSelector> mockAreaPercentileSelector;
         private Area selectedChamber;
-        private Mock<AreaGenerator> mockSpecialChamberGenerator;
+        private Mock<AreaGenerator> mockSpecialAreaGenerator;
         private Mock<ExitGenerator> mockExitGenerator;
         private Mock<ContentsGenerator> mockContentsGenerator;
 
@@ -23,16 +24,17 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         public void Setup()
         {
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
-            mockSpecialChamberGenerator = new Mock<AreaGenerator>();
+            mockSpecialAreaGenerator = new Mock<AreaGenerator>();
             mockExitGenerator = new Mock<ExitGenerator>();
             mockContentsGenerator = new Mock<ContentsGenerator>();
-            chamberGenerator = new ChamberGenerator(mockAreaPercentileSelector.Object, mockSpecialChamberGenerator.Object, mockExitGenerator.Object, mockContentsGenerator.Object);
+            chamberGenerator = new ChamberGenerator(mockAreaPercentileSelector.Object, mockSpecialAreaGenerator.Object, mockExitGenerator.Object, mockContentsGenerator.Object);
 
             selectedChamber = new Area();
             selectedChamber.Length = 9266;
             selectedChamber.Width = 90210;
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Chambers)).Returns(selectedChamber);
+            mockContentsGenerator.Setup(g => g.Generate(It.IsAny<int>())).Returns(() => new Contents());
         }
 
         [Test]
@@ -66,25 +68,122 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateChamberContents()
         {
-            var contents = new Contents();
-            mockContentsGenerator.Setup(g => g.Generate(42)).Returns(contents);
+            var generatedContents = new Contents();
+            generatedContents.Encounters = new[] { new Encounter(), new Encounter() };
+            generatedContents.Miscellaneous = new[] { "thing 1", "thing 2" };
+            generatedContents.Traps = new[] { new Trap(), new Trap() };
+            generatedContents.Treasures = new[] { new ContainedTreasure(), new ContainedTreasure() };
+
+            mockContentsGenerator.Setup(g => g.Generate(42)).Returns(generatedContents);
 
             var chambers = chamberGenerator.Generate(42);
-            Assert.That(chambers.Single().Contents, Is.EqualTo(contents));
+            var contents = chambers.Single().Contents;
+
+            Assert.That(contents.Encounters.Count(), Is.EqualTo(2));
+            Assert.That(contents.Miscellaneous, Contains.Item("thing 1"));
+            Assert.That(contents.Miscellaneous, Contains.Item("thing 2"));
+            Assert.That(contents.Miscellaneous.Count(), Is.EqualTo(2));
+            Assert.That(contents.Traps.Count(), Is.EqualTo(2));
+            Assert.That(contents.Treasures.Count(), Is.EqualTo(2));
         }
 
         [Test]
         public void GenerateSpecialChamber()
         {
             selectedChamber.Type = AreaTypeConstants.Special;
-            var firstSpecialChamber = new Area();
+            var firstSpecialArea = new Area();
             var secondSpecialArea = new Area();
-            var specialChambers = new[] { firstSpecialChamber, secondSpecialArea };
+            var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialChamberGenerator.Setup(g => g.Generate(42)).Returns(specialChambers);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
 
             var chambers = chamberGenerator.Generate(42);
-            Assert.That(chambers, Is.EqualTo(specialChambers));
+            Assert.That(chambers, Is.EqualTo(specialAreas));
+        }
+
+        [Test]
+        public void GenerateSpecialChamberWithContents()
+        {
+            selectedChamber.Type = AreaTypeConstants.Special;
+            var firstSpecialArea = new Area();
+            firstSpecialArea.Contents.Encounters = new[] { new Encounter() };
+            firstSpecialArea.Contents.Traps = new[] { new Trap() };
+
+            var secondSpecialArea = new Area();
+            secondSpecialArea.Contents.Miscellaneous = new[] { "thing 1", "thing 2" };
+            secondSpecialArea.Descriptions = new[] { "a cave" };
+            secondSpecialArea.Contents.Treasures = new[] { new ContainedTreasure() };
+
+            var firstContents = new Contents();
+            firstContents.Miscellaneous = new[] { "new stuff" };
+            firstContents.Encounters = new[] { new Encounter() };
+
+            var secondContents = new Contents();
+            secondContents.Miscellaneous = new[] { "other new stuff" };
+            secondContents.Treasures = new[] { new ContainedTreasure() };
+            secondContents.Traps = new[] { new Trap() };
+
+            //INFO: We do the order backwards, becuase the internals will iterate backwards through the list
+            mockContentsGenerator.SetupSequence(g => g.Generate(42)).Returns(secondContents).Returns(firstContents);
+
+            var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
+
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Is.EqualTo(specialAreas));
+
+            var first = chambers.First();
+            var last = chambers.Last();
+
+            Assert.That(first.Contents.Encounters.Count(), Is.EqualTo(2));
+            Assert.That(first.Contents.Miscellaneous.Single(), Is.EqualTo("new stuff"));
+            Assert.That(first.Contents.Traps.Count(), Is.EqualTo(1));
+            Assert.That(first.Contents.Treasures, Is.Empty);
+            Assert.That(first.Descriptions, Is.Empty);
+
+            Assert.That(last.Contents.Encounters, Is.Empty);
+            Assert.That(last.Contents.Miscellaneous, Contains.Item("thing 1"));
+            Assert.That(last.Contents.Miscellaneous, Contains.Item("thing 2"));
+            Assert.That(last.Contents.Miscellaneous, Contains.Item("other new stuff"));
+            Assert.That(last.Contents.Miscellaneous.Count(), Is.EqualTo(3));
+            Assert.That(last.Contents.Traps.Count(), Is.EqualTo(1));
+            Assert.That(last.Contents.Treasures.Count(), Is.EqualTo(2));
+            Assert.That(last.Descriptions.Single(), Is.EqualTo("a cave"));
+        }
+
+        [Test]
+        public void GenerateSpecialChamberExits()
+        {
+            selectedChamber.Type = AreaTypeConstants.Special;
+
+            var firstSpecialArea = new Area();
+            firstSpecialArea.Length = 9266;
+            firstSpecialArea.Width = 90210;
+
+            var secondSpecialArea = new Area();
+            secondSpecialArea.Length = 600;
+            secondSpecialArea.Width = 1337;
+
+            var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
+
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+
+            var firstExit = new Area();
+            var secondExit = new Area();
+            mockExitGenerator.Setup(g => g.Generate(42, 9266, 90210)).Returns(new[] { firstExit, secondExit });
+
+            var thirdExit = new Area();
+            var fourthExit = new Area();
+            mockExitGenerator.Setup(g => g.Generate(42, 600, 1337)).Returns(new[] { thirdExit, fourthExit });
+
+            var chambers = chamberGenerator.Generate(42).ToArray();
+            Assert.That(chambers[0], Is.EqualTo(firstSpecialArea));
+            Assert.That(chambers[1], Is.EqualTo(firstExit));
+            Assert.That(chambers[2], Is.EqualTo(secondExit));
+            Assert.That(chambers[3], Is.EqualTo(secondSpecialArea));
+            Assert.That(chambers[4], Is.EqualTo(thirdExit));
+            Assert.That(chambers[5], Is.EqualTo(fourthExit));
         }
     }
 }

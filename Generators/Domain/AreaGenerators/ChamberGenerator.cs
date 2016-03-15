@@ -13,10 +13,10 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         private ExitGenerator exitGenerator;
         private ContentsGenerator contentsGenerator;
 
-        public ChamberGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGenerator specialChamberGenerator, ExitGenerator exitGenerator, ContentsGenerator contentsGenerator)
+        public ChamberGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGenerator specialAreaGenerator, ExitGenerator exitGenerator, ContentsGenerator contentsGenerator)
         {
             this.areaPercentileSelector = areaPercentileSelector;
-            this.specialAreaGenerator = specialChamberGenerator;
+            this.specialAreaGenerator = specialAreaGenerator;
             this.exitGenerator = exitGenerator;
             this.contentsGenerator = contentsGenerator;
         }
@@ -24,14 +24,35 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         public IEnumerable<Area> Generate(int level)
         {
             var chamber = areaPercentileSelector.SelectFrom(TableNameConstants.Chambers);
+            var chambers = new List<Area>();
 
             if (chamber.Type == AreaTypeConstants.Special)
-                chamber = specialAreaGenerator.Generate(level).Single();
+            {
+                var specialChambers = specialAreaGenerator.Generate(level);
+                chambers.AddRange(specialChambers);
+            }
+            else
+            {
+                chambers.Add(chamber);
+            }
 
-            var exits = exitGenerator.Generate(level, chamber.Length, chamber.Width);
-            chamber.Contents = contentsGenerator.Generate(level);
+            for (var i = chambers.Count - 1; i >= 0; i--)
+            {
+                var exits = exitGenerator.Generate(level, chambers[i].Length, chambers[i].Width);
 
-            return new[] { chamber }.Union(exits);
+                if (i + 1 == chambers.Count)
+                    chambers.AddRange(exits);
+                else
+                    chambers.InsertRange(i + 1, exits);
+
+                var newContents = contentsGenerator.Generate(level);
+                chambers[i].Contents.Encounters = chambers[i].Contents.Encounters.Union(newContents.Encounters);
+                chambers[i].Contents.Miscellaneous = chambers[i].Contents.Miscellaneous.Union(newContents.Miscellaneous);
+                chambers[i].Contents.Traps = chambers[i].Contents.Traps.Union(newContents.Traps);
+                chambers[i].Contents.Treasures = chambers[i].Contents.Treasures.Union(newContents.Treasures);
+            }
+
+            return chambers;
         }
     }
 }

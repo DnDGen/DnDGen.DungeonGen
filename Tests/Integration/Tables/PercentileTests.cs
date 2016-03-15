@@ -29,12 +29,12 @@ namespace DungeonGen.Tests.Integration.Tables
             Assert.That(table.Keys.Count, Is.EqualTo(100), tableName);
         }
 
-        public virtual void Percentile(string content, int roll)
+        public virtual void Percentile(int roll, string content)
         {
             AssertPercentile(content, roll);
         }
 
-        public virtual void Percentile(string content, int lower, int upper)
+        public virtual void Percentile(int lower, int upper, string content)
         {
             for (var roll = lower; roll <= upper; roll++)
                 AssertPercentile(content, roll);

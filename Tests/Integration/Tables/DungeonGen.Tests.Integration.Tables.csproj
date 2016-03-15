@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaPercentileTests.cs" />
+    <Compile Include="Areas\Halls\TurnsTests.cs" />
     <Compile Include="Areas\Rooms\ChambersTests.cs" />
     <Compile Include="Areas\DungeonAreaFromDoorTests.cs" />
     <Compile Include="Areas\DungeonAreaFromHallTests.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Areas\Halls\SidePassagesTests.cs" />
     <Compile Include="Areas\Halls\SpecialHallTests.cs" />
     <Compile Include="Areas\Rooms\RoomsTests.cs" />
+    <Compile Include="Areas\Rooms\SpecialAreaShapesTests.cs" />
     <Compile Include="EmbeddedResourceStreamLoaderTests.cs" />
     <Compile Include="PercentileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,8 +1,6 @@
 ﻿using DungeonGen.Common;
 using EncounterGen.Common;
 using NUnit.Framework;
-using TreasureGen.Common.Goods;
-using TreasureGen.Common.Items;
 
 namespace DungeonGen.Tests.Unit.Common
 {
@@ -22,9 +20,9 @@ namespace DungeonGen.Tests.Unit.Common
         {
             Assert.That(contents.Encounters, Is.Empty);
             Assert.That(contents.Miscellaneous, Is.Empty);
-            Assert.That(contents.Treasure, Is.Not.Null);
-            Assert.That(contents.TreasureContainer, Is.Empty);
+            Assert.That(contents.Treasures, Is.Empty);
             Assert.That(contents.Traps, Is.Empty);
+            Assert.That(contents.Pool, Is.Null);
         }
 
         [Test]
@@ -49,30 +47,16 @@ namespace DungeonGen.Tests.Unit.Common
         }
 
         [Test]
-        public void IsNotEmptyIfTreasureCoin()
+        public void IsNotEmptyIfTreasure()
         {
-            contents.Treasure.Coin.Quantity = 1;
+            contents.Treasures = new[] { new ContainedTreasure() };
             Assert.That(contents.IsEmpty, Is.False);
         }
 
         [Test]
-        public void IsNotEmptyIfTreasureGoods()
+        public void IsNotEmptyIfPool()
         {
-            contents.Treasure.Goods = new[] { new Good() };
-            Assert.That(contents.IsEmpty, Is.False);
-        }
-
-        [Test]
-        public void IsNotEmptyIfTreasureItems()
-        {
-            contents.Treasure.Items = new[] { new Item() };
-            Assert.That(contents.IsEmpty, Is.False);
-        }
-
-        [Test]
-        public void IsNotEmptyIfTreasureContainer()
-        {
-            contents.TreasureContainer = "container";
+            contents.Pool = new Pool();
             Assert.That(contents.IsEmpty, Is.False);
         }
 

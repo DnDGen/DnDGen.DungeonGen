@@ -61,6 +61,7 @@
     <Compile Include="Factories\ChamberGeneratorFactory.cs" />
     <Compile Include="Factories\PercentileMapperFactory.cs" />
     <Compile Include="Factories\SidePassageGeneratorFactory.cs" />
+    <Compile Include="Factories\SpecialAreaGeneratorFactory.cs" />
     <Compile Include="Modules\GeneratorsModule.cs" />
     <Compile Include="Modules\MappersModule.cs" />
     <Compile Include="Modules\SelectorsModule.cs" />

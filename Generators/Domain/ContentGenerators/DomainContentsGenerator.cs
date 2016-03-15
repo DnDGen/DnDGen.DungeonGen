@@ -1,7 +1,7 @@
 ﻿using DungeonGen.Common;
 using System;
 
-namespace DungeonGen.Generators.Domain
+namespace DungeonGen.Generators.Domain.ContentGenerators
 {
     public class DomainContentsGenerator : ContentsGenerator
     {

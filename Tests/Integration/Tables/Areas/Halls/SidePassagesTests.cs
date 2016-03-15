@@ -21,19 +21,19 @@ namespace DungeonGen.Tests.Integration.Tables.Areas.Halls
             AssertTableIsComplete();
         }
 
-        [TestCase(SidePassageConstants.Left90Degrees, 1, 10)]
-        [TestCase(SidePassageConstants.Right90Degrees, 11, 20)]
-        [TestCase(SidePassageConstants.Left45DegreesAhead, 21, 30)]
-        [TestCase(SidePassageConstants.Right45DegreesAhead, 31, 40)]
-        [TestCase(SidePassageConstants.Left45DegreesBehind, 41, 45)]
-        [TestCase(SidePassageConstants.Right45DegreesBehind, 46, 50)]
-        [TestCase(SidePassageConstants.TIntersection, 51, 65)]
-        [TestCase(SidePassageConstants.YIntersection, 66, 75)]
-        [TestCase(SidePassageConstants.CrossIntersection, 76, 95)]
-        [TestCase(SidePassageConstants.XIntersection, 96, 100)]
-        public override void Percentile(string content, int lower, int upper)
+        [TestCase(1, 10, SidePassageConstants.Left90Degrees)]
+        [TestCase(11, 20, SidePassageConstants.Right90Degrees)]
+        [TestCase(21, 30, SidePassageConstants.Left45DegreesAhead)]
+        [TestCase(31, 40, SidePassageConstants.Right45DegreesAhead)]
+        [TestCase(41, 45, SidePassageConstants.Left45DegreesBehind)]
+        [TestCase(46, 50, SidePassageConstants.Right45DegreesBehind)]
+        [TestCase(51, 65, SidePassageConstants.TIntersection)]
+        [TestCase(66, 75, SidePassageConstants.YIntersection)]
+        [TestCase(76, 95, SidePassageConstants.CrossIntersection)]
+        [TestCase(96, 100, SidePassageConstants.XIntersection)]
+        public override void Percentile(int lower, int upper, string content)
         {
-            base.Percentile(content, lower, upper);
+            base.Percentile(lower, upper, content);
         }
     }
 }

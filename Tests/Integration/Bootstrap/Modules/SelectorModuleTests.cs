@@ -1,4 +1,5 @@
 ﻿using DungeonGen.Selectors;
+using DungeonGen.Selectors.Domain;
 using NUnit.Framework;
 
 namespace DungeonGen.Tests.Integration.Bootstrap.Modules
@@ -9,13 +10,13 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
         [Test]
         public void PercentileSelectorIsNotASingleton()
         {
-            AssertInjected<IPercentileSelector>();
+            AssertInstanceOf<IPercentileSelector, PercentileSelector>();
         }
 
         [Test]
         public void AreaPercentileSelectorIsNotASingleton()
         {
-            AssertInjected<IAreaPercentileSelector>();
+            AssertInstanceOf<IAreaPercentileSelector, AreaPercentileSelector>();
         }
     }
 }

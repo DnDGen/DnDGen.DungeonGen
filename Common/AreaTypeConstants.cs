@@ -2,6 +2,7 @@
 {
     public static class AreaTypeConstants
     {
+        public const string Cave = "Cave";
         public const string Chamber = "Chamber";
         public const string DeadEnd = "Dead end";
         public const string Door = "Door";

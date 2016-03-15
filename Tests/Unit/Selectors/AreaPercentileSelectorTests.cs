@@ -152,10 +152,7 @@ namespace DungeonGen.Tests.Unit.Selectors
             Assert.That(area.Contents.Miscellaneous, Contains.Item("contents"));
             Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(1));
             Assert.That(area.Contents.Traps, Is.Empty);
-            Assert.That(area.Contents.Treasure.Coin.Quantity, Is.EqualTo(0));
-            Assert.That(area.Contents.Treasure.Goods, Is.Empty);
-            Assert.That(area.Contents.Treasure.Items, Is.Empty);
-            Assert.That(area.Contents.TreasureContainer, Is.Empty);
+            Assert.That(area.Contents.Treasures, Is.Empty);
         }
 
         [Test]
@@ -176,10 +173,7 @@ namespace DungeonGen.Tests.Unit.Selectors
             Assert.That(area.Contents.Miscellaneous, Contains.Item("even more contents"));
             Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(3));
             Assert.That(area.Contents.Traps, Is.Empty);
-            Assert.That(area.Contents.Treasure.Coin.Quantity, Is.EqualTo(0));
-            Assert.That(area.Contents.Treasure.Goods, Is.Empty);
-            Assert.That(area.Contents.Treasure.Items, Is.Empty);
-            Assert.That(area.Contents.TreasureContainer, Is.Empty);
+            Assert.That(area.Contents.Treasures, Is.Empty);
         }
 
         [Test]
@@ -204,10 +198,7 @@ namespace DungeonGen.Tests.Unit.Selectors
             Assert.That(area.Contents.Miscellaneous, Contains.Item("even more contents"));
             Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(3));
             Assert.That(area.Contents.Traps, Is.Empty);
-            Assert.That(area.Contents.Treasure.Coin.Quantity, Is.EqualTo(0));
-            Assert.That(area.Contents.Treasure.Goods, Is.Empty);
-            Assert.That(area.Contents.Treasure.Items, Is.Empty);
-            Assert.That(area.Contents.TreasureContainer, Is.Empty);
+            Assert.That(area.Contents.Treasures, Is.Empty);
         }
     }
 }

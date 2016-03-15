@@ -33,7 +33,7 @@ namespace DungeonGen.Tests.Integration.Tables
             if (length != "0" || width != "0")
                 percentileContents += string.Format("{{{0}x{1}}}", length, width);
 
-            Percentile(percentileContents, lower, upper);
+            Percentile(lower, upper, percentileContents);
         }
     }
 }

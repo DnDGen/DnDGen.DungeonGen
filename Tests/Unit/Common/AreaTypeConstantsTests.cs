@@ -6,6 +6,7 @@ namespace DungeonGen.Tests.Unit.Common
     [TestFixture]
     public class AreaTypeConstantsTests
     {
+        [TestCase(AreaTypeConstants.Cave, "Cave")]
         [TestCase(AreaTypeConstants.Chamber, "Chamber")]
         [TestCase(AreaTypeConstants.DeadEnd, "Dead end")]
         [TestCase(AreaTypeConstants.Door, "Door")]

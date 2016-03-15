@@ -65,7 +65,7 @@
     <EmbeddedResource Include="Areas\DungeonAreaFromDoor.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Areas\Chambers.xml" />
+    <EmbeddedResource Include="Areas\Rooms\Chambers.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Areas\Halls\Halls.xml" />
@@ -75,6 +75,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Areas\Halls\SpecialHall.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\Rooms.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Halls\Turns.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\SpecialAreaShapes.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

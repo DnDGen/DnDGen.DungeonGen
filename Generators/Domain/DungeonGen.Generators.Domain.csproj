@@ -77,6 +77,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaGenerators\CaveGenerator.cs" />
     <Compile Include="AreaGenerators\ChamberGenerator.cs" />
     <Compile Include="AreaGenerators\DoorGenerator.cs" />
     <Compile Include="AreaGenerators\HallGenerator.cs" />
@@ -85,7 +86,8 @@
     <Compile Include="AreaGenerators\SpecialAreaGenerator.cs" />
     <Compile Include="AreaGenerators\StairsGenerator.cs" />
     <Compile Include="AreaGenerators\TurnGenerator.cs" />
-    <Compile Include="DomainContentsGenerator.cs" />
+    <Compile Include="ContentGenerators\DomainContentsGenerator.cs" />
+    <Compile Include="ContentGenerators\DomainPoolGenerator.cs" />
     <Compile Include="DungeonGenerator.cs" />
     <Compile Include="ExitGenerators\ChamberExitGenerator.cs" />
     <Compile Include="ExitGenerators\RoomExitGenerator.cs" />

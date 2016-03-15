@@ -1,4 +1,5 @@
 ﻿using DungeonGen.Tables;
+using DungeonGen.Tables.Domain;
 using NUnit.Framework;
 
 namespace DungeonGen.Tests.Integration.Bootstrap.Modules
@@ -9,7 +10,7 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
         [Test]
         public void StreamLoaderIsNotASingleton()
         {
-            AssertInjected<StreamLoader>();
+            AssertInstanceOf<StreamLoader, EmbeddedResourceStreamLoader>();
         }
     }
 }

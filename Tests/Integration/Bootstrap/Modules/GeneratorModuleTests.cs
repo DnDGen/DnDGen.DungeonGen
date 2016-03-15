@@ -1,6 +1,11 @@
 ﻿using DungeonGen.Common;
 using DungeonGen.Generators;
+using DungeonGen.Generators.Domain;
+using DungeonGen.Generators.Domain.AreaGenerators;
+using DungeonGen.Generators.Domain.ContentGenerators;
+using DungeonGen.Generators.Domain.ExitGenerators;
 using DungeonGen.Generators.Domain.RuntimeFactories;
+using DungeonGen.Generators.Domain.RuntimeFactories.Domain;
 using NUnit.Framework;
 
 namespace DungeonGen.Tests.Integration.Bootstrap.Modules
@@ -11,85 +16,97 @@ namespace DungeonGen.Tests.Integration.Bootstrap.Modules
         [Test]
         public void DungeonGeneratorIsInjected()
         {
-            AssertInjected<IDungeonGenerator>();
+            AssertInstanceOf<IDungeonGenerator, DungeonGenerator>();
         }
 
         [Test]
         public void AreaGeneratorFactoryIsInjected()
         {
-            AssertInjected<IAreaGeneratorFactory>();
+            AssertInstanceOf<IAreaGeneratorFactory, AreaGeneratorFactory>();
         }
 
         [Test]
         public void TrapGeneratorIsInjected()
         {
-            AssertInjected<ITrapGenerator>();
+            AssertInstanceOf<ITrapGenerator, TrapGenerator>();
         }
 
         [Test]
         public void SpecialChamberGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Special);
+            AssertInstanceOf<AreaGenerator, SpecialAreaGenerator>(AreaTypeConstants.Special);
         }
 
         [Test]
         public void ChamberGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Chamber);
+            AssertInstanceOf<AreaGenerator, ChamberGenerator>(AreaTypeConstants.Chamber);
         }
 
         [Test]
         public void DoorGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Door);
+            AssertInstanceOf<AreaGenerator, DoorGenerator>(AreaTypeConstants.Door);
         }
 
         [Test]
         public void HallGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Hall);
+            AssertInstanceOf<AreaGenerator, HallGenerator>(AreaTypeConstants.Hall);
         }
 
         [Test]
         public void RoomGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Room);
+            AssertInstanceOf<AreaGenerator, RoomGenerator>(AreaTypeConstants.Room);
         }
 
         [Test]
         public void SidePassageGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.SidePassage);
+            AssertInstanceOf<AreaGenerator, SidePassageGenerator>(AreaTypeConstants.SidePassage);
         }
 
         [Test]
         public void StairsGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Stairs);
+            AssertInstanceOf<AreaGenerator, StairsGenerator>(AreaTypeConstants.Stairs);
         }
 
         [Test]
         public void TurnGeneratorIsInjected()
         {
-            AssertInjected<AreaGenerator>(AreaTypeConstants.Turn);
+            AssertInstanceOf<AreaGenerator, TurnGenerator>(AreaTypeConstants.Turn);
         }
 
         [Test]
         public void RoomExitGeneratorIsInjected()
         {
-            AssertInjected<ExitGenerator>(AreaTypeConstants.Room);
+            AssertInstanceOf<ExitGenerator, RoomExitGenerator>(AreaTypeConstants.Room);
         }
 
         [Test]
         public void ChamberExitGeneratorIsInjected()
         {
-            AssertInjected<ExitGenerator>(AreaTypeConstants.Chamber);
+            AssertInstanceOf<ExitGenerator, ChamberExitGenerator>(AreaTypeConstants.Chamber);
         }
 
         [Test]
         public void ContentsGeneratorIsInjected()
         {
-            AssertInjected<ContentsGenerator>();
+            AssertInstanceOf<ContentsGenerator, DomainContentsGenerator>();
+        }
+
+        [Test]
+        public void PoolGeneratorIsInjected()
+        {
+            AssertInstanceOf<PoolGenerator, DomainPoolGenerator>();
+        }
+
+        [Test]
+        public void CaveGeneratorIsInjected()
+        {
+            AssertInstanceOf<AreaGenerator, CaveGenerator>(AreaTypeConstants.Cave);
         }
     }
 }

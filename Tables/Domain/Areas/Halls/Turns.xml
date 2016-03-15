@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Left, 90 degrees</content>
+        <upper>40</upper>
+    </object>
+  <object>
+    <lower>41</lower>
+    <content>Left, 45 degrees ahead</content>
+    <upper>45</upper>
+  </object>
+  <object>
+    <lower>46</lower>
+    <content>Left, 45 degrees behind</content>
+    <upper>50</upper>
+  </object>
+  <object>
+    <lower>51</lower>
+    <content>Right, 90 degrees</content>
+    <upper>90</upper>
+  </object>
+  <object>
+    <lower>91</lower>
+    <content>Right, 45 degrees ahead</content>
+    <upper>95</upper>
+  </object>
+  <object>
+    <lower>96</lower>
+    <content>Right, 45 degrees behind</content>
+    <upper>100</upper>
+  </object>
+</percentile>

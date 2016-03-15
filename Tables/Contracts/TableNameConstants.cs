@@ -19,6 +19,8 @@
         public const string Rooms = "Rooms";
         public const string SidePassages = "SidePassages";
         public const string SpecialAREA = "Special{0}";
+        public const string SpecialAreaShapes = "SpecialAreaShapes";
+        public const string SpecialAreaSizes = "SpecialAreaSizes";
         public const string StreamCrossing = "StreamCrossing";
         public const string Turns = "Turns";
     }

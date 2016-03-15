@@ -3,6 +3,7 @@
     public static class ContentsTypeConstants
     {
         public const string Encounter = "Encounter";
+        public const string Pool = "Pool";
         public const string Trap = "Trap";
     }
 }

@@ -54,6 +54,7 @@
     <Compile Include="IDungeonGenerator.cs" />
     <Compile Include="AreaGenerator.cs" />
     <Compile Include="ITrapGenerator.cs" />
+    <Compile Include="PoolGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
