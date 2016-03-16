@@ -5,6 +5,6 @@ namespace DungeonGen.Generators
 {
     public interface AreaGenerator
     {
-        IEnumerable<Area> Generate(int level);
+        IEnumerable<Area> Generate(int dungeonLevel, int partyLevel);
     }
 }

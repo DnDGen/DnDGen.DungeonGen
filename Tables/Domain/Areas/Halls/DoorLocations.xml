@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>On the left</content>
+        <upper>30</upper>
+    </object>
+  <object>
+    <lower>31</lower>
+    <content>On the right</content>
+    <upper>60</upper>
+  </object>
+  <object>
+    <lower>61</lower>
+    <content>Straight ahead</content>
+    <upper>100</upper>
+    </object>
+</percentile>

@@ -21,14 +21,14 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
             this.contentsGenerator = contentsGenerator;
         }
 
-        public IEnumerable<Area> Generate(int level)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
         {
             var room = areaPercentileSelector.SelectFrom(TableNameConstants.Rooms);
             var rooms = new List<Area>();
 
             if (room.Type == AreaTypeConstants.Special)
             {
-                var specialChambers = specialAreaGenerator.Generate(level);
+                var specialChambers = specialAreaGenerator.Generate(dungeonLevel, partyLevel);
                 rooms.AddRange(specialChambers);
             }
             else
@@ -41,14 +41,14 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
                 if (string.IsNullOrEmpty(rooms[i].Type))
                     rooms[i].Type = AreaTypeConstants.Room;
 
-                var exits = exitGenerator.Generate(level, rooms[i].Length, rooms[i].Width);
+                var exits = exitGenerator.Generate(dungeonLevel, partyLevel, rooms[i].Length, rooms[i].Width);
 
                 if (i + 1 == rooms.Count)
                     rooms.AddRange(exits);
                 else
                     rooms.InsertRange(i + 1, exits);
 
-                var newContents = contentsGenerator.Generate(level);
+                var newContents = contentsGenerator.Generate(partyLevel);
                 rooms[i].Contents.Encounters = rooms[i].Contents.Encounters.Union(newContents.Encounters);
                 rooms[i].Contents.Miscellaneous = rooms[i].Contents.Miscellaneous.Union(newContents.Miscellaneous);
                 rooms[i].Contents.Traps = rooms[i].Contents.Traps.Union(newContents.Traps);

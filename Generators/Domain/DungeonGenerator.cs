@@ -26,23 +26,23 @@ namespace DungeonGen.Generators.Domain
             this.percentileSelector = percentileSelector;
         }
 
-        public IEnumerable<Area> GenerateFromDoor(int level)
+        public IEnumerable<Area> GenerateFromDoor(int dungeonLevel, int partyLevel)
         {
-            return Generate(level, TableNameConstants.DungeonAreaFromDoor);
+            return Generate(dungeonLevel, partyLevel, TableNameConstants.DungeonAreaFromDoor);
         }
 
-        public IEnumerable<Area> GenerateFromHall(int level)
+        public IEnumerable<Area> GenerateFromHall(int dungeonLevel, int partyLevel)
         {
-            return Generate(level, TableNameConstants.DungeonAreaFromHall);
+            return Generate(dungeonLevel, partyLevel, TableNameConstants.DungeonAreaFromHall);
         }
 
-        private IEnumerable<Area> Generate(int level, string tableName)
+        private IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string tableName)
         {
-            var areas = GenerateAreas(level, tableName);
+            var areas = GenerateAreas(dungeonLevel, partyLevel, tableName);
 
             while (areas.Last().Type == AreaTypeConstants.General)
             {
-                var newAreas = GenerateAreas(level, tableName);
+                var newAreas = GenerateAreas(dungeonLevel, partyLevel, tableName);
                 areas = areas.Union(newAreas);
             }
 
@@ -54,14 +54,14 @@ namespace DungeonGen.Generators.Domain
                     area.Descriptions = area.Descriptions.Union(new[] { doorLocation });
                 }
 
-                area.Contents.Encounters = GenerateEncounters(area, level);
-                area.Contents.Traps = GenerateTraps(area, level);
+                area.Contents.Encounters = GenerateEncounters(area, partyLevel);
+                area.Contents.Traps = GenerateTraps(area, partyLevel);
             }
 
             return areas;
         }
 
-        private IEnumerable<Area> GenerateAreas(int level, string tableName)
+        private IEnumerable<Area> GenerateAreas(int dungeonLevel, int partyLevel, string tableName)
         {
             var area = areaPercentileSelector.SelectFrom(tableName);
 
@@ -73,35 +73,35 @@ namespace DungeonGen.Generators.Domain
 
             while (area.Width-- > 0)
             {
-                var newAreas = areaGenerator.Generate(level);
+                var newAreas = areaGenerator.Generate(dungeonLevel, partyLevel);
                 specificAreas.AddRange(newAreas);
             }
 
             return specificAreas;
         }
 
-        private IEnumerable<Encounter> GenerateEncounters(Area area, int level)
+        private IEnumerable<Encounter> GenerateEncounters(Area area, int partyLevel)
         {
             var encounters = new List<Encounter>();
             var encounterContents = area.Contents.Miscellaneous.Where(m => m == ContentsTypeConstants.Encounter);
 
             foreach (var encounterContent in encounterContents)
             {
-                var encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, level);
+                var encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel);
                 encounters.Add(encounter);
             }
 
             return encounters;
         }
 
-        private IEnumerable<Trap> GenerateTraps(Area area, int level)
+        private IEnumerable<Trap> GenerateTraps(Area area, int partyLevel)
         {
             var traps = new List<Trap>();
             var trapContents = area.Contents.Miscellaneous.Where(m => m == ContentsTypeConstants.Trap);
 
             foreach (var trapContent in trapContents)
             {
-                var trap = trapGenerator.Generate(level);
+                var trap = trapGenerator.Generate(partyLevel);
                 traps.Add(trap);
             }
 

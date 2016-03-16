@@ -89,9 +89,11 @@
     <Compile Include="AreaGenerators\ChamberGeneratorTests.cs" />
     <Compile Include="AreaGenerators\DoorGeneratorTests.cs" />
     <Compile Include="AreaGenerators\HallGeneratorTests.cs" />
+    <Compile Include="AreaGenerators\RoomExitGeneratorTests.cs" />
     <Compile Include="AreaGenerators\RoomGeneratorTests.cs" />
     <Compile Include="AreaGenerators\SidePassageGeneratorTests.cs" />
     <Compile Include="AreaGenerators\SpecialAreaGeneratorTests.cs" />
+    <Compile Include="AreaGenerators\StairsGeneratorTests.cs" />
     <Compile Include="AreaGenerators\TurnGeneratorTests.cs" />
     <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

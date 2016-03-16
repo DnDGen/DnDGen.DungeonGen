@@ -25,6 +25,7 @@ namespace DungeonGen.Tests.Unit.Tables
         [TestCase(TableNameConstants.SpecialAREA, "Special{0}")]
         [TestCase(TableNameConstants.SpecialAreaShapes, "SpecialAreaShapes")]
         [TestCase(TableNameConstants.SpecialAreaSizes, "SpecialAreaSizes")]
+        [TestCase(TableNameConstants.Stairs, "Stairs")]
         [TestCase(TableNameConstants.StreamCrossing, "StreamCrossing")]
         [TestCase(TableNameConstants.Turns, "Turns")]
         public void Constant(string constant, string value)

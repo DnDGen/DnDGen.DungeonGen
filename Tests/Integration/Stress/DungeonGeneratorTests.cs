@@ -32,8 +32,9 @@ namespace DungeonGen.Tests.Integration.Stress
 
         private IEnumerable<Area> GenerateFromHall()
         {
-            var level = Random.Next(20) + 1;
-            return DungeonGenerator.GenerateFromHall(level);
+            var dungeonLevel = Random.Next(20) + 1;
+            var partyLevel = Random.Next(20) + 1;
+            return DungeonGenerator.GenerateFromHall(dungeonLevel, partyLevel);
         }
 
         private void AssertArea(Area area)
@@ -62,8 +63,9 @@ namespace DungeonGen.Tests.Integration.Stress
 
         private void AssertFromDoor()
         {
-            var level = Random.Next(20) + 1;
-            var areas = DungeonGenerator.GenerateFromDoor(level);
+            var dungeonLevel = Random.Next(20) + 1;
+            var partyLevel = Random.Next(20) + 1;
+            var areas = DungeonGenerator.GenerateFromDoor(dungeonLevel, partyLevel);
             Assert.That(areas, Is.Not.Empty);
 
             foreach (var area in areas)

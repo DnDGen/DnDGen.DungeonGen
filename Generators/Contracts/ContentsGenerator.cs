@@ -4,6 +4,6 @@ namespace DungeonGen.Generators
 {
     public interface ContentsGenerator
     {
-        Contents Generate(int level);
+        Contents Generate(int partyLevel);
     }
 }

@@ -21,6 +21,7 @@
         public const string SpecialAREA = "Special{0}";
         public const string SpecialAreaShapes = "SpecialAreaShapes";
         public const string SpecialAreaSizes = "SpecialAreaSizes";
+        public const string Stairs = "Stairs";
         public const string StreamCrossing = "StreamCrossing";
         public const string Turns = "Turns";
     }

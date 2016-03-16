@@ -14,7 +14,7 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
             this.percentileSelector = percentileSelector;
         }
 
-        public IEnumerable<Area> Generate(int level)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
         {
             var description = percentileSelector.SelectFrom(TableNameConstants.Turns);
 

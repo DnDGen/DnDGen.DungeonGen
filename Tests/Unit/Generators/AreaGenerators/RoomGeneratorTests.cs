@@ -40,7 +40,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateRoom()
         {
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Is.Not.Null);
             Assert.That(rooms, Is.Not.Empty);
         }
@@ -48,7 +48,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateRoomFromSelector()
         {
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms.Single(), Is.EqualTo(selectedRoom));
         }
 
@@ -57,9 +57,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             var firstExit = new Area();
             var secondExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(42, 9266, 90210)).Returns(new[] { firstExit, secondExit });
+            mockExitGenerator.Setup(g => g.Generate(42, 600, 9266, 90210)).Returns(new[] { firstExit, secondExit });
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Contains.Item(selectedRoom));
             Assert.That(rooms, Contains.Item(firstExit));
             Assert.That(rooms, Contains.Item(secondExit));
@@ -74,9 +74,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             generatedContents.Traps = new[] { new Trap(), new Trap() };
             generatedContents.Treasures = new[] { new ContainedTreasure(), new ContainedTreasure() };
 
-            mockContentsGenerator.Setup(g => g.Generate(42)).Returns(generatedContents);
+            mockContentsGenerator.Setup(g => g.Generate(600)).Returns(generatedContents);
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             var contents = rooms.Single().Contents;
 
             Assert.That(contents.Encounters.Count(), Is.EqualTo(2));
@@ -95,9 +95,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var secondSpecialArea = new Area();
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42, 600)).Returns(specialAreas);
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Is.EqualTo(specialAreas));
         }
 
@@ -124,13 +124,13 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             secondContents.Traps = new[] { new Trap() };
 
             //INFO: We do the order backwards, becuase the internals will iterate backwards through the list
-            mockContentsGenerator.SetupSequence(g => g.Generate(42)).Returns(secondContents).Returns(firstContents);
+            mockContentsGenerator.SetupSequence(g => g.Generate(600)).Returns(secondContents).Returns(firstContents);
 
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42, 600)).Returns(specialAreas);
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Is.EqualTo(specialAreas));
 
             var first = rooms.First();
@@ -162,22 +162,22 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             firstSpecialArea.Width = 90210;
 
             var secondSpecialArea = new Area();
-            secondSpecialArea.Length = 600;
+            secondSpecialArea.Length = 1234;
             secondSpecialArea.Width = 1337;
 
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42, 600)).Returns(specialAreas);
 
             var firstExit = new Area();
             var secondExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(42, 9266, 90210)).Returns(new[] { firstExit, secondExit });
+            mockExitGenerator.Setup(g => g.Generate(42, 600, 9266, 90210)).Returns(new[] { firstExit, secondExit });
 
             var thirdExit = new Area();
             var fourthExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(42, 600, 1337)).Returns(new[] { thirdExit, fourthExit });
+            mockExitGenerator.Setup(g => g.Generate(42, 600, 1234, 1337)).Returns(new[] { thirdExit, fourthExit });
 
-            var rooms = roomGenerator.Generate(42).ToArray();
+            var rooms = roomGenerator.Generate(42, 600).ToArray();
             Assert.That(rooms[0], Is.EqualTo(firstSpecialArea));
             Assert.That(rooms[1], Is.EqualTo(firstExit));
             Assert.That(rooms[2], Is.EqualTo(secondExit));
@@ -194,9 +194,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var secondSpecialArea = new Area();
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42, 600)).Returns(specialAreas);
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Is.EqualTo(specialAreas));
             Assert.That(rooms.First().Type, Is.EqualTo(AreaTypeConstants.Room));
             Assert.That(rooms.Last().Type, Is.EqualTo(AreaTypeConstants.Room));
@@ -210,9 +210,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var secondSpecialArea = new Area { Type = "whatever" };
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42, 600)).Returns(specialAreas);
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Is.EqualTo(specialAreas));
             Assert.That(rooms.First().Type, Is.EqualTo("cave"));
             Assert.That(rooms.Last().Type, Is.EqualTo("whatever"));
@@ -226,9 +226,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var secondSpecialArea = new Area();
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
-            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42, 600)).Returns(specialAreas);
 
-            var rooms = roomGenerator.Generate(42);
+            var rooms = roomGenerator.Generate(42, 600);
             Assert.That(rooms, Is.EqualTo(specialAreas));
             Assert.That(rooms.First().Type, Is.EqualTo("cave"));
             Assert.That(rooms.Last().Type, Is.EqualTo(AreaTypeConstants.Room));

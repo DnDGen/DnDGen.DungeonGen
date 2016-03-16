@@ -4,6 +4,6 @@ namespace DungeonGen.Generators
 {
     public interface PoolGenerator
     {
-        Pool Generate(int level);
+        Pool Generate(int partyLevel);
     }
 }

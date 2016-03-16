@@ -17,77 +17,77 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
             this.hallGenerator = hallGenerator;
         }
 
-        public IEnumerable<Area> Generate(int level)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
         {
             var sidePassageType = percentileSelector.SelectFrom(TableNameConstants.SidePassages);
 
             switch (sidePassageType)
             {
-                case SidePassageConstants.YIntersection: return GenerateYIntersection(level);
-                case SidePassageConstants.XIntersection: return GenerateXIntersection(level);
-                case SidePassageConstants.TIntersection: return GenerateTIntersection(level);
-                case SidePassageConstants.CrossIntersection: return GenerateCrossIntersection(level);
-                default: return GenerateSidePassage(level, sidePassageType);
+                case SidePassageConstants.YIntersection: return GenerateYIntersection(dungeonLevel, partyLevel);
+                case SidePassageConstants.XIntersection: return GenerateXIntersection(dungeonLevel, partyLevel);
+                case SidePassageConstants.TIntersection: return GenerateTIntersection(dungeonLevel, partyLevel);
+                case SidePassageConstants.CrossIntersection: return GenerateCrossIntersection(dungeonLevel, partyLevel);
+                default: return GenerateSidePassage(dungeonLevel, partyLevel, sidePassageType);
             }
         }
 
-        private IEnumerable<Area> GenerateYIntersection(int level)
+        private IEnumerable<Area> GenerateYIntersection(int dungeonLevel, int partyLevel)
         {
-            var leftPassage = hallGenerator.Generate(level).Single();
+            var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesAhead });
 
-            var rightPassage = hallGenerator.Generate(level).Single();
+            var rightPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right45DegreesAhead });
 
             return new[] { leftPassage, rightPassage };
         }
 
-        private IEnumerable<Area> GenerateXIntersection(int level)
+        private IEnumerable<Area> GenerateXIntersection(int dungeonLevel, int partyLevel)
         {
-            var leftBehindPassage = hallGenerator.Generate(level).Single();
+            var leftBehindPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             leftBehindPassage.Descriptions = leftBehindPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesBehind });
 
-            var leftAheadPassage = hallGenerator.Generate(level).Single();
+            var leftAheadPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             leftAheadPassage.Descriptions = leftAheadPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesAhead });
 
-            var rightAheadPassage = hallGenerator.Generate(level).Single();
+            var rightAheadPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             rightAheadPassage.Descriptions = rightAheadPassage.Descriptions.Union(new[] { SidePassageConstants.Right45DegreesAhead });
 
-            var rightBehindPassage = hallGenerator.Generate(level).Single();
+            var rightBehindPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             rightBehindPassage.Descriptions = rightBehindPassage.Descriptions.Union(new[] { SidePassageConstants.Right45DegreesBehind });
 
             return new[] { leftBehindPassage, leftAheadPassage, rightAheadPassage, rightBehindPassage };
         }
 
-        private IEnumerable<Area> GenerateTIntersection(int level)
+        private IEnumerable<Area> GenerateTIntersection(int dungeonLevel, int partyLevel)
         {
-            var leftPassage = hallGenerator.Generate(level).Single();
+            var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
 
-            var rightPassage = hallGenerator.Generate(level).Single();
+            var rightPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right90Degrees });
 
             return new[] { leftPassage, rightPassage };
         }
 
-        private IEnumerable<Area> GenerateCrossIntersection(int level)
+        private IEnumerable<Area> GenerateCrossIntersection(int dungeonLevel, int partyLevel)
         {
             var originalHall = GetOriginalHall();
 
-            var leftPassage = hallGenerator.Generate(level).Single();
+            var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
 
-            var rightPassage = hallGenerator.Generate(level).Single();
+            var rightPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right90Degrees });
 
             return new[] { leftPassage, originalHall, rightPassage };
         }
 
-        private IEnumerable<Area> GenerateSidePassage(int level, string sidePassageType)
+        private IEnumerable<Area> GenerateSidePassage(int dungeonLevel, int partyLevel, string sidePassageType)
         {
             var originalHall = GetOriginalHall();
 
-            var sidePassage = hallGenerator.Generate(level).Single();
+            var sidePassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
             sidePassage.Descriptions = sidePassage.Descriptions.Union(new[] { sidePassageType });
 
             return new[] { originalHall, sidePassage };

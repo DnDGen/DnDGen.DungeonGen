@@ -15,7 +15,7 @@ namespace DungeonGen.Bootstrap.Factories
             var doorGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Door);
             var percentileSelector = kernel.Get<IPercentileSelector>();
 
-            return new RoomExitGenerator();
+            return new RoomExitGenerator(areaPercentileSelector, hallGenerator, doorGenerator, percentileSelector);
         }
     }
 }

@@ -3,47 +3,172 @@
 <percentile>
   <object>
     <lower>1</lower>
-    <content>Room{10x10}</content>
-    <upper>10</upper>
+    <content>Door(Simple/Wooden)</content>
+    <upper>8</upper>
   </object>
   <object>
-        <lower>11</lower>
-        <content>Room{20x20}</content>
-        <upper>20</upper>
+    <lower>9</lower>
+    <content>Door(Simple/Wooden)[Trap]</content>
+    <upper>9</upper>
+  </object>
+  <object>
+        <lower>10</lower>
+        <content>Door(Simple/Wooden){13x0}</content>
+        <upper>23</upper>
     </object>
   <object>
-    <lower>21</lower>
-    <content>Room{30x30}</content>
+    <lower>24</lower>
+    <content>Door(Simple/Wooden)[Trap]{13x0}</content>
+    <upper>24</upper>
+  </object>
+  <object>
+    <lower>25</lower>
+    <content>Door(Simple/Wooden){0x15}</content>
+    <upper>29</upper>
+  </object>
+  <object>
+    <lower>30</lower>
+    <content>Door(Simple/Wooden)[Trap]{0x15}</content>
     <upper>30</upper>
   </object>
-    <object>
-        <lower>31</lower>
-        <content>Room{40x40}</content>
-        <upper>40</upper>
-    </object>
   <object>
-    <lower>41</lower>
-    <content>Room{10x20}</content>
+    <lower>31</lower>
+    <content>Door(Good/Wooden)</content>
+    <upper>35</upper>
+  </object>
+  <object>
+    <lower>36</lower>
+    <content>Door(Good/Wooden)[Trap]</content>
+    <upper>36</upper>
+  </object>
+  <object>
+    <lower>37</lower>
+    <content>Door(Good/Wooden){18x0}</content>
+    <upper>44</upper>
+  </object>
+  <object>
+    <lower>45</lower>
+    <content>Door(Good/Wooden)[Trap]{18x0}</content>
+    <upper>45</upper>
+  </object>
+  <object>
+    <lower>46</lower>
+    <content>Door(Good/Wooden){0x18}</content>
+    <upper>49</upper>
+  </object>
+  <object>
+    <lower>50</lower>
+    <content>Door(Good/Wooden)[Trap]{0x18}</content>
     <upper>50</upper>
   </object>
-    <object>
-        <lower>51</lower>
-        <content>Room{20x30}</content>
-        <upper>65</upper>
-    </object>
-    <object>
-        <lower>66</lower>
-        <content>Room{20x40}</content>
-        <upper>75</upper>
-    </object>
-    <object>
-        <lower>76</lower>
-        <content>Room{30x40}</content>
-        <upper>85</upper>
-    </object>
+  <object>
+    <lower>51</lower>
+    <content>Door(Strong/Wooden)</content>
+    <upper>55</upper>
+  </object>
+  <object>
+    <lower>56</lower>
+    <content>Door(Strong/Wooden)[Trap]</content>
+    <upper>56</upper>
+  </object>
+  <object>
+    <lower>57</lower>
+    <content>Door(Strong/Wooden){23x0}</content>
+    <upper>64</upper>
+  </object>
+  <object>
+    <lower>65</lower>
+    <content>Door(Strong/Wooden)[Trap]{23x0}</content>
+    <upper>65</upper>
+  </object>
+  <object>
+    <lower>66</lower>
+    <content>Door(Strong/Wooden){0x25}</content>
+    <upper>69</upper>
+  </object>
+  <object>
+    <lower>70</lower>
+    <content>Door(Strong/Wooden)[Trap]{0x25}</content>
+    <upper>70</upper>
+  </object>
+  <object>
+    <lower>71</lower>
+    <content>Door(Stone)</content>
+    <upper>71</upper>
+  </object>
+  <object>
+    <lower>72</lower>
+    <content>Door(Stone)[Trap]</content>
+    <upper>72</upper>
+  </object>
+  <object>
+    <lower>73</lower>
+    <content>Door(Stone){28x0}</content>
+    <upper>75</upper>
+  </object>
+  <object>
+    <lower>76</lower>
+    <content>Door(Stone)[Trap]{28x0}</content>
+    <upper>76</upper>
+  </object>
+  <object>
+    <lower>77</lower>
+    <content>Door(Stone){0x28}</content>
+    <upper>79</upper>
+  </object>
+  <object>
+    <lower>80</lower>
+    <content>Door(Stone)[Trap]{0x28}</content>
+    <upper>80</upper>
+  </object>
+  <object>
+    <lower>81</lower>
+    <content>Door(Iron)</content>
+    <upper>81</upper>
+  </object>
+  <object>
+    <lower>82</lower>
+    <content>Door(Iron)[Trap]</content>
+    <upper>82</upper>
+  </object>
+  <object>
+    <lower>83</lower>
+    <content>Door(Iron){28x0}</content>
+    <upper>85</upper>
+  </object>
   <object>
     <lower>86</lower>
-    <content>Special</content>
+    <content>Door(Iron)[Trap]{28x0}</content>
+    <upper>86</upper>
+  </object>
+  <object>
+    <lower>87</lower>
+    <content>Door(Iron){0x28}</content>
+    <upper>89</upper>
+  </object>
+  <object>
+    <lower>90</lower>
+    <content>Door(Iron)[Trap]{0x28}</content>
+    <upper>90</upper>
+  </object>
+  <object>
+    <lower>91</lower>
+    <content>Special(Slides to one side){1x0}</content>
+    <upper>93</upper>
+  </object>
+  <object>
+    <lower>94</lower>
+    <content>Special(Slides down){1x0}</content>
+    <upper>96</upper>
+  </object>
+  <object>
+    <lower>97</lower>
+    <content>Special(Slides up){2x0}</content>
+    <upper>99</upper>
+  </object>
+  <object>
+    <lower>100</lower>
+    <content>Special(Magically reinforced){30x40}</content>
     <upper>100</upper>
-    </object>
+  </object>
 </percentile>

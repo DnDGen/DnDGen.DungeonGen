@@ -5,7 +5,7 @@ namespace DungeonGen.Generators
 {
     public interface IDungeonGenerator
     {
-        IEnumerable<Area> GenerateFromHall(int level);
-        IEnumerable<Area> GenerateFromDoor(int level);
+        IEnumerable<Area> GenerateFromHall(int dungeonLevel, int partyLevel);
+        IEnumerable<Area> GenerateFromDoor(int dungeonLevel, int partyLevel);
     }
 }

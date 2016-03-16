@@ -4,6 +4,6 @@ namespace DungeonGen.Generators
 {
     public interface ITrapGenerator
     {
-        Trap Generate(int level);
+        Trap Generate(int partyLevel);
     }
 }
