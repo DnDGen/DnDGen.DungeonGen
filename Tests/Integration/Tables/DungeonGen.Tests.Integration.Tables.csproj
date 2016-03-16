@@ -73,6 +73,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,14 +93,17 @@
   <ItemGroup>
     <Compile Include="AreaPercentileTests.cs" />
     <Compile Include="Areas\Halls\TurnsTests.cs" />
+    <Compile Include="Areas\Rooms\ChamberExitsTests.cs" />
     <Compile Include="Areas\Rooms\ChambersTests.cs" />
     <Compile Include="Areas\DungeonAreaFromDoorTests.cs" />
     <Compile Include="Areas\DungeonAreaFromHallTests.cs" />
     <Compile Include="Areas\Halls\HallsTests.cs" />
     <Compile Include="Areas\Halls\SidePassagesTests.cs" />
     <Compile Include="Areas\Halls\SpecialHallTests.cs" />
+    <Compile Include="Areas\Rooms\DoorTypeTests.cs" />
     <Compile Include="Areas\Rooms\RoomsTests.cs" />
     <Compile Include="Areas\Rooms\SpecialAreaShapesTests.cs" />
+    <Compile Include="Areas\Rooms\SpecialAreaSizesTests.cs" />
     <Compile Include="EmbeddedResourceStreamLoaderTests.cs" />
     <Compile Include="PercentileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
