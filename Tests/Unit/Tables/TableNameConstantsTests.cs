@@ -11,7 +11,7 @@ namespace DungeonGen.Tests.Unit.Tables
         [TestCase(TableNameConstants.Chambers, "Chambers")]
         [TestCase(TableNameConstants.ChasmCrossing, "ChasmCrossing")]
         [TestCase(TableNameConstants.DoorLocations, "DoorLocations")]
-        [TestCase(TableNameConstants.DoorType, "DoorType")]
+        [TestCase(TableNameConstants.DoorTypes, "DoorTypes")]
         [TestCase(TableNameConstants.DungeonAreaFromHall, "DungeonAreaFromHall")]
         [TestCase(TableNameConstants.DungeonAreaFromDoor, "DungeonAreaFromDoor")]
         [TestCase(TableNameConstants.ExitDirection, "ExitDirection")]

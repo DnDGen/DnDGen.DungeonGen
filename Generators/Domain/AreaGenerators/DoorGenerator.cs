@@ -7,20 +7,16 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
 {
     public class DoorGenerator : AreaGenerator
     {
-        private IPercentileSelector percentileSelector;
+        private IAreaPercentileSelector areaPercentileSelector;
 
-        public DoorGenerator(IPercentileSelector percentileSelector)
+        public DoorGenerator(IAreaPercentileSelector areaPercentileSelector)
         {
-            this.percentileSelector = percentileSelector;
+            this.areaPercentileSelector = areaPercentileSelector;
         }
 
         public IEnumerable<Area> Generate(int level)
         {
-            var description = percentileSelector.SelectFrom(TableNameConstants.DoorType);
-
-            var door = new Area();
-            door.Type = AreaTypeConstants.Door;
-            door.Descriptions = new[] { description };
+            var door = areaPercentileSelector.SelectFrom(TableNameConstants.DoorTypes);
 
             return new[] { door };
         }

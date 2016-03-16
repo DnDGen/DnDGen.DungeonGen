@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+    <lower>1</lower>
+    <content>Room{10x10}</content>
+    <upper>10</upper>
+  </object>
+  <object>
+        <lower>11</lower>
+        <content>Room{20x20}</content>
+        <upper>20</upper>
+    </object>
+  <object>
+    <lower>21</lower>
+    <content>Room{30x30}</content>
+    <upper>30</upper>
+  </object>
+    <object>
+        <lower>31</lower>
+        <content>Room{40x40}</content>
+        <upper>40</upper>
+    </object>
+  <object>
+    <lower>41</lower>
+    <content>Room{10x20}</content>
+    <upper>50</upper>
+  </object>
+    <object>
+        <lower>51</lower>
+        <content>Room{20x30}</content>
+        <upper>65</upper>
+    </object>
+    <object>
+        <lower>66</lower>
+        <content>Room{20x40}</content>
+        <upper>75</upper>
+    </object>
+    <object>
+        <lower>76</lower>
+        <content>Room{30x40}</content>
+        <upper>85</upper>
+    </object>
+  <object>
+    <lower>86</lower>
+    <content>Special</content>
+    <upper>100</upper>
+    </object>
+</percentile>

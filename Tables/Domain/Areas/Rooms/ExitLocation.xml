@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Opposite wall</content>
+        <upper>35</upper>
+    </object>
+  <object>
+    <lower>36</lower>
+    <content>Left wall</content>
+    <upper>60</upper>
+  </object>
+  <object>
+    <lower>61</lower>
+    <content>Right wall</content>
+    <upper>85</upper>
+  </object>
+  <object>
+    <lower>86</lower>
+    <content>Same wall</content>
+    <upper>100</upper>
+  </object>
+</percentile>

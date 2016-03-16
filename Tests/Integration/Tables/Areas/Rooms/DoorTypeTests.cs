@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Tables;
 using NUnit.Framework;
+using System;
 
 namespace DungeonGen.Tests.Integration.Tables.Areas.Rooms
 {
@@ -10,7 +11,7 @@ namespace DungeonGen.Tests.Integration.Tables.Areas.Rooms
         {
             get
             {
-                return TableNameConstants.DoorType;
+                return TableNameConstants.DoorTypes;
             }
         }
 
@@ -21,8 +22,10 @@ namespace DungeonGen.Tests.Integration.Tables.Areas.Rooms
         }
 
         [TestCase(1, 8, "", "", "", 0, 0)]
+        [TestCase(9, 9, "", "", "", 0, 0)]
         public override void AreaPercentile(int lower, int upper, string areaType, string description, string contents, int length, int width)
         {
+            throw new NotImplementedException("Need to finish writing the test cases.  Will probably dictate changes to the door generator");
             base.AreaPercentile(lower, upper, areaType, description, contents, length, width);
         }
     }

@@ -38,6 +38,9 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
 
             for (var i = rooms.Count - 1; i >= 0; i--)
             {
+                if (string.IsNullOrEmpty(rooms[i].Type))
+                    rooms[i].Type = AreaTypeConstants.Room;
+
                 var exits = exitGenerator.Generate(level, rooms[i].Length, rooms[i].Width);
 
                 if (i + 1 == rooms.Count)

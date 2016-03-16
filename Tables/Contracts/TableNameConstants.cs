@@ -7,7 +7,7 @@
         public const string Chambers = "Chambers";
         public const string ChasmCrossing = "ChasmCrossing";
         public const string DoorLocations = "DoorLocations";
-        public const string DoorType = "DoorType";
+        public const string DoorTypes = "DoorTypes";
         public const string DungeonAreaFromHall = "DungeonAreaFromHall";
         public const string DungeonAreaFromDoor = "DungeonAreaFromDoor";
         public const string ExitDirection = "ExitDirection";

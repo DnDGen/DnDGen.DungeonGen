@@ -101,6 +101,7 @@
     <Compile Include="Areas\Halls\SidePassagesTests.cs" />
     <Compile Include="Areas\Halls\SpecialHallTests.cs" />
     <Compile Include="Areas\Rooms\DoorTypeTests.cs" />
+    <Compile Include="Areas\Rooms\ExitLocationTests.cs" />
     <Compile Include="Areas\Rooms\RoomsTests.cs" />
     <Compile Include="Areas\Rooms\SpecialAreaShapesTests.cs" />
     <Compile Include="Areas\Rooms\SpecialAreaSizesTests.cs" />

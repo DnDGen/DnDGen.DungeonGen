@@ -185,5 +185,53 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(chambers[4], Is.EqualTo(thirdExit));
             Assert.That(chambers[5], Is.EqualTo(fourthExit));
         }
+
+        [Test]
+        public void IfSpecialAreaTypeIsBlank_AssignChamber()
+        {
+            selectedChamber.Type = AreaTypeConstants.Special;
+            var firstSpecialArea = new Area();
+            var secondSpecialArea = new Area();
+            var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
+
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Is.EqualTo(specialAreas));
+            Assert.That(chambers.First().Type, Is.EqualTo(AreaTypeConstants.Chamber));
+            Assert.That(chambers.Last().Type, Is.EqualTo(AreaTypeConstants.Chamber));
+        }
+
+        [Test]
+        public void IfSpecialAreaTypeIsNotBlank_DoNotAssignChamber()
+        {
+            selectedChamber.Type = AreaTypeConstants.Special;
+            var firstSpecialArea = new Area { Type = "cave" };
+            var secondSpecialArea = new Area { Type = "whatever" };
+            var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
+
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Is.EqualTo(specialAreas));
+            Assert.That(chambers.First().Type, Is.EqualTo("cave"));
+            Assert.That(chambers.Last().Type, Is.EqualTo("whatever"));
+        }
+
+        [Test]
+        public void DetermineWhetherToAssignChamberPerSpecialArea()
+        {
+            selectedChamber.Type = AreaTypeConstants.Special;
+            var firstSpecialArea = new Area { Type = "cave" };
+            var secondSpecialArea = new Area();
+            var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
+
+            mockSpecialAreaGenerator.Setup(g => g.Generate(42)).Returns(specialAreas);
+
+            var chambers = chamberGenerator.Generate(42);
+            Assert.That(chambers, Is.EqualTo(specialAreas));
+            Assert.That(chambers.First().Type, Is.EqualTo("cave"));
+            Assert.That(chambers.Last().Type, Is.EqualTo(AreaTypeConstants.Chamber));
+        }
     }
 }
