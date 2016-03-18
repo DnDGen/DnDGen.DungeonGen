@@ -57,6 +57,9 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
                 allStairAreas.Add(deadEnd);
             }
 
+            stairs.Length = 0;
+            stairs.Width = 0;
+
             return allStairAreas;
         }
 

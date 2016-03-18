@@ -49,6 +49,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var stairs = stairsGenerator.Generate(9266, 90210).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
             Assert.That(stairs.Descriptions.Single(), Is.EqualTo("Down to level 9866"));
+            Assert.That(stairs.Length, Is.EqualTo(0));
+            Assert.That(stairs.Width, Is.EqualTo(0));
         }
 
         [TestCase(41)]
@@ -68,6 +70,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             Assert.That(first, Is.EqualTo(selectedStairs));
             Assert.That(first.Descriptions.Single(), Is.EqualTo("Down to level 9866"));
+            Assert.That(first.Length, Is.EqualTo(0));
+            Assert.That(first.Width, Is.EqualTo(0));
             Assert.That(last.Type, Is.EqualTo(AreaTypeConstants.DeadEnd));
             Assert.That(last.Contents.IsEmpty, Is.True);
             Assert.That(last.Descriptions, Is.Empty);
@@ -86,6 +90,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var stairs = stairsGenerator.Generate(9266, 90210).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
             Assert.That(stairs.Descriptions.Single(), Is.EqualTo("Down to level 9866"));
+            Assert.That(stairs.Length, Is.EqualTo(0));
+            Assert.That(stairs.Width, Is.EqualTo(0));
         }
 
         [Test]
@@ -96,6 +102,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var stairs = stairsGenerator.Generate(9266, 90210).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
             Assert.That(stairs.Descriptions.Single(), Is.EqualTo("Up to level 9224"));
+            Assert.That(stairs.Length, Is.EqualTo(0));
+            Assert.That(stairs.Width, Is.EqualTo(0));
         }
 
         [TestCase(-9266)]
@@ -133,6 +141,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(last.Descriptions, Contains.Item("Up to level 8666"));
             Assert.That(last.Descriptions, Contains.Item(DescriptionConstants.Chimney));
             Assert.That(last.Descriptions.Count(), Is.EqualTo(2));
+            Assert.That(last.Length, Is.EqualTo(0));
+            Assert.That(last.Width, Is.EqualTo(0));
         }
 
         [TestCase(-9266)]
@@ -171,6 +181,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(last.Descriptions, Contains.Item("Down to level 9866"));
             Assert.That(last.Descriptions, Contains.Item(DescriptionConstants.TrapDoor));
             Assert.That(last.Descriptions.Count(), Is.EqualTo(2));
+            Assert.That(last.Length, Is.EqualTo(0));
+            Assert.That(last.Width, Is.EqualTo(0));
         }
 
         [Test]
@@ -195,6 +207,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(first, Is.EqualTo(selectedStairs));
             Assert.That(first.Descriptions.Single(), Is.EqualTo("Down to level 9866"));
             Assert.That(first.Contents.IsEmpty, Is.True);
+            Assert.That(first.Length, Is.EqualTo(0));
+            Assert.That(first.Width, Is.EqualTo(0));
         }
     }
 }

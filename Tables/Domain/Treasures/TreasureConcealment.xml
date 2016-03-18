@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Invisibility spell</content>
+        <upper>15</upper>
+    </object>
+  <object>
+    <lower>16</lower>
+    <content>Illusion</content>
+    <upper>25</upper>
+  </object>
+  <object>
+    <lower>26</lower>
+    <content>In a secret place under the container</content>
+    <upper>30</upper>
+  </object>
+  <object>
+    <lower>31</lower>
+    <content>In a secret compartment in the container</content>
+    <upper>40</upper>
+  </object>
+  <object>
+    <lower>41</lower>
+    <content>Inside an ordinary item in plain view</content>
+    <upper>45</upper>
+  </object>
+  <object>
+    <lower>46</lower>
+    <content>Disguised to appear as something else</content>
+    <upper>50</upper>
+  </object>
+  <object>
+    <lower>51</lower>
+    <content>Under a heap of trash/dung</content>
+    <upper>55</upper>
+  </object>
+  <object>
+    <lower>56</lower>
+    <content>Under a loose stone in the floor</content>
+    <upper>65</upper>
+  </object>
+    <object>
+        <lower>66</lower>
+        <content>Behind a loose stone in the wall</content>
+        <upper>75</upper>
+    </object>
+    <object>
+        <lower>76</lower>
+        <content>In a secret room nearby</content>
+        <upper>100</upper>
+    </object>
+</percentile>

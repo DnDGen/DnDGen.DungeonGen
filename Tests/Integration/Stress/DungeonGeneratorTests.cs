@@ -48,7 +48,7 @@ namespace DungeonGen.Tests.Integration.Stress
             {
                 Assert.That(area.Contents.IsEmpty, Is.False);
             }
-            else if (area.Type != AreaTypeConstants.DeadEnd && area.Type != AreaTypeConstants.Door)
+            else if (area.Type != AreaTypeConstants.DeadEnd && area.Type != AreaTypeConstants.Door && area.Type != AreaTypeConstants.Stairs)
             {
                 Assert.That(area.Length, Is.Positive, area.Type);
                 Assert.That(area.Width, Is.Not.Negative, area.Type);
@@ -65,6 +65,28 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             var dungeonLevel = Random.Next(20) + 1;
             var partyLevel = Random.Next(20) + 1;
+            var areas = DungeonGenerator.GenerateFromDoor(dungeonLevel, partyLevel);
+            Assert.That(areas, Is.Not.Empty);
+
+            foreach (var area in areas)
+                AssertArea(area);
+        }
+
+        [TestCase(1, 1)]
+        public void GeneratrBetaFromHall(int dungeonLevel, int partyLevel)
+        {
+            //INFO: To use this beta properly, place a breakpoint after the area is generated and inspect the generated object
+            var areas = DungeonGenerator.GenerateFromHall(dungeonLevel, partyLevel);
+            Assert.That(areas, Is.Not.Empty);
+
+            foreach (var area in areas)
+                AssertArea(area);
+        }
+
+        [TestCase(1, 1)]
+        public void GeneratrBetaFromDoor(int dungeonLevel, int partyLevel)
+        {
+            //INFO: To use this beta properly, place a breakpoint after the area is generated and inspect the generated object
             var areas = DungeonGenerator.GenerateFromDoor(dungeonLevel, partyLevel);
             Assert.That(areas, Is.Not.Empty);
 

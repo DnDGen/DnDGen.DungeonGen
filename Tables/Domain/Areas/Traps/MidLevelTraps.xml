@@ -18,7 +18,7 @@
   </object>
   <object>
     <lower>8</lower>
-    <content>Burnt othur vapor trap(7){21x21}</content>
+    <content>Glyph of warding, blast(4){28x28}</content>
     <upper>10</upper>
   </object>
   <object>
@@ -33,7 +33,7 @@
   </object>
   <object>
     <lower>16</lower>
-    <content>Poison dart trap(4){21x22}</content>
+    <content>Poisoned dart trap(4){21x22}</content>
     <upper>18</upper>
   </object>
   <object>
@@ -112,68 +112,78 @@
     <upper>58</upper>
   </object>
   <object>
-    <lower>60</lower>
-    <content>Well-camouflaged pit trap(8){27x18}</content>
-    <upper>62</upper>
+    <lower>59</lower>
+    <content>Poison wall spikes(5){17x21}</content>
+    <upper>61</upper>
   </object>
   <object>
-    <lower>63</lower>
-    <content>Word of chaos trap(8){32x32}</content>
-    <upper>65</upper>
+    <lower>62</lower>
+    <content>Spiked pit trap(5){21x20}</content>
+    <upper>64</upper>
   </object>
   <object>
-    <lower>66</lower>
-    <content>Drawer handle smeared with contact poison(9){18x26}</content>
-    <upper>68</upper>
+    <lower>65</lower>
+    <content>Spiked pit trap, 80 ft.(5){20x20}</content>
+    <upper>67</upper>
+  </object>
+  <object>
+    <lower>68</lower>
+    <content>Ungol dust vapor trap(5){20x16}</content>
+    <upper>69</upper>
   </object>
     <object>
-        <lower>69</lower>
-        <content>Dropping ceiling(9){20x16}</content>
+        <lower>70</lower>
+        <content>Built-to-collapse wall(6){14x16}</content>
         <upper>71</upper>
     </object>
   <object>
     <lower>72</lower>
-    <content>Incendiary cloud trap(9){33x33}</content>
+    <content>Compacting room(6){20x22}</content>
     <upper>74</upper>
   </object>
   <object>
     <lower>75</lower>
-    <content>Wide-mouth pit trap(9){25x25}</content>
+    <content>Flame strike trap(6){30x30}</content>
     <upper>77</upper>
   </object>
     <object>
         <lower>78</lower>
-        <content>Wide mouth spiked pit with poisoned spikes(9){20x20}</content>
+        <content>Fusillade of spears(6){26x20}</content>
         <upper>80</upper>
     </object>
   <object>
     <lower>81</lower>
-    <content>Crushing room(10){22x20}</content>
-    <upper>84</upper>
+    <content>Glyph of warding, blast(6){28x28}</content>
+    <upper>83</upper>
   </object>
   <object>
-    <lower>85</lower>
-    <content>Crushing wall trap(10){20x25}</content>
+    <lower>84</lower>
+    <content>Lightning bolt trap(6){28x28}</content>
+    <upper>85</upper>
+  </object>
+  <object>
+    <lower>86</lower>
+    <content>Spiked blocks from ceiling(6){24x20}</content>
     <upper>88</upper>
   </object>
   <object>
     <lower>89</lower>
-    <content>Energy drain trap(10){34x34}</content>
+    <content>Spiked pit trap, 100 ft.(6){20x20}</content>
     <upper>91</upper>
   </object>
   <object>
     <lower>92</lower>
-    <content>Forcecage and summon monster VII trap(10){32x32}</content>
+    <content>Whirling poison blades(6){20x20}</content>
     <upper>94</upper>
   </object>
   <object>
     <lower>95</lower>
-    <content>Poisoned spiked pit trap(10){16x25}</content>
+    <content>Wide-mouth pit trap(6){26x25}</content>
     <upper>97</upper>
   </object>
   <object>
     <lower>98</lower>
-    <content>Wail of the banshee trap(10){34x34}</content>
+    <content>Wyvern arrow trap(6){20x16}</content>
     <upper>100</upper>
     </object>
 </percentile>
