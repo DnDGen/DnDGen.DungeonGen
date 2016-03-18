@@ -85,6 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AreaGenerators\CaveGeneratorTests.cs" />
     <Compile Include="AreaGenerators\ChamberExitGeneratorTests.cs" />
     <Compile Include="AreaGenerators\ChamberGeneratorTests.cs" />
     <Compile Include="AreaGenerators\DoorGeneratorTests.cs" />

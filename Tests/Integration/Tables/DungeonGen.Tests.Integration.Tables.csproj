@@ -93,8 +93,10 @@
   <ItemGroup>
     <Compile Include="AreaPercentileTests.cs" />
     <Compile Include="Areas\Halls\AdditionalGalleryStairsTests.cs" />
+    <Compile Include="Areas\Halls\ChasmCrossingTests.cs" />
     <Compile Include="Areas\Halls\DoorLocationsTests.cs" />
     <Compile Include="Areas\Halls\GalleryStairsTests.cs" />
+    <Compile Include="Areas\Halls\RiverCrossingTests.cs" />
     <Compile Include="Areas\Halls\StairsTests.cs" />
     <Compile Include="Areas\Halls\StreamCrossingTests.cs" />
     <Compile Include="Areas\Halls\TurnsTests.cs" />

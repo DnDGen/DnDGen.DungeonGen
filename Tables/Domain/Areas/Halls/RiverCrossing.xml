@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Boat</content>
+        <upper>25</upper>
+    </object>
+  <object>
+    <lower>26</lower>
+    <content>Bridge</content>
+    <upper>100</upper>
+  </object>
+</percentile>

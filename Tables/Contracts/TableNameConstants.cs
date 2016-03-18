@@ -3,6 +3,7 @@
     public static class TableNameConstants
     {
         public const string AdditionalGalleryStairs = "AdditionalGalleryStairs";
+        public const string Caves = "Caves";
         public const string ChamberExits = "ChamberExits";
         public const string Chambers = "Chambers";
         public const string ChasmCrossing = "ChasmCrossing";

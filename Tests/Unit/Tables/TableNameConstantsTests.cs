@@ -7,6 +7,7 @@ namespace DungeonGen.Tests.Unit.Tables
     public class TableNameConstantsTests
     {
         [TestCase(TableNameConstants.AdditionalGalleryStairs, "AdditionalGalleryStairs")]
+        [TestCase(TableNameConstants.Caves, "Caves")]
         [TestCase(TableNameConstants.ChamberExits, "ChamberExits")]
         [TestCase(TableNameConstants.Chambers, "Chambers")]
         [TestCase(TableNameConstants.ChasmCrossing, "ChasmCrossing")]
