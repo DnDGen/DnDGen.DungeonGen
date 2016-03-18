@@ -7,7 +7,7 @@ namespace DungeonGen.Common
     public class Contents
     {
         public IEnumerable<Encounter> Encounters { get; set; }
-        public IEnumerable<ContainedTreasure> Treasures { get; set; }
+        public IEnumerable<DungeonTreasure> Treasures { get; set; }
         public IEnumerable<string> Miscellaneous { get; set; }
         public IEnumerable<Trap> Traps { get; set; }
         public Pool Pool { get; set; }
@@ -22,7 +22,7 @@ namespace DungeonGen.Common
 
         public Contents()
         {
-            Treasures = Enumerable.Empty<ContainedTreasure>();
+            Treasures = Enumerable.Empty<DungeonTreasure>();
             Encounters = Enumerable.Empty<Encounter>();
             Miscellaneous = Enumerable.Empty<string>();
             Traps = Enumerable.Empty<Trap>();

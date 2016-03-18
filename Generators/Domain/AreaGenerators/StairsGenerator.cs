@@ -3,6 +3,7 @@ using DungeonGen.Selectors;
 using DungeonGen.Tables;
 using RollGen;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonGen.Generators.Domain.AreaGenerators
 {
@@ -22,17 +23,50 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
         {
             var stairs = areaPercentileSelector.SelectFrom(TableNameConstants.Stairs);
-
             var endLevel = dungeonLevel + stairs.Length;
-            if (endLevel < 1)
+            var passiveStairs = new[] { DescriptionConstants.Chimney, DescriptionConstants.TrapDoor };
+            var allStairAreas = new List<Area>();
+
+            if (stairs.Descriptions.Intersect(passiveStairs).Any())
+            {
+                var originalHall = GetOriginalHall();
+                allStairAreas.Add(originalHall);
+
+                if (endLevel < 1)
+                    return allStairAreas;
+            }
+            else if (endLevel < 1)
+            {
                 return new[] { GetDeadEnd() };
+            }
 
             var directionDescription = GetDirectionDescription(dungeonLevel, endLevel);
+            stairs.Descriptions = stairs.Descriptions.Union(new[] { directionDescription });
 
-            var allStairAreas = new List<Area>();
             allStairAreas.Add(stairs);
 
+            if (stairs.Contents.Miscellaneous.Contains(AreaTypeConstants.Chamber))
+            {
+                stairs.Contents.Miscellaneous = stairs.Contents.Miscellaneous.Except(new[] { AreaTypeConstants.Chamber });
+                var chambers = chamberGenerator.Generate(dungeonLevel, partyLevel);
+                allStairAreas.AddRange(chambers);
+            }
+            else if (dice.Roll().Percentile() <= stairs.Width)
+            {
+                var deadEnd = GetDeadEnd();
+                allStairAreas.Add(deadEnd);
+            }
+
             return allStairAreas;
+        }
+
+        private Area GetOriginalHall()
+        {
+            return new Area
+            {
+                Type = AreaTypeConstants.Hall,
+                Length = 30
+            };
         }
 
         private Area GetDeadEnd()
@@ -46,9 +80,9 @@ namespace DungeonGen.Generators.Domain.AreaGenerators
         private string GetDirectionDescription(int dungeonLevel, int endLevel)
         {
             if (dungeonLevel > endLevel)
-                return $"Down to level {endLevel}";
+                return $"Up to level {endLevel}";
 
-            return $"Up to level {endLevel}";
+            return $"Down to level {endLevel}";
         }
     }
 }

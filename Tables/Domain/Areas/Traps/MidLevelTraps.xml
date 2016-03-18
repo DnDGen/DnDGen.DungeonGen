@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Bestow curse trap(4){28x28}</content>
+        <upper>2</upper>
+    </object>
+  <object>
+    <lower>3</lower>
+    <content>Camouflaged pit trap(4){25x17}</content>
+    <upper>5</upper>
+  </object>
+  <object>
+    <lower>6</lower>
+    <content>Collapsing column(4){20x24}</content>
+    <upper>7</upper>
+  </object>
+  <object>
+    <lower>8</lower>
+    <content>Burnt othur vapor trap(7){21x21}</content>
+    <upper>10</upper>
+  </object>
+  <object>
+    <lower>11</lower>
+    <content>Lightning bolt trap(4){28x28}</content>
+    <upper>12</upper>
+  </object>
+  <object>
+    <lower>13</lower>
+    <content>Pit trap(4){20x20}</content>
+    <upper>15</upper>
+  </object>
+  <object>
+    <lower>16</lower>
+    <content>Poison dart trap(4){21x22}</content>
+    <upper>18</upper>
+  </object>
+  <object>
+    <lower>19</lower>
+    <content>Sepia snake sigil trap(4){28x28}</content>
+    <upper>21</upper>
+  </object>
+  <object>
+    <lower>22</lower>
+    <content>Spiked pit trap(4){20x20}</content>
+    <upper>24</upper>
+  </object>
+  <object>
+    <lower>25</lower>
+    <content>Wall scythe trap(4){21x18}</content>
+    <upper>26</upper>
+  </object>
+  <object>
+    <lower>27</lower>
+    <content>Water-filled room trap(4){17x23}</content>
+    <upper>29</upper>
+  </object>
+    <object>
+        <lower>30</lower>
+        <content>Wide-mouth spiked pit trap(4){18x25}</content>
+        <upper>32</upper>
+    </object>
+  <object>
+    <lower>33</lower>
+    <content>Camouflaged pit trap(5){25x17}</content>
+    <upper>35</upper>
+  </object>
+  <object>
+    <lower>36</lower>
+    <content>Doorknob smeared with contact poison(5){25x19}</content>
+    <upper>37</upper>
+  </object>
+  <object>
+    <lower>38</lower>
+    <content>Falling block trap(5){20x25}</content>
+    <upper>40</upper>
+  </object>
+    <object>
+        <lower>41</lower>
+        <content>Fire trap(5){29x29}</content>
+        <upper>43</upper>
+    </object>
+  <object>
+    <lower>44</lower>
+    <content>Fireball trap(5){28x28}</content>
+    <upper>46</upper>
+  </object>
+  <object>
+    <lower>47</lower>
+    <content>Flooding room trap(5){20x25}</content>
+    <upper>48</upper>
+  </object>
+  <object>
+    <lower>49</lower>
+    <content>Fusillade of darts(5){19x25}</content>
+    <upper>51</upper>
+  </object>
+  <object>
+    <lower>52</lower>
+    <content>Moving executioner statue(5){25x18}</content>
+    <upper>53</upper>
+  </object>
+  <object>
+    <lower>54</lower>
+    <content>Phantasmal killer trap(5){29x29}</content>
+    <upper>55</upper>
+  </object>
+  <object>
+    <lower>56</lower>
+    <content>Pit trap(5){20x20}</content>
+    <upper>58</upper>
+  </object>
+  <object>
+    <lower>60</lower>
+    <content>Well-camouflaged pit trap(8){27x18}</content>
+    <upper>62</upper>
+  </object>
+  <object>
+    <lower>63</lower>
+    <content>Word of chaos trap(8){32x32}</content>
+    <upper>65</upper>
+  </object>
+  <object>
+    <lower>66</lower>
+    <content>Drawer handle smeared with contact poison(9){18x26}</content>
+    <upper>68</upper>
+  </object>
+    <object>
+        <lower>69</lower>
+        <content>Dropping ceiling(9){20x16}</content>
+        <upper>71</upper>
+    </object>
+  <object>
+    <lower>72</lower>
+    <content>Incendiary cloud trap(9){33x33}</content>
+    <upper>74</upper>
+  </object>
+  <object>
+    <lower>75</lower>
+    <content>Wide-mouth pit trap(9){25x25}</content>
+    <upper>77</upper>
+  </object>
+    <object>
+        <lower>78</lower>
+        <content>Wide mouth spiked pit with poisoned spikes(9){20x20}</content>
+        <upper>80</upper>
+    </object>
+  <object>
+    <lower>81</lower>
+    <content>Crushing room(10){22x20}</content>
+    <upper>84</upper>
+  </object>
+  <object>
+    <lower>85</lower>
+    <content>Crushing wall trap(10){20x25}</content>
+    <upper>88</upper>
+  </object>
+  <object>
+    <lower>89</lower>
+    <content>Energy drain trap(10){34x34}</content>
+    <upper>91</upper>
+  </object>
+  <object>
+    <lower>92</lower>
+    <content>Forcecage and summon monster VII trap(10){32x32}</content>
+    <upper>94</upper>
+  </object>
+  <object>
+    <lower>95</lower>
+    <content>Poisoned spiked pit trap(10){16x25}</content>
+    <upper>97</upper>
+  </object>
+  <object>
+    <lower>98</lower>
+    <content>Wail of the banshee trap(10){34x34}</content>
+    <upper>100</upper>
+    </object>
+</percentile>

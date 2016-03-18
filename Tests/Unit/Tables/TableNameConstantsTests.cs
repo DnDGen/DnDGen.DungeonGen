@@ -10,6 +10,7 @@ namespace DungeonGen.Tests.Unit.Tables
         [TestCase(TableNameConstants.ChamberExits, "ChamberExits")]
         [TestCase(TableNameConstants.Chambers, "Chambers")]
         [TestCase(TableNameConstants.ChasmCrossing, "ChasmCrossing")]
+        [TestCase(TableNameConstants.Contents, "Contents")]
         [TestCase(TableNameConstants.DoorLocations, "DoorLocations")]
         [TestCase(TableNameConstants.DoorTypes, "DoorTypes")]
         [TestCase(TableNameConstants.DungeonAreaFromHall, "DungeonAreaFromHall")]
@@ -18,6 +19,8 @@ namespace DungeonGen.Tests.Unit.Tables
         [TestCase(TableNameConstants.ExitLocation, "ExitLocation")]
         [TestCase(TableNameConstants.GalleryStairs, "GalleryStairs")]
         [TestCase(TableNameConstants.Halls, "Halls")]
+        [TestCase(TableNameConstants.MajorFeatures, "MajorFeatures")]
+        [TestCase(TableNameConstants.MinorFeatures, "MinorFeatures")]
         [TestCase(TableNameConstants.RiverCrossing, "RiverCrossing")]
         [TestCase(TableNameConstants.RoomExits, "RoomExits")]
         [TestCase(TableNameConstants.Rooms, "Rooms")]
@@ -27,6 +30,11 @@ namespace DungeonGen.Tests.Unit.Tables
         [TestCase(TableNameConstants.SpecialAreaSizes, "SpecialAreaSizes")]
         [TestCase(TableNameConstants.Stairs, "Stairs")]
         [TestCase(TableNameConstants.StreamCrossing, "StreamCrossing")]
+        [TestCase(TableNameConstants.LowLevelTraps, "LowLevelTraps")]
+        [TestCase(TableNameConstants.MidLevelTraps, "MidLevelTraps")]
+        [TestCase(TableNameConstants.HighLevelTraps, "HighLevelTraps")]
+        [TestCase(TableNameConstants.TreasureConcealment, "TreasureConcealment")]
+        [TestCase(TableNameConstants.TreasureContainers, "TreasureContainers")]
         [TestCase(TableNameConstants.Turns, "Turns")]
         public void Constant(string constant, string value)
         {

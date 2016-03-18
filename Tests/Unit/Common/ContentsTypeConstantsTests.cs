@@ -9,6 +9,7 @@ namespace DungeonGen.Tests.Unit.Common
         [TestCase(ContentsTypeConstants.Encounter, "Encounter")]
         [TestCase(ContentsTypeConstants.Pool, "Pool")]
         [TestCase(ContentsTypeConstants.Trap, "Trap")]
+        [TestCase(ContentsTypeConstants.Treasure, "Treasure")]
         public void Constant(string constant, string value)
         {
             Assert.That(constant, Is.EqualTo(value));

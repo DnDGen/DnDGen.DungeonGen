@@ -72,7 +72,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             generatedContents.Encounters = new[] { new Encounter(), new Encounter() };
             generatedContents.Miscellaneous = new[] { "thing 1", "thing 2" };
             generatedContents.Traps = new[] { new Trap(), new Trap() };
-            generatedContents.Treasures = new[] { new ContainedTreasure(), new ContainedTreasure() };
+            generatedContents.Treasures = new[] { new DungeonTreasure(), new DungeonTreasure() };
 
             mockContentsGenerator.Setup(g => g.Generate(600)).Returns(generatedContents);
 
@@ -112,7 +112,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var secondSpecialArea = new Area();
             secondSpecialArea.Contents.Miscellaneous = new[] { "thing 1", "thing 2" };
             secondSpecialArea.Descriptions = new[] { "a cave" };
-            secondSpecialArea.Contents.Treasures = new[] { new ContainedTreasure() };
+            secondSpecialArea.Contents.Treasures = new[] { new DungeonTreasure() };
 
             var firstContents = new Contents();
             firstContents.Miscellaneous = new[] { "new stuff" };
@@ -120,7 +120,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var secondContents = new Contents();
             secondContents.Miscellaneous = new[] { "other new stuff" };
-            secondContents.Treasures = new[] { new ContainedTreasure() };
+            secondContents.Treasures = new[] { new DungeonTreasure() };
             secondContents.Traps = new[] { new Trap() };
 
             //INFO: We do the order backwards, becuase the internals will iterate backwards through the list

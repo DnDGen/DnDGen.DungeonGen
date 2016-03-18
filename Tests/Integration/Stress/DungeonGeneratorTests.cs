@@ -48,7 +48,7 @@ namespace DungeonGen.Tests.Integration.Stress
             {
                 Assert.That(area.Contents.IsEmpty, Is.False);
             }
-            else if (area.Type != AreaTypeConstants.DeadEnd)
+            else if (area.Type != AreaTypeConstants.DeadEnd && area.Type != AreaTypeConstants.Door)
             {
                 Assert.That(area.Length, Is.Positive, area.Type);
                 Assert.That(area.Width, Is.Not.Negative, area.Type);

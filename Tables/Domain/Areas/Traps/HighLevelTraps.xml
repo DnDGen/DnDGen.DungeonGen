@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Acid fog trap(7){31x31}</content>
+        <upper>4</upper>
+    </object>
+  <object>
+    <lower>5</lower>
+    <content>Blade barrier trap(7){31x31}</content>
+    <upper>7</upper>
+  </object>
+  <object>
+    <lower>8</lower>
+    <content>Burnt othur vapor trap(7){21x21}</content>
+    <upper>10</upper>
+  </object>
+  <object>
+    <lower>11</lower>
+    <content>Chain lightning trap(7){31x31}</content>
+    <upper>14</upper>
+  </object>
+  <object>
+    <lower>15</lower>
+    <content>Evard's black tentacles trap(7){29x29}</content>
+    <upper>17</upper>
+  </object>
+  <object>
+    <lower>18</lower>
+    <content>Fusillade of greenblood oil darts(7){25x25}</content>
+    <upper>20</upper>
+  </object>
+  <object>
+    <lower>21</lower>
+    <content>Lock covered in dragon bile(7){27x16}</content>
+    <upper>23</upper>
+  </object>
+  <object>
+    <lower>24</lower>
+    <content>Summon monster VI trap(7){31x31}</content>
+    <upper>26</upper>
+  </object>
+  <object>
+    <lower>27</lower>
+    <content>Water-filled room(7){20x25}</content>
+    <upper>30</upper>
+  </object>
+    <object>
+        <lower>31</lower>
+        <content>Well-camouflaged pit trap(7){27x18}</content>
+        <upper>33</upper>
+    </object>
+  <object>
+    <lower>34</lower>
+    <content>Deathblade wall scythe(8){24x19}</content>
+    <upper>36</upper>
+  </object>
+  <object>
+    <lower>37</lower>
+    <content>Destruction trap(8){32x32}</content>
+    <upper>39</upper>
+  </object>
+    <object>
+        <lower>40</lower>
+        <content>Earthquake trap(8){32x32}</content>
+        <upper>42</upper>
+    </object>
+  <object>
+    <lower>43</lower>
+    <content>Insanity mist vapor trap(8){25x20}</content>
+    <upper>46</upper>
+  </object>
+  <object>
+    <lower>47</lower>
+    <content>Melf's acid arrow trap(8){27x27}</content>
+    <upper>49</upper>
+  </object>
+  <object>
+    <lower>50</lower>
+    <content>Power word stun trap(8){32x32}</content>
+    <upper>52</upper>
+  </object>
+  <object>
+    <lower>53</lower>
+    <content>Prismatic spray trap(8){32x32}</content>
+    <upper>55</upper>
+  </object>
+  <object>
+    <lower>56</lower>
+    <content>Reverse gravity trap(8){32x32}</content>
+    <upper>59</upper>
+  </object>
+  <object>
+    <lower>60</lower>
+    <content>Well-camouflaged pit trap(8){27x18}</content>
+    <upper>62</upper>
+  </object>
+  <object>
+    <lower>63</lower>
+    <content>Word of chaos trap(8){32x32}</content>
+    <upper>65</upper>
+  </object>
+  <object>
+    <lower>66</lower>
+    <content>Drawer handle smeared with contact poison(9){18x26}</content>
+    <upper>68</upper>
+  </object>
+    <object>
+        <lower>69</lower>
+        <content>Dropping ceiling(9){20x16}</content>
+        <upper>71</upper>
+    </object>
+  <object>
+    <lower>72</lower>
+    <content>Incendiary cloud trap(9){33x33}</content>
+    <upper>74</upper>
+  </object>
+  <object>
+    <lower>75</lower>
+    <content>Wide-mouth pit trap(9){25x25}</content>
+    <upper>77</upper>
+  </object>
+    <object>
+        <lower>78</lower>
+        <content>Wide mouth spiked pit with poisoned spikes(9){20x20}</content>
+        <upper>80</upper>
+    </object>
+  <object>
+    <lower>81</lower>
+    <content>Crushing room(10){22x20}</content>
+    <upper>84</upper>
+  </object>
+  <object>
+    <lower>85</lower>
+    <content>Crushing wall trap(10){20x25}</content>
+    <upper>88</upper>
+  </object>
+  <object>
+    <lower>89</lower>
+    <content>Energy drain trap(10){34x34}</content>
+    <upper>91</upper>
+  </object>
+  <object>
+    <lower>92</lower>
+    <content>Forcecage and summon monster VII trap(10){32x32}</content>
+    <upper>94</upper>
+  </object>
+  <object>
+    <lower>95</lower>
+    <content>Poisoned spiked pit trap(10){16x25}</content>
+    <upper>97</upper>
+  </object>
+  <object>
+    <lower>98</lower>
+    <content>Wail of the banshee trap(10){34x34}</content>
+    <upper>100</upper>
+    </object>
+</percentile>

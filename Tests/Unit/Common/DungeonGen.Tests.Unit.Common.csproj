@@ -83,7 +83,7 @@
   <ItemGroup>
     <Compile Include="AreaTests.cs" />
     <Compile Include="AreaTypeConstantsTests.cs" />
-    <Compile Include="ContainedTreasureTests.cs" />
+    <Compile Include="DungeonTreasureTests.cs" />
     <Compile Include="ContentsConstantsTests.cs" />
     <Compile Include="ContentsTests.cs" />
     <Compile Include="ContentsTypeConstantsTests.cs" />

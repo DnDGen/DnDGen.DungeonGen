@@ -43,6 +43,10 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RollGen, Version=1.0.5900.36696, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\D20Dice.11.0\lib\RollGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +66,7 @@
     <Compile Include="Factories\PercentileMapperFactory.cs" />
     <Compile Include="Factories\SidePassageGeneratorFactory.cs" />
     <Compile Include="Factories\SpecialAreaGeneratorFactory.cs" />
+    <Compile Include="Factories\StairsGeneratorFactory.cs" />
     <Compile Include="Modules\GeneratorsModule.cs" />
     <Compile Include="Modules\MappersModule.cs" />
     <Compile Include="Modules\SelectorsModule.cs" />

@@ -49,7 +49,7 @@ namespace DungeonGen.Tests.Unit.Common
         [Test]
         public void IsNotEmptyIfTreasure()
         {
-            contents.Treasures = new[] { new ContainedTreasure() };
+            contents.Treasures = new[] { new DungeonTreasure() };
             Assert.That(contents.IsEmpty, Is.False);
         }
 

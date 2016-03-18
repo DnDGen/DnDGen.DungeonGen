@@ -74,7 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area.cs" />
-    <Compile Include="ContainedTreasure.cs" />
+    <Compile Include="DungeonTreasure.cs" />
     <Compile Include="ContentsConstants.cs" />
     <Compile Include="DescriptionConstants.cs" />
     <Compile Include="Pool.cs" />

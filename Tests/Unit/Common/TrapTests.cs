@@ -19,7 +19,7 @@ namespace DungeonGen.Tests.Unit.Common
         {
             Assert.That(trap.ChallengeRating, Is.EqualTo(0));
             Assert.That(trap.Description, Is.Empty);
-            Assert.That(trap.DieCheck, Is.EqualTo(0));
+            Assert.That(trap.SearchDC, Is.EqualTo(0));
         }
     }
 }

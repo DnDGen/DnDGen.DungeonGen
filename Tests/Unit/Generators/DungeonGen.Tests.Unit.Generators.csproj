@@ -95,6 +95,8 @@
     <Compile Include="AreaGenerators\SpecialAreaGeneratorTests.cs" />
     <Compile Include="AreaGenerators\StairsGeneratorTests.cs" />
     <Compile Include="AreaGenerators\TurnGeneratorTests.cs" />
+    <Compile Include="ContentGenerators\DomainContentsGeneratorTests.cs" />
+    <Compile Include="ContentGenerators\TrapGeneratorTests.cs" />
     <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RuntimeFactories\AreaGeneratorFactoryTests.cs" />

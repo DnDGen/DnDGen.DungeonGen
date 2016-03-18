@@ -26,7 +26,7 @@ namespace DungeonGen.Bootstrap.Modules
             Bind<AreaGenerator>().ToMethod(c => RoomGeneratorFactory.Build(c.Kernel)).Named(AreaTypeConstants.Room);
             Bind<AreaGenerator>().ToMethod(c => SidePassageGeneratorFactory.Build(c.Kernel)).Named(AreaTypeConstants.SidePassage);
             Bind<AreaGenerator>().ToMethod(c => SpecialAreaGeneratorFactory.Build(c.Kernel)).Named(AreaTypeConstants.Special);
-            Bind<AreaGenerator>().To<StairsGenerator>().Named(AreaTypeConstants.Stairs);
+            Bind<AreaGenerator>().ToMethod(c => StairsGeneratorFactory.Build(c.Kernel)).Named(AreaTypeConstants.Stairs);
             Bind<AreaGenerator>().To<TurnGenerator>().Named(AreaTypeConstants.Turn);
 
             Bind<ExitGenerator>().ToMethod(c => ChamberExitGeneratorFactory.Build(c.Kernel)).Named(AreaTypeConstants.Chamber);

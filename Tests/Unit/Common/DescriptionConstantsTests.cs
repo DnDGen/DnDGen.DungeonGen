@@ -14,7 +14,7 @@ namespace DungeonGen.Tests.Unit.Common
         [TestCase(DescriptionConstants.SlidesDown, "Slides down")]
         [TestCase(DescriptionConstants.SlidesUp, "Slides up")]
         [TestCase(DescriptionConstants.Stone, "Stone")]
-        [TestCase(DescriptionConstants.TrapDoor, "TrapDoor")]
+        [TestCase(DescriptionConstants.TrapDoor, "Trap door")]
         [TestCase(DescriptionConstants.Wooden, "Wooden")]
         public void Constant(string constant, string value)
         {

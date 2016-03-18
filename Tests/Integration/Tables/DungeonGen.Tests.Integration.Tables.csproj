@@ -93,6 +93,8 @@
   <ItemGroup>
     <Compile Include="AreaPercentileTests.cs" />
     <Compile Include="Areas\Halls\DoorLocationsTests.cs" />
+    <Compile Include="Areas\Halls\StairsTests.cs" />
+    <Compile Include="Areas\Halls\StreamCrossingTests.cs" />
     <Compile Include="Areas\Halls\TurnsTests.cs" />
     <Compile Include="Areas\Rooms\ChamberExitsTests.cs" />
     <Compile Include="Areas\Rooms\ChambersTests.cs" />
@@ -101,13 +103,18 @@
     <Compile Include="Areas\Halls\HallsTests.cs" />
     <Compile Include="Areas\Halls\SidePassagesTests.cs" />
     <Compile Include="Areas\Halls\SpecialHallTests.cs" />
+    <Compile Include="Areas\Rooms\ContentsTests.cs" />
     <Compile Include="Areas\Rooms\DoorTypesTests.cs" />
     <Compile Include="Areas\Rooms\ExitDirectionTests.cs" />
     <Compile Include="Areas\Rooms\ExitLocationTests.cs" />
+    <Compile Include="Areas\Rooms\MajorFeaturesTests.cs" />
+    <Compile Include="Areas\Rooms\MinorFeaturesTests.cs" />
     <Compile Include="Areas\Rooms\RoomExitsTests.cs" />
     <Compile Include="Areas\Rooms\RoomsTests.cs" />
     <Compile Include="Areas\Rooms\SpecialAreaShapesTests.cs" />
     <Compile Include="Areas\Rooms\SpecialAreaSizesTests.cs" />
+    <Compile Include="Areas\Traps\HighLevelTrapsTests.cs" />
+    <Compile Include="Areas\Traps\MidLevelTrapsTests.cs" />
     <Compile Include="EmbeddedResourceStreamLoaderTests.cs" />
     <Compile Include="PercentileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

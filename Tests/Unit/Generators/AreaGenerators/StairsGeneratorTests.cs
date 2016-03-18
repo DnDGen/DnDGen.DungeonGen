@@ -29,6 +29,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedStairs = new Area();
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Stairs)).Returns(selectedStairs);
+            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 1 });
         }
 
         [Test]
@@ -43,7 +44,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateStairsDownXLevels()
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = 600;
 
             var stairs = stairsGenerator.Generate(9266, 90210).Single();
@@ -55,7 +55,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [TestCase(42)]
         public void GenerateStairsDownXLevelsDeadEnds(int roll)
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = 600;
             selectedStairs.Width = 42;
 
@@ -79,7 +78,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateStairsDownXLevelsDoesNotDeadEnd()
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = 600;
             selectedStairs.Width = 42;
 
@@ -93,7 +91,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateStairsUpXLevels()
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = -42;
 
             var stairs = stairsGenerator.Generate(9266, 90210).Single();
@@ -105,7 +102,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [TestCase(-9267)]
         public void IfUpTooManyLevels_ThenDeadEnd(int levelsDown)
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = levelsDown;
 
             var stairs = stairsGenerator.Generate(9266, 90210).Single();
@@ -119,7 +115,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void ChimneyAlsoLetsTheHallContinue()
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = -600;
             selectedStairs.Descriptions = new[] { DescriptionConstants.Chimney };
 
@@ -144,7 +139,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [TestCase(-9267)]
         public void IfChimneyGoesUpTooHigh_NoChimney(int levelsDown)
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = levelsDown;
             selectedStairs.Descriptions = new[] { DescriptionConstants.Chimney };
 
@@ -159,7 +153,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void TrapDoorAlsoLetsTheHallContinue()
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = 600;
             selectedStairs.Descriptions = new[] { DescriptionConstants.TrapDoor };
 
@@ -183,7 +176,6 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void StairsEndInChamber()
         {
-            var selectedStairs = new Area();
             selectedStairs.Length = 600;
             selectedStairs.Contents.Miscellaneous = new[] { AreaTypeConstants.Chamber };
 
