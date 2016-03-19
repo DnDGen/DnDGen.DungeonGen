@@ -8,6 +8,7 @@ namespace DungeonGen.Tests.Unit.Common
     {
         [TestCase(DescriptionConstants.Chimney, "Chimney")]
         [TestCase(DescriptionConstants.Circular, "Circular")]
+        [TestCase(DescriptionConstants.DoubleCavern, "Double cavern")]
         [TestCase(DescriptionConstants.Iron, "Iron")]
         [TestCase(DescriptionConstants.MagicallyReinforced, "Magically reinforced")]
         [TestCase(DescriptionConstants.SlidesToSide, "Slides to one side")]

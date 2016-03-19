@@ -148,6 +148,24 @@
   <ItemGroup>
     <EmbeddedResource Include="Areas\Halls\RiverCrossing.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\Pools.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\MagicPoolPowers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\Caves.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\Lakes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\MagicPoolAlignments.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Areas\Rooms\MagicPoolTeleportationDestinations.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

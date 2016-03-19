@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Lawful Good</content>
+        <upper>30</upper>
+    </object>
+  <object>
+    <lower>31</lower>
+    <content>Lawful Evil</content>
+    <upper>45</upper>
+  </object>
+  <object>
+    <lower>46</lower>
+    <content>Chaotic Good</content>
+    <upper>60</upper>
+  </object>
+  <object>
+    <lower>61</lower>
+    <content>Chaotic Evil</content>
+    <upper>85</upper>
+  </object>
+  <object>
+    <lower>86</lower>
+    <content>Any neutral alignment</content>
+    <upper>100</upper>
+  </object>
+</percentile>

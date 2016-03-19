@@ -26,9 +26,10 @@ namespace DungeonGen.Selectors.Domain
                 throw new ArgumentException(message);
             }
 
-            var resultWithReplacedRolls = dice.ReplaceExpressionWithTotal(table[roll]);
+            if (dice.ContainsRoll(table[roll]))
+                return dice.ReplaceExpressionWithTotal(table[roll]);
 
-            return resultWithReplacedRolls;
+            return table[roll];
         }
     }
 }

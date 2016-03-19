@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<percentile>
+  <object>
+        <lower>1</lower>
+        <content>Changes gold to lead one time</content>
+        <upper>20</upper>
+    </object>
+  <object>
+    <lower>21</lower>
+    <content>Changes gold to platinum one time</content>
+    <upper>40</upper>
+  </object>
+  <object>
+    <lower>41</lower>
+    <content>Changes a stat (random per character, once per character: 50% raise, 50% lower, random stat (1d6), adjusted 1d3 points)</content>
+    <upper>75</upper>
+  </object>
+  <object>
+    <lower>76</lower>
+    <content>Talking pool (grants wish to ALIGNMENT characters, deals 1d20 points of damage to anyone else who speaks to it)</content>
+    <upper>85</upper>
+  </object>
+  <object>
+    <lower>86</lower>
+    <content>Wading into the pool teleports the character DESTINATION</content>
+    <upper>100</upper>
+  </object>
+</percentile>

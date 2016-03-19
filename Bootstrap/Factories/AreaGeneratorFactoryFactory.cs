@@ -12,13 +12,12 @@ namespace DungeonGen.Bootstrap.Factories
         {
             var chamberGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Chamber);
             var doorGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Door);
-            var hallGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Hall);
             var roomGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Room);
             var sidePassageGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.SidePassage);
             var stairsGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Stairs);
             var turnGenerator = kernel.Get<AreaGenerator>(AreaTypeConstants.Turn);
 
-            return new AreaGeneratorFactory(chamberGenerator, doorGenerator, hallGenerator, roomGenerator, sidePassageGenerator, stairsGenerator, turnGenerator);
+            return new AreaGeneratorFactory(chamberGenerator, doorGenerator, roomGenerator, sidePassageGenerator, stairsGenerator, turnGenerator);
         }
     }
 }

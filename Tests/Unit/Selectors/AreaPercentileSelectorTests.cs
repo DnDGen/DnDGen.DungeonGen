@@ -177,6 +177,47 @@ namespace DungeonGen.Tests.Unit.Selectors
         }
 
         [Test]
+        public void ReturnNumericContentsFromInnerSelector()
+        {
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type[42/600]");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Is.Empty);
+            Assert.That(area.Length, Is.EqualTo(0));
+            Assert.That(area.Width, Is.EqualTo(0));
+            Assert.That(area.Contents.Encounters, Is.Empty);
+            Assert.That(area.Contents.IsEmpty, Is.False);
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("42"));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("600"));
+            Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(2));
+            Assert.That(area.Contents.Traps, Is.Empty);
+            Assert.That(area.Contents.Treasures, Is.Empty);
+        }
+
+        [Test]
+        public void ReturnMultipleNumericContentsFromInnerSelector()
+        {
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type[42/600/even more contents]");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Is.Empty);
+            Assert.That(area.Length, Is.EqualTo(0));
+            Assert.That(area.Width, Is.EqualTo(0));
+            Assert.That(area.Contents.Encounters, Is.Empty);
+            Assert.That(area.Contents.IsEmpty, Is.False);
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("42"));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("600"));
+            Assert.That(area.Contents.Miscellaneous, Contains.Item("even more contents"));
+            Assert.That(area.Contents.Miscellaneous.Count(), Is.EqualTo(3));
+            Assert.That(area.Contents.Traps, Is.Empty);
+            Assert.That(area.Contents.Treasures, Is.Empty);
+        }
+
+        [Test]
         public void ReturnFullAreaFromInnerSelector()
         {
             mockDice.Setup(d => d.Roll("1d2")).Returns(9266);

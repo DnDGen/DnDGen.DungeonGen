@@ -7,12 +7,11 @@ namespace DungeonGen.Generators.Domain.RuntimeFactories.Domain
     {
         private readonly Dictionary<string, AreaGenerator> areaGenerators;
 
-        public AreaGeneratorFactory(AreaGenerator chamberGenerator, AreaGenerator doorGenerator, AreaGenerator hallGenerator, AreaGenerator roomGenerator, AreaGenerator sidePassageGenerator, AreaGenerator stairsGenerator, AreaGenerator turnGenerator)
+        public AreaGeneratorFactory(AreaGenerator chamberGenerator, AreaGenerator doorGenerator, AreaGenerator roomGenerator, AreaGenerator sidePassageGenerator, AreaGenerator stairsGenerator, AreaGenerator turnGenerator)
         {
             areaGenerators = new Dictionary<string, AreaGenerator>();
             areaGenerators[AreaTypeConstants.Chamber] = chamberGenerator;
             areaGenerators[AreaTypeConstants.Door] = doorGenerator;
-            areaGenerators[AreaTypeConstants.Hall] = hallGenerator;
             areaGenerators[AreaTypeConstants.Room] = roomGenerator;
             areaGenerators[AreaTypeConstants.SidePassage] = sidePassageGenerator;
             areaGenerators[AreaTypeConstants.Stairs] = stairsGenerator;

@@ -16,8 +16,13 @@
         public const string ExitLocation = "ExitLocation";
         public const string GalleryStairs = "GalleryStairs";
         public const string Halls = "Halls";
+        public const string Lakes = "Lakes";
+        public const string MagicPoolAlignments = "MagicPoolAlignments";
+        public const string MagicPoolPowers = "MagicPoolPowers";
+        public const string MagicPoolTeleportationDestinations = "MagicPoolTeleportationDestinations";
         public const string MajorFeatures = "MajorFeatures";
         public const string MinorFeatures = "MinorFeatures";
+        public const string Pools = "Pools";
         public const string RiverCrossing = "RiverCrossing";
         public const string RoomExits = "RoomExits";
         public const string Rooms = "Rooms";

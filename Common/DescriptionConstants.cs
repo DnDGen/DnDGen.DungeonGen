@@ -4,6 +4,7 @@
     {
         public const string Chimney = "Chimney";
         public const string Circular = "Circular";
+        public const string DoubleCavern = "Double cavern";
         public const string Iron = "Iron";
         public const string MagicallyReinforced = "Magically reinforced";
         public const string SlidesToSide = "Slides to one side";

@@ -4,6 +4,7 @@ using Ninject;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DungeonGen.Tests.Integration.Stress
 {
@@ -72,26 +73,49 @@ namespace DungeonGen.Tests.Integration.Stress
                 AssertArea(area);
         }
 
-        [TestCase(1, 1)]
-        public void GeneratrBetaFromHall(int dungeonLevel, int partyLevel)
+        [Test]
+        public void ContinuingHallHasSamePassageWidth()
         {
-            //INFO: To use this beta properly, place a breakpoint after the area is generated and inspect the generated object
-            var areas = DungeonGenerator.GenerateFromHall(dungeonLevel, partyLevel);
-            Assert.That(areas, Is.Not.Empty);
-
-            foreach (var area in areas)
-                AssertArea(area);
+            Stress(AssertHallContinuesAtSameWidth);
         }
 
-        [TestCase(1, 1)]
-        public void GeneratrBetaFromDoor(int dungeonLevel, int partyLevel)
+        private void AssertHallContinuesAtSameWidth()
         {
-            //INFO: To use this beta properly, place a breakpoint after the area is generated and inspect the generated object
+            var dungeonLevel = Random.Next(20) + 1;
+            var partyLevel = Random.Next(20) + 1;
             var areas = DungeonGenerator.GenerateFromDoor(dungeonLevel, partyLevel);
             Assert.That(areas, Is.Not.Empty);
 
-            foreach (var area in areas)
-                AssertArea(area);
+            if (areas.Count() == 1)
+            {
+                var area = areas.Single();
+                if (area.Type == AreaTypeConstants.Hall)
+                    Assert.That(area.Width, Is.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void ChamberDoorsHaveLocationOnly()
+        {
+            Stress(AssertChamberDoorsHaveLocationOnly);
+        }
+
+        private void AssertChamberDoorsHaveLocationOnly()
+        {
+            var areas = GenerateFromHall();
+            Assert.That(areas, Is.Not.Empty);
+
+            if (areas.Count() == 2 && areas.First().Type == AreaTypeConstants.Chamber && areas.Last().Type == AreaTypeConstants.Door)
+            {
+                var door = areas.Last();
+                var extras = door.Descriptions.Skip(1);
+                Assert.That(extras, Is.Empty);
+
+                Assert.That(door.Descriptions.Single(), Is.EqualTo("Right wall")
+                    .Or.EqualTo("Left wall")
+                    .Or.EqualTo("Opposite wall")
+                    .Or.EqualTo("Same wall"));
+            }
         }
     }
 }

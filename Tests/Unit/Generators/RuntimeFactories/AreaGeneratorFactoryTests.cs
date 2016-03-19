@@ -13,7 +13,6 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         private IAreaGeneratorFactory areaGeneratorFactory;
         private Mock<AreaGenerator> mockChamberGenerator;
         private Mock<AreaGenerator> mockDoorGenerator;
-        private Mock<AreaGenerator> mockHallGenerator;
         private Mock<AreaGenerator> mockRoomGenerator;
         private Mock<AreaGenerator> mockSidePassageGenerator;
         private Mock<AreaGenerator> mockStairsGenerator;
@@ -24,13 +23,12 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         {
             mockChamberGenerator = new Mock<AreaGenerator>();
             mockDoorGenerator = new Mock<AreaGenerator>();
-            mockHallGenerator = new Mock<AreaGenerator>();
             mockRoomGenerator = new Mock<AreaGenerator>();
             mockSidePassageGenerator = new Mock<AreaGenerator>();
             mockStairsGenerator = new Mock<AreaGenerator>();
             mockTurnGenerator = new Mock<AreaGenerator>();
 
-            areaGeneratorFactory = new AreaGeneratorFactory(mockChamberGenerator.Object, mockDoorGenerator.Object, mockHallGenerator.Object, mockRoomGenerator.Object,
+            areaGeneratorFactory = new AreaGeneratorFactory(mockChamberGenerator.Object, mockDoorGenerator.Object, mockRoomGenerator.Object,
                 mockSidePassageGenerator.Object, mockStairsGenerator.Object, mockTurnGenerator.Object);
         }
 
@@ -48,14 +46,6 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
             var generator = areaGeneratorFactory.Build(AreaTypeConstants.Door);
             Assert.That(generator, Is.Not.Null);
             Assert.That(generator, Is.EqualTo(mockDoorGenerator.Object));
-        }
-
-        [Test]
-        public void BuildHallGenerator()
-        {
-            var generator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
-            Assert.That(generator, Is.Not.Null);
-            Assert.That(generator, Is.EqualTo(mockHallGenerator.Object));
         }
 
         [Test]
@@ -95,7 +85,7 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         [TestCase(AreaTypeConstants.DeadEnd, false)]
         [TestCase(AreaTypeConstants.Door, true)]
         [TestCase(AreaTypeConstants.General, false)]
-        [TestCase(AreaTypeConstants.Hall, true)]
+        [TestCase(AreaTypeConstants.Hall, false)]
         [TestCase(AreaTypeConstants.Room, true)]
         [TestCase(AreaTypeConstants.SidePassage, true)]
         [TestCase(AreaTypeConstants.Special, false)]

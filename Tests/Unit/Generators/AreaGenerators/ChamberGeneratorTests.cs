@@ -113,6 +113,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             secondSpecialArea.Contents.Miscellaneous = new[] { "thing 1", "thing 2" };
             secondSpecialArea.Descriptions = new[] { "a cave" };
             secondSpecialArea.Contents.Treasures = new[] { new DungeonTreasure() };
+            secondSpecialArea.Contents.Pool = new Pool();
 
             var firstContents = new Contents();
             firstContents.Miscellaneous = new[] { "new stuff" };
@@ -150,6 +151,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(last.Contents.Traps.Count(), Is.EqualTo(1));
             Assert.That(last.Contents.Treasures.Count(), Is.EqualTo(2));
             Assert.That(last.Descriptions.Single(), Is.EqualTo("a cave"));
+            Assert.That(last.Contents.Pool, Is.Not.Null);
+            Assert.That(last.Contents.Pool, Is.EqualTo(secondSpecialArea.Contents.Pool));
         }
 
         [Test]

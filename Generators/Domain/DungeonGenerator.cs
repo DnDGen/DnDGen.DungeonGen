@@ -46,9 +46,21 @@ namespace DungeonGen.Generators.Domain
                 areas = areas.Union(newAreas);
             }
 
+            var specificAreas = areas.Where(a => a.Type != AreaTypeConstants.General);
+            var doorsAreFromHall = specificAreas.All(a => a.Type == AreaTypeConstants.Door);
+
+            if (specificAreas.Count() == 1)
+            {
+                var area = specificAreas.Single();
+                if (area.Type == AreaTypeConstants.Hall)
+                {
+                    area.Width = 0;
+                }
+            }
+
             foreach (var area in areas)
             {
-                if (area.Type == AreaTypeConstants.Door)
+                if (doorsAreFromHall && area.Type == AreaTypeConstants.Door)
                 {
                     var doorLocation = percentileSelector.SelectFrom(TableNameConstants.DoorLocations);
                     area.Descriptions = area.Descriptions.Union(new[] { doorLocation });

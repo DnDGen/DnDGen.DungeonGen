@@ -65,11 +65,24 @@ namespace DungeonGen.Tests.Unit.Selectors
         public void ReplaceRollsInResult()
         {
             table[3] = "1d6+4 things";
+            mockDice.Setup(d => d.ContainsRoll(table[3])).Returns(true);
             mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 3 });
             mockDice.Setup(d => d.ReplaceExpressionWithTotal("1d6+4 things")).Returns("rolls replaced");
 
             var result = selector.SelectFrom(tableName);
             Assert.That(result, Is.EqualTo("rolls replaced"));
+        }
+
+        [Test]
+        public void DoNotReplaceNonRollsInResult()
+        {
+            table[3] = "[20/30/contents]";
+            mockDice.Setup(d => d.ContainsRoll(table[3])).Returns(false);
+            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 3 });
+            mockDice.Setup(d => d.ReplaceExpressionWithTotal("20/30/contents")).Returns("rolls replaced");
+
+            var result = selector.SelectFrom(tableName);
+            Assert.That(result, Is.EqualTo("[20/30/contents]"));
         }
     }
 }

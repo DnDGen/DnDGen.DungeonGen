@@ -100,6 +100,7 @@
     <Compile Include="Areas\Halls\StairsTests.cs" />
     <Compile Include="Areas\Halls\StreamCrossingTests.cs" />
     <Compile Include="Areas\Halls\TurnsTests.cs" />
+    <Compile Include="Areas\Rooms\CavesTests.cs" />
     <Compile Include="Areas\Rooms\ChamberExitsTests.cs" />
     <Compile Include="Areas\Rooms\ChambersTests.cs" />
     <Compile Include="Areas\DungeonAreaFromDoorTests.cs" />
@@ -111,8 +112,13 @@
     <Compile Include="Areas\Rooms\DoorTypesTests.cs" />
     <Compile Include="Areas\Rooms\ExitDirectionTests.cs" />
     <Compile Include="Areas\Rooms\ExitLocationTests.cs" />
+    <Compile Include="Areas\Rooms\LakesTests.cs" />
+    <Compile Include="Areas\Rooms\MagicPoolAlignmentsTests.cs" />
+    <Compile Include="Areas\Rooms\MagicPoolPowersTests.cs" />
+    <Compile Include="Areas\Rooms\MagicPoolTeleportationDestinationsTests.cs" />
     <Compile Include="Areas\Rooms\MajorFeaturesTests.cs" />
     <Compile Include="Areas\Rooms\MinorFeaturesTests.cs" />
+    <Compile Include="Areas\Rooms\PoolsTests.cs" />
     <Compile Include="Areas\Rooms\RoomExitsTests.cs" />
     <Compile Include="Areas\Rooms\RoomsTests.cs" />
     <Compile Include="Areas\Rooms\SpecialAreaShapesTests.cs" />
