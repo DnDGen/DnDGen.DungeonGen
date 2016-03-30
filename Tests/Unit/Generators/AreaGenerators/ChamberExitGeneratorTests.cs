@@ -126,6 +126,24 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         }
 
         [Test]
+        public void ExitLocationDoesNotOverewriteDoorDescriptions()
+        {
+            selectedExit.Type = AreaTypeConstants.Door;
+
+            var door = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "secret", "speak friend and enter" } };
+            mockDoorGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { door });
+            mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling");
+            mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right");
+
+            var exits = chamberExitGenerator.Generate(9266, 90210, 42, 600);
+            Assert.That(exits.Single(), Is.EqualTo(door));
+            Assert.That(door.Descriptions, Contains.Item("on the ceiling"));
+            Assert.That(door.Descriptions, Contains.Item("secret"));
+            Assert.That(door.Descriptions, Contains.Item("speak friend and enter"));
+            Assert.That(door.Descriptions.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
         public void GetExitLocationsAndDirections()
         {
             selectedExit.Width = 2;
@@ -151,6 +169,37 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(last.Descriptions, Contains.Item("behind you"));
             Assert.That(last.Descriptions, Contains.Item("to the left"));
             Assert.That(last.Descriptions.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ExitLocationsAndDirectionsDoNotOverwriteHallDescriptions()
+        {
+            selectedExit.Width = 2;
+
+            var exit = new Area { Descriptions = new[] { "hallway-y" } };
+            var otherExit = new Area { Descriptions = new[] { "dark", "dank" } };
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { exit }).Returns(new[] { otherExit });
+
+            mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling").Returns("behind you");
+            mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right").Returns("to the left");
+
+            var exits = chamberExitGenerator.Generate(9266, 90210, 42, 600);
+            Assert.That(exits.Count(), Is.EqualTo(2));
+
+            var first = exits.First();
+            var last = exits.Last();
+
+            Assert.That(first, Is.EqualTo(exit));
+            Assert.That(first.Descriptions, Contains.Item("on the ceiling"));
+            Assert.That(first.Descriptions, Contains.Item("to the right"));
+            Assert.That(first.Descriptions, Contains.Item("hallway-y"));
+            Assert.That(first.Descriptions.Count(), Is.EqualTo(3));
+            Assert.That(last, Is.EqualTo(otherExit));
+            Assert.That(last.Descriptions, Contains.Item("behind you"));
+            Assert.That(last.Descriptions, Contains.Item("to the left"));
+            Assert.That(last.Descriptions, Contains.Item("dark"));
+            Assert.That(last.Descriptions, Contains.Item("dank"));
+            Assert.That(last.Descriptions.Count(), Is.EqualTo(4));
         }
     }
 }

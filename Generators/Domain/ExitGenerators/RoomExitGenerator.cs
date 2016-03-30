@@ -33,7 +33,8 @@ namespace DungeonGen.Generators.Domain.ExitGenerators
             while (selectedExit.Width-- > 0)
             {
                 var exit = GetExit(dungeonLevel, partyLevel, selectedExit.Type);
-                exit.Descriptions = GetDescription(exit);
+                var additionalDescriptions = GetDescription(exit);
+                exit.Descriptions = exit.Descriptions.Union(additionalDescriptions);
 
                 exits.Add(exit);
             }

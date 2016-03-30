@@ -16,7 +16,7 @@ namespace DungeonGen.Tests.Integration.Stress
         [Inject]
         public Random Random { get; set; }
 
-        [TestCase("Dungeon generator - From Hall")]
+        [TestCase("Dungeon Generator - From Hall")]
         public override void Stress(string stressSubject)
         {
             Stress();
@@ -91,30 +91,6 @@ namespace DungeonGen.Tests.Integration.Stress
                 var area = areas.Single();
                 if (area.Type == AreaTypeConstants.Hall)
                     Assert.That(area.Width, Is.EqualTo(0));
-            }
-        }
-
-        [Test]
-        public void ChamberDoorsHaveLocationOnly()
-        {
-            Stress(AssertChamberDoorsHaveLocationOnly);
-        }
-
-        private void AssertChamberDoorsHaveLocationOnly()
-        {
-            var areas = GenerateFromHall();
-            Assert.That(areas, Is.Not.Empty);
-
-            if (areas.Count() == 2 && areas.First().Type == AreaTypeConstants.Chamber && areas.Last().Type == AreaTypeConstants.Door)
-            {
-                var door = areas.Last();
-                var extras = door.Descriptions.Skip(1);
-                Assert.That(extras, Is.Empty);
-
-                Assert.That(door.Descriptions.Single(), Is.EqualTo("Right wall")
-                    .Or.EqualTo("Left wall")
-                    .Or.EqualTo("Opposite wall")
-                    .Or.EqualTo("Same wall"));
             }
         }
     }

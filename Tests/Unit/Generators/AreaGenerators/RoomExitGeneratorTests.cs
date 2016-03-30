@@ -111,7 +111,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         }
 
         [Test]
-        public void GetExitLocationAndDirecetionForHall()
+        public void GetExitLocationAndDirectionForHall()
         {
             selectedExit.Type = AreaTypeConstants.Hall;
 
@@ -125,6 +125,25 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(hall.Descriptions, Contains.Item("on the ceiling"));
             Assert.That(hall.Descriptions, Contains.Item("to the right"));
             Assert.That(hall.Descriptions.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ExitLocationAndDirectionDoNotOverwriteHallDescriptions()
+        {
+            selectedExit.Type = AreaTypeConstants.Hall;
+
+            var hall = new Area { Type = AreaTypeConstants.Hall, Descriptions = new[] { "dark", "dank" } };
+            mockHallGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { hall });
+            mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling");
+            mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right");
+
+            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600);
+            Assert.That(exits.Single(), Is.EqualTo(hall));
+            Assert.That(hall.Descriptions, Contains.Item("on the ceiling"));
+            Assert.That(hall.Descriptions, Contains.Item("to the right"));
+            Assert.That(hall.Descriptions, Contains.Item("dark"));
+            Assert.That(hall.Descriptions, Contains.Item("dank"));
+            Assert.That(hall.Descriptions.Count(), Is.EqualTo(4));
         }
 
         [Test]
@@ -149,6 +168,35 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(first.Descriptions.Single(), Is.EqualTo("on the ceiling"));
             Assert.That(last, Is.EqualTo(otherExit));
             Assert.That(last.Descriptions.Single(), Is.EqualTo("behind you"));
+        }
+
+        [Test]
+        public void ExitLocationsDoNotOverwriteDoorDescriptions()
+        {
+            selectedExit.Width = 2;
+
+            var exit = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "door-like" } };
+            var otherExit = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "sliding", "like Star Trek" } };
+            mockDoorGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { exit }).Returns(new[] { otherExit });
+
+            mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling").Returns("behind you");
+            mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right").Returns("to the left");
+
+            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600);
+            Assert.That(exits.Count(), Is.EqualTo(2));
+
+            var first = exits.First();
+            var last = exits.Last();
+
+            Assert.That(first, Is.EqualTo(exit));
+            Assert.That(first.Descriptions, Contains.Item("on the ceiling"));
+            Assert.That(first.Descriptions, Contains.Item("door-like"));
+            Assert.That(first.Descriptions.Count(), Is.EqualTo(2));
+            Assert.That(last, Is.EqualTo(otherExit));
+            Assert.That(last.Descriptions, Contains.Item("behind you"));
+            Assert.That(last.Descriptions, Contains.Item("sliding"));
+            Assert.That(last.Descriptions, Contains.Item("like Star Trek"));
+            Assert.That(last.Descriptions.Count(), Is.EqualTo(3));
         }
     }
 }

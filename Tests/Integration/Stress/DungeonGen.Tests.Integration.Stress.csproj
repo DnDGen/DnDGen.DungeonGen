@@ -89,6 +89,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\ChamberExitGeneratorTests.cs" />
+    <Compile Include="Areas\ChamberGeneratorTests.cs" />
+    <Compile Include="Areas\RoomExitGeneratorTests.cs" />
+    <Compile Include="Areas\RoomGeneratorTests.cs" />
     <Compile Include="DungeonGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StressAttribute.cs" />
