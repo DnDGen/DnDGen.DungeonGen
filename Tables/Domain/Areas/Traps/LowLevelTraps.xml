@@ -18,7 +18,7 @@
   </object>
   <object>
     <lower>10</lower>
-    <content>Doorknob smeared with contact poison(1){19x19}</content>
+    <content>Touchable surface smeared with contact poison(1){19x19}</content>
     <upper>11</upper>
   </object>
   <object>

@@ -33,7 +33,7 @@ namespace DungeonGen.Tests.Integration.Tables.Areas.Traps
         [TestCase(27, 29, "Water-filled room trap", "4", "", 17, 23)]
         [TestCase(30, 32, "Wide-mouth spiked pit trap", "4", "", 18, 25)]
         [TestCase(33, 35, "Camouflaged pit trap", "5", "", 25, 17)]
-        [TestCase(36, 37, "Doorknob smeared with contact poison", "5", "", 25, 19)]
+        [TestCase(36, 37, "Touchable surface smeared with contact poison", "5", "", 25, 19)]
         [TestCase(38, 40, "Falling block trap", "5", "", 20, 25)]
         [TestCase(41, 43, "Fire trap", "5", "", 29, 29)]
         [TestCase(44, 46, "Fireball trap", "5", "", 28, 28)]
