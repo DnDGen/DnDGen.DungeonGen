@@ -3,8 +3,6 @@ using Ninject;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 
 namespace DungeonGen.Tests.Integration.Stress
 {
@@ -24,13 +22,8 @@ namespace DungeonGen.Tests.Integration.Stress
 
         public StressTests()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var types = assembly.GetTypes();
-            var methods = types.SelectMany(t => t.GetMethods());
-            var stressTestsCount = methods.Count(m => m.GetCustomAttributes<TestAttribute>(true).Any() || m.GetCustomAttributes<TestCaseAttribute>().Any());
-
 #if STRESS
-            timeLimitInSeconds = TenMinutesInSeconds / stressTestsCount;
+            timeLimitInSeconds = TenMinutesInSeconds - 10;
 #else
             timeLimitInSeconds = 1;
 #endif
@@ -62,29 +55,8 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             do makeAssertions();
             while (TestShouldKeepRunning());
-        }
 
-        protected T Generate<T>(Func<T> generate, Func<T, bool> isValid)
-        {
-            T generatedObject;
-
-            do generatedObject = generate();
-            while (isValid(generatedObject) == false);
-
-            return generatedObject;
-        }
-
-        protected T GenerateOrFail<T>(Func<T> generate, Func<T, bool> isValid)
-        {
-            T generatedObject;
-
-            do generatedObject = generate();
-            while (TestShouldKeepRunning() && isValid(generatedObject) == false);
-
-            if (TestShouldKeepRunning() == false && isValid(generatedObject) == false)
-                Assert.Fail("Stress test timed out.");
-
-            return generatedObject;
+            Console.WriteLine($"Stress test complete after {Stopwatch.Elapsed} and {iterations} iterations");
         }
 
         private bool TestShouldKeepRunning()
