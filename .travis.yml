@@ -5,11 +5,7 @@ install:
   - nuget install NUnit.Runners -OutputDirectory testrunner
 script:
   - xbuild DungeonGen.sln /p:TargetFrameworkVersion="v4.5.1" /p:Configuration=Stress
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Unit/Common/bin/Stress/DungeonGen.Tests.Unit.Common.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Unit/Generators/bin/Stress/DungeonGen.Tests.Unit.Generators.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Unit/Selectors/bin/Stress/DungeonGen.Tests.Unit.Selectors.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Unit/Mappers/bin/Stress/DungeonGen.Tests.Unit.Mappers.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Unit/Tables/bin/Stress/DungeonGen.Tests.Unit.Tables.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Integration/Bootstrap/bin/Stress/DungeonGen.Tests.Integration.Bootstrap.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Integration/Tables/bin/Stress/DungeonGen.Tests.Integration.Tables.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/Integration/Stress/bin/Stress/DungeonGen.Tests.Integration.Stress.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Unit/bin/Stress/DungeonGen.Tests.Unit.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Integration.IoC/bin/Stress/DungeonGen.Tests.Integration.IoC.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Integration.Tables/bin/Stress/DungeonGen.Tests.Integration.Tables.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Integration.Stress/bin/Stress/DungeonGen.Tests.Integration.Stress.dll

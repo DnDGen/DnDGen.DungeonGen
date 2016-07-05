@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4CCAD67-C4BA-45AD-AD7E-B325EBE88DD7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DungeonGen.Tests.Unit</RootNamespace>
+    <AssemblyName>DungeonGen.Tests.Unit</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stress|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Stress\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CharacterGen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CharacterGen.5.0\lib\CharacterGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EncounterGen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EncounterGen.0.2.1\lib\EncounterGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RollGen, Version=12.1.5991.24748, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DnDGen.RollGen.12.2\lib\RollGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TreasureGen, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DnDGen.TreasureGen.4.0\lib\TreasureGen.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Generators\AreaGenerators\CaveGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\ChamberExitGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\ChamberGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\DoorGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\HallGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\RoomExitGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\RoomGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\SidePassageGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\SpecialAreaGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\StairsGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\TurnGeneratorTests.cs" />
+    <Compile Include="Generators\AreaTests.cs" />
+    <Compile Include="Generators\AreaTypeConstantsTests.cs" />
+    <Compile Include="Generators\ContentGenerators\DomainContentsGeneratorTests.cs" />
+    <Compile Include="Generators\ContentGenerators\DomainPoolGeneratorTests.cs" />
+    <Compile Include="Generators\ContentGenerators\TrapGeneratorTests.cs" />
+    <Compile Include="Generators\ContentsConstantsTests.cs" />
+    <Compile Include="Generators\ContentsTests.cs" />
+    <Compile Include="Generators\ContentsTypeConstantsTests.cs" />
+    <Compile Include="Generators\DescriptionConstantsTests.cs" />
+    <Compile Include="Generators\DungeonGeneratorTests.cs" />
+    <Compile Include="Generators\DungeonTreasureTests.cs" />
+    <Compile Include="Generators\PoolTests.cs" />
+    <Compile Include="Generators\SidePassageConstantsTests.cs" />
+    <Compile Include="Generators\TrapTests.cs" />
+    <Compile Include="Mappers\PercentileMapperCachingProxyTests.cs" />
+    <Compile Include="Mappers\PercentileXmlMapperTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Generators\RuntimeFactories\AreaGeneratorFactoryTests.cs" />
+    <Compile Include="Selectors\AreaPercentileSelectorTests.cs" />
+    <Compile Include="Selectors\PercentileSelectorTests.cs" />
+    <Compile Include="Tables\TableNameConstantsTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DungeonGen.Domain\DungeonGen.Domain.csproj">
+      <Project>{7adc00a1-2c4d-4e61-975b-4bec3f38ae1a}</Project>
+      <Name>DungeonGen.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DungeonGen\DungeonGen.csproj">
+      <Project>{f9d7c4f5-3467-4216-9e2b-8aaf3cf0271b}</Project>
+      <Name>DungeonGen</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
