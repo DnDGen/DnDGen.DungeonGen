@@ -1,5 +1,4 @@
-﻿using DungeonGen.Domain.IoC.Factories;
-using DungeonGen.Domain.Mappers;
+﻿using DungeonGen.Domain.Mappers;
 using Ninject.Modules;
 
 namespace DungeonGen.Domain.IoC.Modules
@@ -8,7 +7,8 @@ namespace DungeonGen.Domain.IoC.Modules
     {
         public override void Load()
         {
-            Bind<PercentileMapper>().ToMethod(c => PercentileMapperFactory.Create(c.Kernel)).InSingletonScope();
+            Bind<PercentileMapper>().To<PercentileXmlMapper>().WhenInjectedInto<PercentileMapperCachingProxy>();
+            Bind<PercentileMapper>().To<PercentileMapperCachingProxy>().InSingletonScope();
         }
     }
 }
