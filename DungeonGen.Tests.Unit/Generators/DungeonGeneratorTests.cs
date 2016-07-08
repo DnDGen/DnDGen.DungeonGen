@@ -294,7 +294,6 @@ namespace DungeonGen.Tests.Unit.Generators
             var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
             Assert.That(areas, Contains.Item(door));
             Assert.That(areas, Contains.Item(otherDoor));
-            Assert.That(areas.Count(), Is.EqualTo(2));
 
             Assert.That(door.Descriptions, Contains.Item("below"));
             Assert.That(door.Descriptions, Contains.Item("description"));
@@ -303,6 +302,85 @@ namespace DungeonGen.Tests.Unit.Generators
             Assert.That(otherDoor.Descriptions, Contains.Item("on the ceiling"));
             Assert.That(otherDoor.Descriptions, Contains.Item("other description"));
             Assert.That(otherDoor.Descriptions, Contains.Item("locked"));
+            Assert.That(otherDoor.Descriptions.Count(), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void DoorsToSideAlsoHaveHallContinuing()
+        {
+            var areaFromHall = new Area();
+            areaFromHall.Type = "area type";
+            areaFromHall.Width = 2;
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
+
+            var mockAreaGenerator = new Mock<AreaGenerator>();
+            mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
+            mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
+
+            var door = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "description" } };
+            var otherDoor = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "other description", "locked" } };
+
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { door }).Returns(new[] { otherDoor });
+            mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorLocations)).Returns("below").Returns("on the ceiling");
+
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            Assert.That(areas, Contains.Item(door));
+            Assert.That(areas, Contains.Item(otherDoor));
+            Assert.That(areas.Count(), Is.EqualTo(3));
+
+            Assert.That(door.Descriptions, Contains.Item("below"));
+            Assert.That(door.Descriptions, Contains.Item("description"));
+            Assert.That(door.Descriptions.Count(), Is.EqualTo(2));
+
+            Assert.That(otherDoor.Descriptions, Contains.Item("on the ceiling"));
+            Assert.That(otherDoor.Descriptions, Contains.Item("other description"));
+            Assert.That(otherDoor.Descriptions, Contains.Item("locked"));
+            Assert.That(otherDoor.Descriptions.Count(), Is.EqualTo(3));
+
+            var last = areas.Last();
+            Assert.That(last, Is.Not.EqualTo(door));
+            Assert.That(last, Is.Not.EqualTo(otherDoor));
+            Assert.That(last.Type, Is.EqualTo(AreaTypeConstants.Hall));
+            Assert.That(last.Width, Is.EqualTo(0));
+            Assert.That(last.Length, Is.EqualTo(30));
+            Assert.That(last.Contents.IsEmpty, Is.True);
+            Assert.That(last.Descriptions, Is.Empty);
+        }
+
+        [Test]
+        public void DoorStraightAheadPreventsHallContinuing()
+        {
+            var areaFromHall = new Area();
+            areaFromHall.Type = "area type";
+            areaFromHall.Width = 2;
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
+
+            var mockAreaGenerator = new Mock<AreaGenerator>();
+            mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
+            mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
+
+            var door = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "description" } };
+            var otherDoor = new Area
+            {
+                Type = AreaTypeConstants.Door,
+                Descriptions = new[] { "other description", "locked" }
+            };
+
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { door }).Returns(new[] { otherDoor });
+            mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorLocations)).Returns("below").Returns(DescriptionConstants.StraightAhead);
+
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            Assert.That(areas, Contains.Item(door));
+            Assert.That(areas, Contains.Item(otherDoor));
+            Assert.That(areas.Count(), Is.EqualTo(2));
+
+            Assert.That(door.Descriptions, Contains.Item("below"));
+            Assert.That(door.Descriptions, Contains.Item("description"));
+            Assert.That(door.Descriptions.Count(), Is.EqualTo(2));
+
+            Assert.That(otherDoor.Descriptions, Contains.Item("other description"));
+            Assert.That(otherDoor.Descriptions, Contains.Item("locked"));
+            Assert.That(otherDoor.Descriptions, Contains.Item(DescriptionConstants.StraightAhead));
             Assert.That(otherDoor.Descriptions.Count(), Is.EqualTo(3));
         }
 

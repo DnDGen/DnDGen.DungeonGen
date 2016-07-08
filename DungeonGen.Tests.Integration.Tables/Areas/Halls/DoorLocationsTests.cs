@@ -20,9 +20,9 @@ namespace DungeonGen.Tests.Integration.Tables.Areas.Halls
             AssertTableIsComplete();
         }
 
-        [TestCase(1, 30, "On the left")]
-        [TestCase(31, 60, "On the right")]
-        [TestCase(61, 100, "Straight ahead")]
+        [TestCase(1, 30, DescriptionConstants.OnTheLeft)]
+        [TestCase(31, 60, DescriptionConstants.OnTheRight)]
+        [TestCase(61, 100, DescriptionConstants.StraightAhead)]
         public override void Percentile(int lower, int upper, string content)
         {
             base.Percentile(lower, upper, content);

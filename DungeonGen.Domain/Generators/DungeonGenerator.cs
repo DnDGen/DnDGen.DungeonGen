@@ -69,6 +69,15 @@ namespace DungeonGen.Domain.Generators
                 area.Contents.Traps = GenerateTraps(area, partyLevel);
             }
 
+            if (doorsAreFromHall && areas.Any(a => a.Descriptions.Contains(DescriptionConstants.StraightAhead)) == false)
+            {
+                var continuingHall = new Area();
+                continuingHall.Length = 30;
+                continuingHall.Type = AreaTypeConstants.Hall;
+
+                areas = areas.Union(new[] { continuingHall });
+            }
+
             return areas;
         }
 

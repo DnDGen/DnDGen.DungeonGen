@@ -13,5 +13,8 @@
         public const string Stone = "Stone";
         public const string TrapDoor = "Trap door";
         public const string Wooden = "Wooden";
+        public const string OnTheLeft = "On the left";
+        public const string OnTheRight = "On the right";
+        public const string StraightAhead = "Straight ahead";
     }
 }
