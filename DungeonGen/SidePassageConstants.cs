@@ -12,5 +12,6 @@
         public const string YIntersection = "Y-Intersection";
         public const string CrossIntersection = "Cross intersection";
         public const string XIntersection = "X-Intersection";
+        public const string ParallelPassage = "Parallel passage";
     }
 }

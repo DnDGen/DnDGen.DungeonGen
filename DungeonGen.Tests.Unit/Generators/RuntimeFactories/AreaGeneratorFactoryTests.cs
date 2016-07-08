@@ -15,6 +15,7 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         private Mock<AreaGenerator> mockSidePassageGenerator;
         private Mock<AreaGenerator> mockStairsGenerator;
         private Mock<AreaGenerator> mockTurnGenerator;
+        private Mock<AreaGenerator> mockParallelPassageGenerator;
 
         [SetUp]
         public void Setup()
@@ -25,9 +26,10 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
             mockSidePassageGenerator = new Mock<AreaGenerator>();
             mockStairsGenerator = new Mock<AreaGenerator>();
             mockTurnGenerator = new Mock<AreaGenerator>();
+            mockParallelPassageGenerator = new Mock<AreaGenerator>();
 
             areaGeneratorFactory = new AreaGeneratorFactory(mockChamberGenerator.Object, mockDoorGenerator.Object, mockRoomGenerator.Object,
-                mockSidePassageGenerator.Object, mockStairsGenerator.Object, mockTurnGenerator.Object);
+                mockSidePassageGenerator.Object, mockStairsGenerator.Object, mockTurnGenerator.Object, mockParallelPassageGenerator.Object);
         }
 
         [Test]
@@ -78,6 +80,14 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
             Assert.That(generator, Is.EqualTo(mockTurnGenerator.Object));
         }
 
+        [Test]
+        public void BuildParallelPassageGenerator()
+        {
+            var generator = areaGeneratorFactory.Build(SidePassageConstants.ParallelPassage);
+            Assert.That(generator, Is.Not.Null);
+            Assert.That(generator, Is.EqualTo(mockParallelPassageGenerator.Object));
+        }
+
         [TestCase(AreaTypeConstants.Cave, false)]
         [TestCase(AreaTypeConstants.Chamber, true)]
         [TestCase(AreaTypeConstants.DeadEnd, false)]
@@ -89,6 +99,7 @@ namespace DungeonGen.Tests.Unit.Generators.RuntimeFactories
         [TestCase(AreaTypeConstants.Special, false)]
         [TestCase(AreaTypeConstants.Stairs, true)]
         [TestCase(AreaTypeConstants.Turn, true)]
+        [TestCase(SidePassageConstants.ParallelPassage, true)]
         [TestCase("area type", false)]
         public void AreaTypeHasSpecificGenerator(string areaType, bool hasSpecificGenerator)
         {

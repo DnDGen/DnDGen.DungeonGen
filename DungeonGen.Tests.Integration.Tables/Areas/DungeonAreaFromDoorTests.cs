@@ -20,7 +20,7 @@ namespace DungeonGen.Tests.Integration.Tables.Areas
             AssertTableIsComplete();
         }
 
-        [TestCase(1, 20, AreaTypeConstants.Hall, "Parallel passage", "", 30, 1)]
+        [TestCase(1, 20, SidePassageConstants.ParallelPassage, "", "", 30, 1)]
         [TestCase(21, 40, AreaTypeConstants.Hall, "Straight ahead", "", 30, 1)]
         [TestCase(41, 45, AreaTypeConstants.Hall, "45 degrees left", "", 30, 1)]
         [TestCase(46, 50, AreaTypeConstants.Hall, "45 degrees right", "", 30, 1)]

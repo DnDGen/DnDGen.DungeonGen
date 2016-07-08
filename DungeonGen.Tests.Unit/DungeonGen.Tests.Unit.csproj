@@ -78,6 +78,7 @@
     <Compile Include="Generators\AreaGenerators\ChamberGeneratorTests.cs" />
     <Compile Include="Generators\AreaGenerators\DoorGeneratorTests.cs" />
     <Compile Include="Generators\AreaGenerators\HallGeneratorTests.cs" />
+    <Compile Include="Generators\AreaGenerators\ParallelPassageGeneratorTests.cs" />
     <Compile Include="Generators\AreaGenerators\RoomExitGeneratorTests.cs" />
     <Compile Include="Generators\AreaGenerators\RoomGeneratorTests.cs" />
     <Compile Include="Generators\AreaGenerators\SidePassageGeneratorTests.cs" />

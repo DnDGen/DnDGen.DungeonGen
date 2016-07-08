@@ -3,7 +3,7 @@
 <percentile>
   <object>
         <lower>1</lower>
-        <content>Hall(Parallel passage){30x1}</content>
+        <content>Parallel passage{30x1}</content>
         <upper>20</upper>
     </object>
     <object>

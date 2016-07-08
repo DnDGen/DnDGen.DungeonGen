@@ -73,6 +73,7 @@
     <Compile Include="Generators\AreaGenerators\ChamberGenerator.cs" />
     <Compile Include="Generators\AreaGenerators\DoorGenerator.cs" />
     <Compile Include="Generators\AreaGenerators\HallGenerator.cs" />
+    <Compile Include="Generators\AreaGenerators\ParallelPassageGenerator.cs" />
     <Compile Include="Generators\AreaGenerators\RoomGenerator.cs" />
     <Compile Include="Generators\AreaGenerators\SidePassageGenerator.cs" />
     <Compile Include="Generators\AreaGenerators\SpecialAreaGenerator.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="IoC\Providers\AreaGeneratorFactoryProvider.cs" />
     <Compile Include="IoC\Providers\ChamberExitGeneratorProvider.cs" />
     <Compile Include="IoC\Providers\ChamberGeneratorProvider.cs" />
+    <Compile Include="IoC\Providers\ParallelPassageGeneratorProvider.cs" />
     <Compile Include="IoC\Providers\RoomExitGeneratorProvider.cs" />
     <Compile Include="IoC\Providers\RoomGeneratorProvider.cs" />
     <Compile Include="IoC\Providers\SidePassageGeneratorProvider.cs" />

@@ -6,7 +6,7 @@ namespace DungeonGen.Domain.Generators.RuntimeFactories
     {
         private readonly Dictionary<string, AreaGenerator> areaGenerators;
 
-        public AreaGeneratorFactory(AreaGenerator chamberGenerator, AreaGenerator doorGenerator, AreaGenerator roomGenerator, AreaGenerator sidePassageGenerator, AreaGenerator stairsGenerator, AreaGenerator turnGenerator)
+        public AreaGeneratorFactory(AreaGenerator chamberGenerator, AreaGenerator doorGenerator, AreaGenerator roomGenerator, AreaGenerator sidePassageGenerator, AreaGenerator stairsGenerator, AreaGenerator turnGenerator, AreaGenerator parallelPassageGenerator)
         {
             areaGenerators = new Dictionary<string, AreaGenerator>();
             areaGenerators[AreaTypeConstants.Chamber] = chamberGenerator;
@@ -15,6 +15,7 @@ namespace DungeonGen.Domain.Generators.RuntimeFactories
             areaGenerators[AreaTypeConstants.SidePassage] = sidePassageGenerator;
             areaGenerators[AreaTypeConstants.Stairs] = stairsGenerator;
             areaGenerators[AreaTypeConstants.Turn] = turnGenerator;
+            areaGenerators[SidePassageConstants.ParallelPassage] = parallelPassageGenerator;
         }
 
         public AreaGenerator Build(string areaType)

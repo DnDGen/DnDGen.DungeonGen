@@ -26,6 +26,7 @@ namespace DungeonGen.Domain.IoC.Modules
             Bind<AreaGenerator>().ToProvider<SpecialAreaGeneratorProvider>().Named(AreaTypeConstants.Special);
             Bind<AreaGenerator>().ToProvider<StairsGeneratorProvider>().Named(AreaTypeConstants.Stairs);
             Bind<AreaGenerator>().To<TurnGenerator>().Named(AreaTypeConstants.Turn);
+            Bind<AreaGenerator>().ToProvider<ParallelPassageGeneratorProvider>().Named(SidePassageConstants.ParallelPassage);
 
             Bind<ExitGenerator>().ToProvider<ChamberExitGeneratorProvider>().Named(AreaTypeConstants.Chamber);
             Bind<ExitGenerator>().ToProvider<RoomExitGeneratorProvider>().Named(AreaTypeConstants.Room);

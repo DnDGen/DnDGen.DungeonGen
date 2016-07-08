@@ -15,8 +15,9 @@ namespace DungeonGen.Domain.IoC.Providers
             var sidePassageGenerator = context.Kernel.Get<AreaGenerator>(AreaTypeConstants.SidePassage);
             var stairsGenerator = context.Kernel.Get<AreaGenerator>(AreaTypeConstants.Stairs);
             var turnGenerator = context.Kernel.Get<AreaGenerator>(AreaTypeConstants.Turn);
+            var parallelPassageGenerator = context.Kernel.Get<AreaGenerator>(SidePassageConstants.ParallelPassage);
 
-            return new AreaGeneratorFactory(chamberGenerator, doorGenerator, roomGenerator, sidePassageGenerator, stairsGenerator, turnGenerator);
+            return new AreaGeneratorFactory(chamberGenerator, doorGenerator, roomGenerator, sidePassageGenerator, stairsGenerator, turnGenerator, parallelPassageGenerator);
         }
     }
 }

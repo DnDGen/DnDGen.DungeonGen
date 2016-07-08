@@ -15,6 +15,7 @@ namespace DungeonGen.Tests.Unit.Common
         [TestCase(SidePassageConstants.YIntersection, "Y-Intersection")]
         [TestCase(SidePassageConstants.CrossIntersection, "Cross intersection")]
         [TestCase(SidePassageConstants.XIntersection, "X-Intersection")]
+        [TestCase(SidePassageConstants.ParallelPassage, "Parallel passage")]
         public void Constant(string constant, string value)
         {
             Assert.That(constant, Is.EqualTo(value));

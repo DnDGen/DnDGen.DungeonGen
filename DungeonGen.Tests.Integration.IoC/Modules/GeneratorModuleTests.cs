@@ -105,5 +105,11 @@ namespace DungeonGen.Tests.Integration.IoC.Modules
         {
             AssertInstanceOf<AreaGenerator, CaveGenerator>(AreaTypeConstants.Cave);
         }
+
+        [Test]
+        public void ParallelPassageGeneratorIsInjected()
+        {
+            AssertInstanceOf<AreaGenerator, ParallelPassageGenerator>(SidePassageConstants.ParallelPassage);
+        }
     }
 }
