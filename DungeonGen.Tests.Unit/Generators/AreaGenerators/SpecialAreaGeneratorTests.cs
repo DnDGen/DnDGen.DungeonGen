@@ -35,7 +35,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var size = new Area { Length = 90210 };
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
-            var area = specialAreaGenerator.Generate(9266, 600).Single();
+            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo("dodecahedron"));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -50,7 +50,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var size = new Area { Length = 90210 };
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(biggerSize).Returns(size);
 
-            var area = specialAreaGenerator.Generate(9266, 600).Single();
+            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo("dodecahedron"));
             Assert.That(area.Length, Is.EqualTo(90252));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -65,9 +65,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
             var pool = new Pool();
-            mockPoolGenerator.Setup(g => g.Generate(600)).Returns(pool);
+            mockPoolGenerator.Setup(g => g.Generate(600, "temperature")).Returns(pool);
 
-            var area = specialAreaGenerator.Generate(9266, 600).Single();
+            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo(DescriptionConstants.Circular));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -83,9 +83,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
             var pool = new Pool();
-            mockPoolGenerator.Setup(g => g.Generate(9266)).Returns(pool);
+            mockPoolGenerator.Setup(g => g.Generate(9266, "temperature")).Returns(pool);
 
-            var area = specialAreaGenerator.Generate(9266, 600).Single();
+            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo("dodecahedron"));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -101,9 +101,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
             Pool noPool = null;
-            mockPoolGenerator.Setup(g => g.Generate(9266)).Returns(noPool);
+            mockPoolGenerator.Setup(g => g.Generate(9266, "temperature")).Returns(noPool);
 
-            var area = specialAreaGenerator.Generate(9266, 600).Single();
+            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo(DescriptionConstants.Circular));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -117,9 +117,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var cave = new Area();
             var otherCave = new Area();
-            mockCaveGenerator.Setup(g => g.Generate(9266, 600)).Returns(new[] { cave, otherCave });
+            mockCaveGenerator.Setup(g => g.Generate(9266, 600, "temperature")).Returns(new[] { cave, otherCave });
 
-            var areas = specialAreaGenerator.Generate(9266, 600);
+            var areas = specialAreaGenerator.Generate(9266, 600, "temperature");
             Assert.That(areas.Count(), Is.EqualTo(2));
             Assert.That(areas.First(), Is.EqualTo(cave));
             Assert.That(areas.Last(), Is.EqualTo(otherCave));

@@ -19,7 +19,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.chamberGenerator = chamberGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
         {
             var stairs = areaPercentileSelector.SelectFrom(TableNameConstants.Stairs);
             var endLevel = dungeonLevel + stairs.Length;
@@ -47,7 +47,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             if (stairs.Contents.Miscellaneous.Contains(AreaTypeConstants.Chamber))
             {
                 stairs.Contents.Miscellaneous = stairs.Contents.Miscellaneous.Except(new[] { AreaTypeConstants.Chamber });
-                var chambers = chamberGenerator.Generate(dungeonLevel, partyLevel);
+                var chambers = chamberGenerator.Generate(dungeonLevel, partyLevel, temperature);
                 allStairAreas.AddRange(chambers);
             }
             else if (dice.Roll().Percentile() <= stairs.Width)

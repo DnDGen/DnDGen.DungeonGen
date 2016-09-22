@@ -29,7 +29,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var selectedHall = new Area();
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Halls)).Returns(selectedHall);
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(selectedHall));
         }
 
@@ -45,7 +45,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var tableName = string.Format(TableNameConstants.SpecialAREA, AreaTypeConstants.Hall);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(tableName)).Returns(specialHall);
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
         }
 
@@ -65,7 +65,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.GalleryStairs)).Returns("escalator");
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Gallery));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("escalator"));
@@ -89,7 +89,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.GalleryStairs)).Returns(ContentsConstants.GalleryStairs_Beginning);
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.AdditionalGalleryStairs)).Returns("escalator");
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Gallery));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.GalleryStairs_Beginning));
@@ -113,7 +113,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.StreamCrossing)).Returns("ferry");
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Stream));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("ferry"));
@@ -136,7 +136,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.StreamCrossing)).Returns(string.Empty);
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Stream));
             Assert.That(hall.Contents.Miscellaneous.Count(), Is.EqualTo(1));
@@ -158,7 +158,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.RiverCrossing)).Returns("ferry");
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.River));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("ferry"));
@@ -181,7 +181,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ChasmCrossing)).Returns("zip line");
 
-            var hall = hallGenerator.Generate(9266, 90210).Single();
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Chasm));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("zip line"));

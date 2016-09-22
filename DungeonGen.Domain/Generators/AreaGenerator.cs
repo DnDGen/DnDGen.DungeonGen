@@ -4,6 +4,6 @@ namespace DungeonGen.Domain.Generators
 {
     internal interface AreaGenerator
     {
-        IEnumerable<Area> Generate(int dungeonLevel, int partyLevel);
+        IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature);
     }
 }

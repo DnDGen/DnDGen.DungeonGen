@@ -11,7 +11,7 @@ namespace DungeonGen.Domain.IoC.Modules
     {
         public override void Load()
         {
-            Bind<IDungeonGenerator>().To<DungeonGenerator>();
+            Bind<IDungeonGenerator>().ToProvider<DungeonGeneratorProvider>();
             Bind<IAreaGeneratorFactory>().ToProvider<AreaGeneratorFactoryProvider>();
             Bind<ITrapGenerator>().To<TrapGenerator>();
             Bind<ContentsGenerator>().To<DomainContentsGenerator>();

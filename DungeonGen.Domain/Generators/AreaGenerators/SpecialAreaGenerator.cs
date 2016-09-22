@@ -20,12 +20,12 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.caveGenerator = caveGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
         {
             var shape = percentileSelector.SelectFrom(TableNameConstants.SpecialAreaShapes);
 
             if (shape == AreaTypeConstants.Cave)
-                return caveGenerator.Generate(dungeonLevel, partyLevel);
+                return caveGenerator.Generate(dungeonLevel, partyLevel, temperature);
 
             var area = new Area();
             area.Width = 1;
@@ -42,7 +42,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
             if (area.Descriptions.Contains(DescriptionConstants.Circular))
             {
-                area.Contents.Pool = poolGenerator.Generate(partyLevel);
+                area.Contents.Pool = poolGenerator.Generate(partyLevel, temperature);
             }
 
             return new[] { area };

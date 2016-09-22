@@ -19,6 +19,7 @@ namespace DungeonGen.Tests.Unit.Generators
         private Mock<IEncounterGenerator> mockEncounterGenerator;
         private Mock<ITrapGenerator> mockTrapGenerator;
         private Mock<IPercentileSelector> mockPercentileSelector;
+        private Mock<AreaGenerator> mockHallGenerator;
 
         [SetUp]
         public void Setup()
@@ -28,7 +29,8 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaGeneratorFactory = new Mock<IAreaGeneratorFactory>();
             mockTrapGenerator = new Mock<ITrapGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
-            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockEncounterGenerator.Object, mockTrapGenerator.Object, mockPercentileSelector.Object);
+            mockHallGenerator = new Mock<AreaGenerator>();
+            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockEncounterGenerator.Object, mockTrapGenerator.Object, mockPercentileSelector.Object, mockHallGenerator.Object);
         }
 
         [Test]
@@ -37,7 +39,7 @@ namespace DungeonGen.Tests.Unit.Generators
             var areaFromHall = new Area();
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(areaFromHall));
             Assert.That(areas.Count(), Is.EqualTo(1));
         }
@@ -57,7 +59,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
                 .Returns(areaReroll).Returns(areaFromHall);
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             var firstArea = areas.First();
             var lastArea = areas.Last();
 
@@ -94,7 +96,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
                 .Returns(areaReroll).Returns(otherAreaReroll).Returns(areaFromHall);
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210).ToList();
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature").ToList();
             Assert.That(areas.Count, Is.EqualTo(3));
 
             Assert.That(areas[0].Type, Is.EqualTo(AreaTypeConstants.General));
@@ -129,9 +131,9 @@ namespace DungeonGen.Tests.Unit.Generators
             var specificArea = new Area();
             var otherSpecificArea = new Area();
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
@@ -154,11 +156,11 @@ namespace DungeonGen.Tests.Unit.Generators
             var thirdSpecificArea = new Area();
             var fourthSpecificArea = new Area();
 
-            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210))
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature"))
                 .Returns(new[] { specificArea, otherSpecificArea })
                 .Returns(new[] { thirdSpecificArea, fourthSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas, Contains.Item(thirdSpecificArea));
@@ -186,9 +188,9 @@ namespace DungeonGen.Tests.Unit.Generators
 
             var specificArea = new Area();
             var otherSpecificArea = new Area();
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
@@ -219,10 +221,10 @@ namespace DungeonGen.Tests.Unit.Generators
             specificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter };
             otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter };
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
-            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210)).Returns(() => new Encounter());
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
+            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210, "temperature", EnvironmentConstants.TimesOfDay.Night)).Returns(() => new Encounter());
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
@@ -258,10 +260,10 @@ namespace DungeonGen.Tests.Unit.Generators
             specificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Trap };
             otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Trap };
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
             mockTrapGenerator.Setup(g => g.Generate(90210)).Returns(() => new Trap());
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
@@ -288,10 +290,10 @@ namespace DungeonGen.Tests.Unit.Generators
             var door = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "description" } };
             var otherDoor = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "other description", "locked" } };
 
-            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { door }).Returns(new[] { otherDoor });
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { door }).Returns(new[] { otherDoor });
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorLocations)).Returns("below").Returns("on the ceiling");
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(door));
             Assert.That(areas, Contains.Item(otherDoor));
 
@@ -320,10 +322,10 @@ namespace DungeonGen.Tests.Unit.Generators
             var door = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "description" } };
             var otherDoor = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "other description", "locked" } };
 
-            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { door }).Returns(new[] { otherDoor });
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { door }).Returns(new[] { otherDoor });
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorLocations)).Returns("below").Returns("on the ceiling");
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(door));
             Assert.That(areas, Contains.Item(otherDoor));
             Assert.That(areas.Count(), Is.EqualTo(3));
@@ -366,10 +368,10 @@ namespace DungeonGen.Tests.Unit.Generators
                 Descriptions = new[] { "other description", "locked" }
             };
 
-            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { door }).Returns(new[] { otherDoor });
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { door }).Returns(new[] { otherDoor });
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorLocations)).Returns("below").Returns(DescriptionConstants.StraightAhead);
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(door));
             Assert.That(areas, Contains.Item(otherDoor));
             Assert.That(areas.Count(), Is.EqualTo(2));
@@ -394,7 +396,7 @@ namespace DungeonGen.Tests.Unit.Generators
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall)).Returns(areaFromHall);
 
-            var area = dungeonGenerator.GenerateFromHall(9266, 90210).Single();
+            var area = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature").Single();
             Assert.That(area, Is.EqualTo(areaFromHall));
             Assert.That(area.Type, Is.EqualTo(AreaTypeConstants.Hall));
             Assert.That(area.Length, Is.EqualTo(600));
@@ -416,7 +418,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
                 .Returns(generalArea).Returns(areaFromHall);
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(areaFromHall));
             Assert.That(areas.Count(), Is.EqualTo(2));
@@ -443,11 +445,11 @@ namespace DungeonGen.Tests.Unit.Generators
             var otherSpecificArea = new Area { Type = AreaTypeConstants.Hall };
             var thirdSpecificArea = new Area { Type = AreaTypeConstants.Hall, Width = 600 };
 
-            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210))
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature"))
                 .Returns(new[] { specificArea, otherSpecificArea })
                 .Returns(new[] { thirdSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas, Contains.Item(thirdSpecificArea));
@@ -475,9 +477,9 @@ namespace DungeonGen.Tests.Unit.Generators
             var otherSpecificArea = new Area { Type = AreaTypeConstants.Door };
             otherSpecificArea.Descriptions = new[] { "strong", "wood" };
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromHall(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
@@ -495,7 +497,7 @@ namespace DungeonGen.Tests.Unit.Generators
             var areaFromDoor = new Area();
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromDoor);
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(areaFromDoor));
             Assert.That(areas.Count(), Is.EqualTo(1));
         }
@@ -515,7 +517,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
                 .Returns(areaReroll).Returns(areaFromDoor);
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             var firstArea = areas.First();
             var lastArea = areas.Last();
 
@@ -552,7 +554,7 @@ namespace DungeonGen.Tests.Unit.Generators
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
                 .Returns(areaReroll).Returns(otherAreaReroll).Returns(areaFromDoor);
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210).ToList();
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature").ToList();
             Assert.That(areas.Count, Is.EqualTo(3));
 
             Assert.That(areas[0].Type, Is.EqualTo(AreaTypeConstants.General));
@@ -586,9 +588,9 @@ namespace DungeonGen.Tests.Unit.Generators
 
             var specificArea = new Area();
             var otherSpecificArea = new Area();
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
@@ -611,11 +613,11 @@ namespace DungeonGen.Tests.Unit.Generators
             var thirdSpecificArea = new Area();
             var fourthSpecificArea = new Area();
 
-            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210))
+            mockAreaGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature"))
                 .Returns(new[] { specificArea, otherSpecificArea })
                 .Returns(new[] { thirdSpecificArea, fourthSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas, Contains.Item(thirdSpecificArea));
@@ -643,9 +645,9 @@ namespace DungeonGen.Tests.Unit.Generators
 
             var specificArea = new Area();
             var otherSpecificArea = new Area();
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
@@ -676,10 +678,10 @@ namespace DungeonGen.Tests.Unit.Generators
             specificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter };
             otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter };
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
-            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210)).Returns(() => new Encounter());
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
+            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210, "temperature", EnvironmentConstants.TimesOfDay.Night)).Returns(() => new Encounter());
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
@@ -715,10 +717,10 @@ namespace DungeonGen.Tests.Unit.Generators
             specificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Trap };
             otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Trap };
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
             mockTrapGenerator.Setup(g => g.Generate(90210)).Returns(() => new Trap());
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
@@ -747,9 +749,9 @@ namespace DungeonGen.Tests.Unit.Generators
             var otherSpecificArea = new Area { Type = AreaTypeConstants.Door };
             otherSpecificArea.Descriptions = new[] { "strong", "wood" };
 
-            mockAreaGenerator.Setup(g => g.Generate(9266, 90210)).Returns(new[] { specificArea, otherSpecificArea });
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
 
-            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210);
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(specificArea));
             Assert.That(areas, Contains.Item(otherSpecificArea));
             Assert.That(areas.Count(), Is.EqualTo(2));
@@ -768,14 +770,22 @@ namespace DungeonGen.Tests.Unit.Generators
             areaFromDoor.Type = AreaTypeConstants.Hall;
             areaFromDoor.Width = 42;
             areaFromDoor.Length = 600;
+            areaFromDoor.Descriptions = new[] { "a u-turn of chaos" };
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor)).Returns(areaFromDoor);
 
-            var area = dungeonGenerator.GenerateFromDoor(9266, 90210).Single();
-            Assert.That(area, Is.EqualTo(areaFromDoor));
-            Assert.That(area.Type, Is.EqualTo(AreaTypeConstants.Hall));
-            Assert.That(area.Length, Is.EqualTo(600));
-            Assert.That(area.Width, Is.EqualTo(42));
+            var newHall = new Area();
+            newHall.Length = 1337;
+            newHall.Width = 1234;
+            newHall.Descriptions = new[] { "some description or whatnot" };
+            mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { newHall });
+
+            var area = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature").Single();
+            Assert.That(area, Is.EqualTo(newHall));
+            Assert.That(area.Descriptions, Contains.Item("some description or whatnot"));
+            Assert.That(area.Descriptions, Contains.Item("a u-turn of chaos"));
+            Assert.That(area.Length, Is.EqualTo(1337));
+            Assert.That(area.Width, Is.EqualTo(1234));
         }
     }
 }

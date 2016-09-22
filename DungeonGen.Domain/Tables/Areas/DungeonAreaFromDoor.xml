@@ -8,17 +8,17 @@
     </object>
     <object>
         <lower>21</lower>
-        <content>Hall(Straight ahead){30x1}</content>
+        <content>Hall(Straight ahead){30x0}</content>
         <upper>40</upper>
     </object>
     <object>
         <lower>41</lower>
-        <content>Hall(45 degrees left){30x1}</content>
+        <content>Hall(45 degrees left){30x0}</content>
         <upper>45</upper>
     </object>
     <object>
         <lower>46</lower>
-        <content>Hall(45 degrees right){30x1}</content>
+        <content>Hall(45 degrees right){30x0}</content>
         <upper>50</upper>
     </object>
     <object>

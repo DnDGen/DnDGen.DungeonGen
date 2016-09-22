@@ -23,7 +23,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.encounterGenerator = encounterGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
         {
             var selectedCave = areaPercentileSelector.SelectFrom(TableNameConstants.Caves);
 
@@ -48,7 +48,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             {
                 if (cave.Contents.Miscellaneous.Contains(ContentsTypeConstants.Pool))
                 {
-                    cave.Contents.Pool = poolGenerator.Generate(partyLevel);
+                    cave.Contents.Pool = poolGenerator.Generate(partyLevel, temperature);
                 }
 
                 if (cave.Contents.Miscellaneous.Contains(ContentsTypeConstants.Lake))
@@ -63,7 +63,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
                         if (section == ContentsTypeConstants.Encounter)
                         {
-                            var encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel);
+                            var encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel, temperature, EnvironmentConstants.TimesOfDay.Night);
                             cave.Contents.Encounters = cave.Contents.Encounters.Union(new[] { encounter });
                         }
                     }

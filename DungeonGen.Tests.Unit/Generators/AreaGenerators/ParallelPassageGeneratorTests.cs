@@ -24,9 +24,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             var leftHall = new Area();
             var rightHall = new Area();
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { leftHall }).Returns(new[] { rightHall });
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { leftHall }).Returns(new[] { rightHall });
 
-            var passages = parallelPassageGenerator.Generate(9266, 90210);
+            var passages = parallelPassageGenerator.Generate(9266, 90210, "temperature");
             Assert.That(passages.Count(), Is.EqualTo(2));
 
             var first = passages.First();
@@ -47,9 +47,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var rightHall = new Area();
             rightHall.Width = 42;
 
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { leftHall }).Returns(new[] { rightHall });
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { leftHall }).Returns(new[] { rightHall });
 
-            var passages = parallelPassageGenerator.Generate(9266, 90210);
+            var passages = parallelPassageGenerator.Generate(9266, 90210, "temperature");
             Assert.That(passages.Count(), Is.EqualTo(2));
 
             var first = passages.First();
@@ -70,9 +70,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var rightHall = new Area();
             rightHall.Width = 600;
 
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210)).Returns(new[] { leftHall }).Returns(new[] { rightHall });
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { leftHall }).Returns(new[] { rightHall });
 
-            var passages = parallelPassageGenerator.Generate(9266, 90210);
+            var passages = parallelPassageGenerator.Generate(9266, 90210, "temperature");
             Assert.That(passages.Count(), Is.EqualTo(2));
 
             var first = passages.First();

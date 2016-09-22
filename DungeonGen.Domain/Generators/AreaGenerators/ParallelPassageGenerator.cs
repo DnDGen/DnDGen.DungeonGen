@@ -13,12 +13,12 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.hallGenerator = hallGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
         {
-            var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
+            var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
 
-            var rightPassage = hallGenerator.Generate(dungeonLevel, partyLevel).Single();
+            var rightPassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             rightPassage.Descriptions = rightPassage.Descriptions.Union(new[] { SidePassageConstants.Right90Degrees });
 
             var maxWidth = Math.Max(leftPassage.Width, rightPassage.Width);

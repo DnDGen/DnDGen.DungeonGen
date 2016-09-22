@@ -29,7 +29,8 @@ namespace DungeonGen.Tests.Integration.Tables.Treasures
         [TestCase(51, 55, "Under a heap of trash/dung")]
         [TestCase(56, 65, "Under a loose stone in the floor")]
         [TestCase(66, 75, "Behind a loose stone in the wall")]
-        [TestCase(76, 100, "In a secret room nearby")]
+        [TestCase(76, 85, "In a secret room nearby")]
+        [TestCase(86, 100, "")]
         public override void Percentile(int lower, int upper, string content)
         {
             base.Percentile(lower, upper, content);

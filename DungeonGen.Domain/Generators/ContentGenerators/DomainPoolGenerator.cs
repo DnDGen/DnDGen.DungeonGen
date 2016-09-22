@@ -19,7 +19,7 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
             this.treasureGenerator = treasureGenerator;
         }
 
-        public Pool Generate(int partyLevel)
+        public Pool Generate(int partyLevel, string temperature)
         {
             var selectedPool = percentileSelector.SelectFrom(TableNameConstants.Pools);
 
@@ -33,7 +33,7 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
             {
                 if (section == ContentsTypeConstants.Encounter)
                 {
-                    pool.Encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel);
+                    pool.Encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel, temperature, EnvironmentConstants.TimesOfDay.Night);
                 }
 
                 if (section == ContentsTypeConstants.Treasure)

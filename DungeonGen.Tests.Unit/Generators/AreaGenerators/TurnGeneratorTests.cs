@@ -24,7 +24,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateTurn()
         {
-            var turns = turnGenerator.Generate(9266, 90210);
+            var turns = turnGenerator.Generate(9266, 90210, "temperature");
             Assert.That(turns, Is.Not.Null);
             Assert.That(turns, Is.Not.Empty);
             Assert.That(turns.Count(), Is.EqualTo(1));
@@ -35,7 +35,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Turns)).Returns("loop the loop");
 
-            var turn = turnGenerator.Generate(9266, 90210).Single();
+            var turn = turnGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(turn.Contents.IsEmpty, Is.True);
             Assert.That(turn.Descriptions.Single(), Is.EqualTo("loop the loop"));
             Assert.That(turn.Length, Is.EqualTo(30));

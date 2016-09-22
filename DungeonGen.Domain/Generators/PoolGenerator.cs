@@ -2,6 +2,6 @@
 {
     internal interface PoolGenerator
     {
-        Pool Generate(int partyLevel);
+        Pool Generate(int partyLevel, string temperature);
     }
 }

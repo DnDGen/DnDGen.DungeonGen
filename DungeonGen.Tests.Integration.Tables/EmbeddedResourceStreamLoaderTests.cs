@@ -20,13 +20,13 @@ namespace DungeonGen.Tests.Integration.Tables
             var table = Load("DungeonAreaFromHall.xml");
 
             for (var i = 100; i > 95; i--)
-                Assert.That(table[i], Is.EqualTo("General[Encounter]{0x1}"));
+                Assert.That(table[i], Is.EqualTo("General[Encounter]"));
 
             for (var i = 95; i > 90; i--)
-                Assert.That(table[i], Is.EqualTo("General[Trap]{0x1}"));
+                Assert.That(table[i], Is.EqualTo("General[Trap]"));
 
             for (var i = 90; i > 85; i--)
-                Assert.That(table[i], Is.EqualTo("Dead end(Check for secret doors along already mapped walls){0x1}"));
+                Assert.That(table[i], Is.EqualTo("Dead end(Check for secret doors along already mapped walls)"));
 
             for (var i = 85; i > 80; i--)
                 Assert.That(table[i], Is.EqualTo("Stairs{0x1}"));
@@ -44,7 +44,7 @@ namespace DungeonGen.Tests.Integration.Tables
                 Assert.That(table[i], Is.EqualTo("Door{0x1d3}"));
 
             for (var i = 10; i > 0; i--)
-                Assert.That(table[i], Is.EqualTo("Hall{30x1}"));
+                Assert.That(table[i], Is.EqualTo("Hall{30x0}"));
         }
 
         private Dictionary<int, string> Load(string filename)

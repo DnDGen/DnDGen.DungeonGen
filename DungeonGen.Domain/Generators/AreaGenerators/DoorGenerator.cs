@@ -14,7 +14,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.areaPercentileSelector = areaPercentileSelector;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
         {
             var door = areaPercentileSelector.SelectFrom(TableNameConstants.DoorTypes);
 

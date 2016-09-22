@@ -49,6 +49,11 @@
     <object>
         <lower>76</lower>
         <content>In a secret room nearby</content>
-        <upper>100</upper>
+        <upper>85</upper>
     </object>
+  <object>
+    <lower>86</lower>
+    <content></content>
+    <upper>100</upper>
+  </object>
 </percentile>

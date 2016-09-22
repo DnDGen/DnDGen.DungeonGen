@@ -20,14 +20,14 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.contentsGenerator = contentsGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel)
+        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
         {
             var chamber = areaPercentileSelector.SelectFrom(TableNameConstants.Chambers);
             var chambers = new List<Area>();
 
             if (chamber.Type == AreaTypeConstants.Special)
             {
-                var specialChambers = specialAreaGenerator.Generate(dungeonLevel, partyLevel);
+                var specialChambers = specialAreaGenerator.Generate(dungeonLevel, partyLevel, temperature);
                 chambers.AddRange(specialChambers);
             }
             else
@@ -40,7 +40,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
                 if (string.IsNullOrEmpty(chambers[i].Type))
                     chambers[i].Type = AreaTypeConstants.Chamber;
 
-                var exits = exitGenerator.Generate(dungeonLevel, partyLevel, chambers[i].Length, chambers[i].Width);
+                var exits = exitGenerator.Generate(dungeonLevel, partyLevel, chambers[i].Length, chambers[i].Width, temperature);
 
                 if (i + 1 == chambers.Count)
                     chambers.AddRange(exits);

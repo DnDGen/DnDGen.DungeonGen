@@ -52,21 +52,24 @@ namespace DungeonGen.Tests.Integration.Stress
             Stopwatch.Reset();
         }
 
-        public abstract void Stress(string stressSubject);
-
-        protected void Stress()
+        protected void Stress(Action stressedAction)
         {
-            Stress(MakeAssertions);
-        }
-
-        protected abstract void MakeAssertions();
-
-        protected void Stress(Action makeAssertions)
-        {
-            do makeAssertions();
+            do stressedAction();
             while (TestShouldKeepRunning());
 
-            Console.WriteLine($"Stress test complete after {Stopwatch.Elapsed} and {iterations} iterations");
+            var message = BuildMessage("Stress test complete");
+            Console.WriteLine(message);
+        }
+
+        private string BuildMessage(string baseMessage, bool includeIterations = true)
+        {
+            var message = $"{baseMessage} after {Stopwatch.Elapsed}";
+
+            if (!includeIterations)
+                return message;
+
+            var iterationsPerSecond = Math.Round(iterations / Stopwatch.Elapsed.TotalSeconds, 2);
+            return $"{message} and {iterations} iterations, or {iterationsPerSecond} iterations/second";
         }
 
         private bool TestShouldKeepRunning()
@@ -83,7 +86,29 @@ namespace DungeonGen.Tests.Integration.Stress
             while (isValid(generatedObject) == false && Stopwatch.Elapsed.TotalSeconds < timeLimitInSeconds + 10);
 
             if (isValid(generatedObject) == false)
-                Assert.Fail($"Failed to generate after {Stopwatch.Elapsed}");
+            {
+                var message = BuildMessage("Failed to generate", false);
+                Assert.Fail(message);
+            }
+
+            return generatedObject;
+        }
+
+        protected T GenerateOrFail<T>(Func<T> generate, Func<T, bool> isValid)
+        {
+            T generatedObject;
+
+            do generatedObject = generate();
+            while (TestShouldKeepRunning() && isValid(generatedObject) == false);
+
+            var message = BuildMessage("Generation complete");
+            Console.WriteLine(message);
+
+            if (TestShouldKeepRunning() == false && isValid(generatedObject) == false)
+            {
+                message = BuildMessage("Failed to generate");
+                Assert.Fail(message);
+            }
 
             return generatedObject;
         }
