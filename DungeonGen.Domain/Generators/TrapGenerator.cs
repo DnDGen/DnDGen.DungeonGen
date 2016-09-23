@@ -19,10 +19,11 @@ namespace DungeonGen.Domain.Generators
             var selectedTrap = SelectTrap(partyLevel);
 
             var trap = new Trap();
-            trap.Description = selectedTrap.Type;
+            trap.Name = selectedTrap.Type;
+            trap.Descriptions = selectedTrap.Descriptions;
             trap.SearchDC = selectedTrap.Length;
             trap.DisableDeviceDC = selectedTrap.Width;
-            trap.ChallengeRating = Convert.ToInt32(selectedTrap.Descriptions.Single());
+            trap.ChallengeRating = Convert.ToInt32(selectedTrap.Contents.Miscellaneous.Single());
 
             return trap;
         }

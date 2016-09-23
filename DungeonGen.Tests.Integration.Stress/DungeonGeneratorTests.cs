@@ -82,9 +82,15 @@ namespace DungeonGen.Tests.Integration.Stress
             foreach (var trap in area.Contents.Traps)
             {
                 Assert.That(trap.ChallengeRating, Is.Positive);
-                Assert.That(trap.Description, Is.Not.Empty);
+                Assert.That(trap.Descriptions, Is.Not.Empty);
                 Assert.That(trap.DisableDeviceDC, Is.Positive);
                 Assert.That(trap.SearchDC, Is.Positive);
+                Assert.That(trap.Name, Is.Not.Empty);
+                Assert.That(trap.Descriptions, Is.Not.Empty);
+                Assert.That(trap.Descriptions, Contains.Item("Mechanical").Or.Contains("Magic device").Or.Contains("Spell"));
+                Assert.That(trap.Descriptions.Any(t => t.Contains("trigger")), Is.True, $"{trap.Name} lacks trigger");
+                Assert.That(trap.Descriptions.Any(t => t.Contains("reset")), Is.True, $"{trap.Name} lacks reset");
+                Assert.That(trap.Descriptions.Count, Is.AtLeast(4));
             }
 
             foreach (var treasure in area.Contents.Treasures)

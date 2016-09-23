@@ -17,8 +17,10 @@ namespace DungeonGen.Tests.Unit.Common
         public void TrapIsInitialized()
         {
             Assert.That(trap.ChallengeRating, Is.EqualTo(0));
-            Assert.That(trap.Description, Is.Empty);
+            Assert.That(trap.Descriptions, Is.Empty);
             Assert.That(trap.SearchDC, Is.EqualTo(0));
+            Assert.That(trap.DisableDeviceDC, Is.EqualTo(0));
+            Assert.That(trap.Name, Is.Empty);
         }
     }
 }

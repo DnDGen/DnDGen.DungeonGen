@@ -40,13 +40,15 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             selectedLowLevelTrap.Type = "trap of trappiness";
             selectedLowLevelTrap.Length = 42;
             selectedLowLevelTrap.Width = 600;
-            selectedLowLevelTrap.Descriptions = new[] { "90210" };
+            selectedLowLevelTrap.Contents.Miscellaneous = new[] { "90210" };
+            selectedLowLevelTrap.Descriptions = new[] { "this trap will trap you", "forEVA" };
 
             var trap = trapGenerator.Generate(partyLevel);
             Assert.That(trap.ChallengeRating, Is.EqualTo(90210));
-            Assert.That(trap.Description, Is.EqualTo("trap of trappiness"));
+            Assert.That(trap.Name, Is.EqualTo("trap of trappiness"));
             Assert.That(trap.SearchDC, Is.EqualTo(42));
             Assert.That(trap.DisableDeviceDC, Is.EqualTo(600));
+            Assert.That(trap.Descriptions, Is.EquivalentTo(selectedLowLevelTrap.Descriptions));
         }
 
         [TestCase(7)]
@@ -60,13 +62,15 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             selectedMidLevelTrap.Type = "trap of trappiness";
             selectedMidLevelTrap.Length = 42;
             selectedMidLevelTrap.Width = 600;
-            selectedMidLevelTrap.Descriptions = new[] { "90210" };
+            selectedMidLevelTrap.Contents.Miscellaneous = new[] { "90210" };
+            selectedMidLevelTrap.Descriptions = new[] { "this trap will trap you", "forEVA" };
 
             var trap = trapGenerator.Generate(partyLevel);
             Assert.That(trap.ChallengeRating, Is.EqualTo(90210));
-            Assert.That(trap.Description, Is.EqualTo("trap of trappiness"));
+            Assert.That(trap.Name, Is.EqualTo("trap of trappiness"));
             Assert.That(trap.SearchDC, Is.EqualTo(42));
             Assert.That(trap.DisableDeviceDC, Is.EqualTo(600));
+            Assert.That(trap.Descriptions, Is.EquivalentTo(selectedMidLevelTrap.Descriptions));
         }
 
         [TestCase(13)]
@@ -82,13 +86,15 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             selectedHighLevelTrap.Type = "trap of trappiness";
             selectedHighLevelTrap.Length = 42;
             selectedHighLevelTrap.Width = 600;
-            selectedHighLevelTrap.Descriptions = new[] { "90210" };
+            selectedHighLevelTrap.Contents.Miscellaneous = new[] { "90210" };
+            selectedHighLevelTrap.Descriptions = new[] { "this trap will trap you", "forEVA" };
 
             var trap = trapGenerator.Generate(partyLevel);
             Assert.That(trap.ChallengeRating, Is.EqualTo(90210));
-            Assert.That(trap.Description, Is.EqualTo("trap of trappiness"));
+            Assert.That(trap.Name, Is.EqualTo("trap of trappiness"));
             Assert.That(trap.SearchDC, Is.EqualTo(42));
             Assert.That(trap.DisableDeviceDC, Is.EqualTo(600));
+            Assert.That(trap.Descriptions, Is.EquivalentTo(selectedHighLevelTrap.Descriptions));
         }
     }
 }
