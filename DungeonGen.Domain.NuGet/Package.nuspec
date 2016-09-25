@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DungeonGen.Domain</id>
-    <version>2.0.2</version>
+    <version>3.0.0</version>
     <title>DungeonGen.Domain</title>
     <authors>Karl M. Speer</authors>
     <owners>cidthecoatrack</owners>
@@ -22,7 +22,7 @@
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="DungeonGen" version="2.0.1" />
+      <dependency id="DungeonGen" version="3.0.0" />
       <dependency id="EncounterGen" version="1.0.0" />
       <dependency id="CharacterGen" version="7.0.0" />
       <dependency id="DnDGen.TreasureGen" version="5.0.0" />
