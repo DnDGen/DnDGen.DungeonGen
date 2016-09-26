@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DungeonGen.Domain</id>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <title>DungeonGen.Domain</title>
     <authors>Karl M. Speer</authors>
     <owners>cidthecoatrack</owners>
@@ -10,7 +10,7 @@
       This is the Ninject-based bootstrapper for DungeonGen
     </description>
     <releaseNotes>
-      Features #13 and #14
+      Bug #15
     </releaseNotes>
     <summary>
       This generates dungeons for the Dungeons and Dragons 3.5 system.
