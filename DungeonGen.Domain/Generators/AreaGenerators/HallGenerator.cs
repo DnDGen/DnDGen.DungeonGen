@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using RollGen;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,11 +10,13 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
     {
         private IAreaPercentileSelector areaPercentileSelector;
         private IPercentileSelector percentileSelector;
+        private Dice dice;
 
-        public HallGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector)
+        public HallGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, Dice dice)
         {
             this.areaPercentileSelector = areaPercentileSelector;
             this.percentileSelector = percentileSelector;
+            this.dice = dice;
         }
 
         public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
@@ -60,6 +63,9 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
             if (string.IsNullOrEmpty(additionalContents))
                 return area;
+
+            if (dice.ContainsRoll(additionalContents))
+                additionalContents = dice.ReplaceExpressionWithTotal(additionalContents);
 
             area.Contents.Miscellaneous = area.Contents.Miscellaneous.Union(new[] { additionalContents });
 

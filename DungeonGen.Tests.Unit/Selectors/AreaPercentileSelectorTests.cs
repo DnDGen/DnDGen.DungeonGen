@@ -78,6 +78,22 @@ namespace DungeonGen.Tests.Unit.Selectors
         }
 
         [Test]
+        public void BUG_DoNotReplaceRollsInDescriptions()
+        {
+            mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type(description of 1d2 things/other description of 3d4 things)");
+
+            var area = areaPercentileSelector.SelectFrom("table name");
+            Assert.That(area, Is.Not.Null);
+            Assert.That(area.Type, Is.EqualTo("area type"));
+            Assert.That(area.Descriptions, Contains.Item("description of 1d2 things"));
+            Assert.That(area.Descriptions, Contains.Item("other description of 3d4 things"));
+            Assert.That(area.Descriptions.Count(), Is.EqualTo(2));
+            Assert.That(area.Length, Is.EqualTo(0));
+            Assert.That(area.Width, Is.EqualTo(0));
+            Assert.That(area.Contents.IsEmpty, Is.True);
+        }
+
+        [Test]
         public void ReturnLengthFromInnerSelector()
         {
             mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type{9266x0}");

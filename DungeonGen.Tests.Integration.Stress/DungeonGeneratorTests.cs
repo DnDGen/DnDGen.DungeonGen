@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace DungeonGen.Tests.Integration.Stress
 {
@@ -462,7 +463,7 @@ namespace DungeonGen.Tests.Integration.Stress
 
         [TestCase(true)]
         [TestCase(false)]
-        public void MagicPoolDoesNotHappen(bool fromHall)
+        public void MundanePoolHappens(bool fromHall)
         {
             var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower == string.Empty));
             AssertAreas(areas);
@@ -536,6 +537,19 @@ namespace DungeonGen.Tests.Integration.Stress
 
             var treasures = pools.Select(p => p.Treasure);
             Assert.That(treasures, Is.All.Null);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BUG_TrapWithRollHappens(bool fromHall)
+        {
+            var rollRegex = new Regex("\\d+d\\d+");
+            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)))));
+            AssertAreas(areas);
+
+            var traps = areas.SelectMany(a => a.Contents.Traps);
+            var trapsWithRolls = traps.Where(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)));
+            Assert.That(trapsWithRolls, Is.Not.Empty);
         }
     }
 }

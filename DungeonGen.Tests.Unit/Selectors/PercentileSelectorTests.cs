@@ -59,29 +59,5 @@ namespace DungeonGen.Tests.Unit.Selectors
             mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 11 });
             Assert.That(() => selector.SelectFrom(tableName), Throws.InstanceOf<ArgumentException>().With.Message.EqualTo("11 is not a valid entry in the table table name"));
         }
-
-        [Test]
-        public void ReplaceRollsInResult()
-        {
-            table[3] = "1d6+4 things";
-            mockDice.Setup(d => d.ContainsRoll(table[3], false)).Returns(true);
-            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 3 });
-            mockDice.Setup(d => d.ReplaceExpressionWithTotal("1d6+4 things", false)).Returns("rolls replaced");
-
-            var result = selector.SelectFrom(tableName);
-            Assert.That(result, Is.EqualTo("rolls replaced"));
-        }
-
-        [Test]
-        public void DoNotReplaceNonRollsInResult()
-        {
-            table[3] = "[20/30/contents]";
-            mockDice.Setup(d => d.ContainsRoll(table[3], false)).Returns(false);
-            mockDice.Setup(d => d.Roll(1).IndividualRolls(100)).Returns(new[] { 3 });
-            mockDice.Setup(d => d.ReplaceExpressionWithTotal("20/30/contents", false)).Returns("rolls replaced");
-
-            var result = selector.SelectFrom(tableName);
-            Assert.That(result, Is.EqualTo("[20/30/contents]"));
-        }
     }
 }

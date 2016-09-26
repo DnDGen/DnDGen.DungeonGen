@@ -4,6 +4,7 @@ using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
 using NUnit.Framework;
+using RollGen;
 using System.Linq;
 
 namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
@@ -14,13 +15,15 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private AreaGenerator hallGenerator;
         private Mock<IAreaPercentileSelector> mockAreaPercentileSelector;
         private Mock<IPercentileSelector> mockPercentileSelector;
+        private Mock<Dice> mockDice;
 
         [SetUp]
         public void Setup()
         {
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
-            hallGenerator = new HallGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object);
+            mockDice = new Mock<Dice>();
+            hallGenerator = new HallGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockDice.Object);
         }
 
         [Test]
@@ -185,6 +188,31 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Chasm));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("zip line"));
+            Assert.That(hall.Contents.Miscellaneous.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GenerateSpecialHallWithChasmCrossingAndRoll()
+        {
+            var selectedHall = new Area();
+            selectedHall.Type = AreaTypeConstants.Special;
+
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Halls)).Returns(selectedHall);
+
+            var specialHall = new Area();
+            specialHall.Contents.Miscellaneous = new[] { ContentsConstants.Chasm };
+
+            var tableName = string.Format(TableNameConstants.SpecialAREA, AreaTypeConstants.Hall);
+            mockAreaPercentileSelector.Setup(s => s.SelectFrom(tableName)).Returns(specialHall);
+
+            mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ChasmCrossing)).Returns("zip line");
+            mockDice.Setup(d => d.ContainsRoll("zip line", false)).Returns(true);
+            mockDice.Setup(d => d.ReplaceExpressionWithTotal("zip line", false)).Returns("roll replaced");
+
+            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            Assert.That(hall, Is.EqualTo(specialHall));
+            Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Chasm));
+            Assert.That(hall.Contents.Miscellaneous, Contains.Item("roll replaced"));
             Assert.That(hall.Contents.Miscellaneous.Count(), Is.EqualTo(2));
         }
     }
