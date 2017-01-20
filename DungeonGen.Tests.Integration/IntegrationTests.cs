@@ -3,7 +3,7 @@ using DungeonGen.Domain.IoC;
 using EncounterGen.Domain.IoC;
 using Ninject;
 using NUnit.Framework;
-using RollGen.Domain.Ioc;
+using RollGen.Domain.IoC;
 using TreasureGen.Domain.IoC;
 
 namespace DungeonGen.Tests.Integration

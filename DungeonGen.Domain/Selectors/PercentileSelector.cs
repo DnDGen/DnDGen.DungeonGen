@@ -18,7 +18,7 @@ namespace DungeonGen.Domain.Selectors
         public string SelectFrom(string tableName)
         {
             var table = percentileMapper.Map(tableName);
-            var roll = dice.Roll().Percentile();
+            var roll = dice.Roll().Percentile().AsSum();
 
             if (table.ContainsKey(roll) == false)
             {

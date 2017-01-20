@@ -24,13 +24,23 @@ namespace DungeonGen.Tests.Unit.Selectors
             mockDice.Setup(d => d.Roll(It.IsAny<string>())).Returns((string s) => ParseRoll(s));
         }
 
-        private int ParseRoll(string s)
+        private PartialRoll ParseRoll(string roll)
         {
             var result = 0;
-            if (int.TryParse(s, out result))
-                return result;
+            if (!int.TryParse(roll, out result))
+                throw new ArgumentException(roll + " is not set up to be rolled");
 
-            throw new ArgumentException(s + " is not set up to be rolled");
+            var mockPartialRoll = new Mock<PartialRoll>();
+            mockPartialRoll.Setup(r => r.AsSum()).Returns(result);
+
+            return mockPartialRoll.Object;
+        }
+
+        private void SetUpRoll(string roll, int result)
+        {
+            var mockPartialRoll = new Mock<PartialRoll>();
+            mockPartialRoll.Setup(r => r.AsSum()).Returns(result);
+            mockDice.Setup(d => d.Roll(roll)).Returns(mockPartialRoll.Object);
         }
 
         [Test]
@@ -110,7 +120,7 @@ namespace DungeonGen.Tests.Unit.Selectors
         [Test]
         public void ReturnRandomLength()
         {
-            mockDice.Setup(d => d.Roll("1d2")).Returns(9266);
+            mockDice.Setup(d => d.Roll("1d2").AsSum()).Returns(9266);
             mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type{1d2x0}");
 
             var area = areaPercentileSelector.SelectFrom("table name");
@@ -139,7 +149,7 @@ namespace DungeonGen.Tests.Unit.Selectors
         [Test]
         public void ReturnRandomWidth()
         {
-            mockDice.Setup(d => d.Roll("3d4")).Returns(90210);
+            mockDice.Setup(d => d.Roll("3d4").AsSum()).Returns(90210);
             mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type{0x3d4}");
 
             var area = areaPercentileSelector.SelectFrom("table name");
@@ -235,8 +245,9 @@ namespace DungeonGen.Tests.Unit.Selectors
         [Test]
         public void ReturnFullAreaFromInnerSelector()
         {
-            mockDice.Setup(d => d.Roll("1d2")).Returns(9266);
-            mockDice.Setup(d => d.Roll("3d4")).Returns(90210);
+            SetUpRoll("1d2", 9266);
+            SetUpRoll("3d4", 90210);
+
             mockInnerSelector.Setup(s => s.SelectFrom("table name")).Returns("area type(description/other description)[contents/more contents/even more contents]{1d2x3d4}");
 
             var area = areaPercentileSelector.SelectFrom("table name");

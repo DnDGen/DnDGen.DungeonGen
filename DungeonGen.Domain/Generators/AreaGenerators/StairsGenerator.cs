@@ -50,7 +50,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
                 var chambers = chamberGenerator.Generate(dungeonLevel, partyLevel, temperature);
                 allStairAreas.AddRange(chambers);
             }
-            else if (dice.Roll().Percentile() <= stairs.Width)
+            else if (dice.Roll().Percentile().AsSum() <= stairs.Width)
             {
                 var deadEnd = GetDeadEnd();
                 allStairAreas.Add(deadEnd);

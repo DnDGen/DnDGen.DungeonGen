@@ -68,7 +68,7 @@ namespace DungeonGen.Domain.Selectors
             var lengthEndIndex = result.IndexOf('x', lengthStartIndex);
             var length = result.Substring(lengthStartIndex + 1, lengthEndIndex - lengthStartIndex - 1);
 
-            return dice.Roll(length);
+            return dice.Roll(length).AsSum();
         }
 
         private int GetWidth(string result)
@@ -81,7 +81,7 @@ namespace DungeonGen.Domain.Selectors
             var widthEndIndex = result.IndexOf('}');
             var width = result.Substring(widthStartIndex + 1, widthEndIndex - widthStartIndex - 1);
 
-            return dice.Roll(width);
+            return dice.Roll(width).AsSum();
         }
 
         private IEnumerable<string> GetContents(string result)
