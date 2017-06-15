@@ -1,4 +1,4 @@
-﻿using DungeonGen.Domain.Generators.RuntimeFactories;
+﻿using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Tables;
 using Ninject;
 using NUnit.Framework;
@@ -10,7 +10,7 @@ namespace DungeonGen.Tests.Integration.Tables.Areas
     public class DungeonAreaFromHallTests : AreaPercentileTests
     {
         [Inject]
-        internal IAreaGeneratorFactory AreaGeneratorFactory { get; set; }
+        internal AreaGeneratorFactory AreaGeneratorFactory { get; set; }
 
         protected override string tableName
         {

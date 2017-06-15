@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,18 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class SidePassageGenerator : AreaGenerator
     {
-        private IPercentileSelector percentileSelector;
-        private AreaGenerator hallGenerator;
+        public string AreaType
+        {
+            get { return AreaTypeConstants.SidePassage; }
+        }
 
-        public SidePassageGenerator(IPercentileSelector percentileSelector, AreaGenerator hallGenerator)
+        private IPercentileSelector percentileSelector;
+        private AreaGeneratorFactory areaGeneratorFactory;
+
+        public SidePassageGenerator(IPercentileSelector percentileSelector, AreaGeneratorFactory areaGeneratorFactory)
         {
             this.percentileSelector = percentileSelector;
-            this.hallGenerator = hallGenerator;
+            this.areaGeneratorFactory = areaGeneratorFactory;
         }
 
         public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
@@ -32,6 +38,8 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
         private IEnumerable<Area> GenerateYIntersection(int dungeonLevel, int partyLevel, string temperature)
         {
+            var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
+
             var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesAhead });
 
@@ -43,6 +51,8 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
         private IEnumerable<Area> GenerateXIntersection(int dungeonLevel, int partyLevel, string temperature)
         {
+            var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
+
             var leftBehindPassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             leftBehindPassage.Descriptions = leftBehindPassage.Descriptions.Union(new[] { SidePassageConstants.Left45DegreesBehind });
 
@@ -60,6 +70,8 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
         private IEnumerable<Area> GenerateTIntersection(int dungeonLevel, int partyLevel, string temperature)
         {
+            var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
+
             var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
 
@@ -72,6 +84,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
         private IEnumerable<Area> GenerateCrossIntersection(int dungeonLevel, int partyLevel, string temperature)
         {
             var originalHall = GetOriginalHall();
+            var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
 
             var leftPassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             leftPassage.Descriptions = leftPassage.Descriptions.Union(new[] { SidePassageConstants.Left90Degrees });
@@ -85,6 +98,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
         private IEnumerable<Area> GenerateSidePassage(int dungeonLevel, int partyLevel, string sidePassageType, string temperature)
         {
             var originalHall = GetOriginalHall();
+            var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
 
             var sidePassage = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
             sidePassage.Descriptions = sidePassage.Descriptions.Union(new[] { sidePassageType });

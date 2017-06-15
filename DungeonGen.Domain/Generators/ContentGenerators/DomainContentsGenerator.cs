@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,15 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
 {
     internal class DomainContentsGenerator : ContentsGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private IPercentileSelector percentileSelector;
-        private ITreasureGenerator treasureGenerator;
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly JustInTimeFactory justInTimeFactory;
 
-        public DomainContentsGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, ITreasureGenerator treasureGenerator)
+        public DomainContentsGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, JustInTimeFactory justInTimeFactory)
         {
             this.areaPercentileSelector = areaPercentileSelector;
             this.percentileSelector = percentileSelector;
-            this.treasureGenerator = treasureGenerator;
+            this.justInTimeFactory = justInTimeFactory;
         }
 
         public Contents Generate(int partyLevel)
@@ -37,9 +38,11 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
             if (areaContents.Contents.Miscellaneous.Contains(ContentsTypeConstants.Treasure))
             {
                 var dungeonTreasure = new DungeonTreasure();
-                dungeonTreasure.Treasure = treasureGenerator.GenerateAtLevel(partyLevel);
                 dungeonTreasure.Concealment = percentileSelector.SelectFrom(TableNameConstants.TreasureConcealment);
                 dungeonTreasure.Container = percentileSelector.SelectFrom(TableNameConstants.TreasureContainers);
+
+                var treasureGenerator = justInTimeFactory.Build<ITreasureGenerator>();
+                dungeonTreasure.Treasure = treasureGenerator.GenerateAtLevel(partyLevel);
 
                 areaContents.Contents.Treasures = new[] { dungeonTreasure };
             }

@@ -1,5 +1,5 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.ContentGenerators;
+﻿using DungeonGen.Domain.Generators.ContentGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -18,6 +18,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
         private Area selectedContents;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<ITreasureGenerator> mockTreasureGenerator;
+        private Mock<JustInTimeFactory> mockJustInTimeFactory;
 
         [SetUp]
         public void Setup()
@@ -25,10 +26,12 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockTreasureGenerator = new Mock<ITreasureGenerator>();
-            contentsGenerator = new DomainContentsGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockTreasureGenerator.Object);
+            mockJustInTimeFactory = new Mock<JustInTimeFactory>();
+            contentsGenerator = new DomainContentsGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockJustInTimeFactory.Object);
             selectedContents = new Area();
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Contents)).Returns(selectedContents);
+            mockJustInTimeFactory.Setup(f => f.Build<ITreasureGenerator>()).Returns(mockTreasureGenerator.Object);
         }
 
         [Test]

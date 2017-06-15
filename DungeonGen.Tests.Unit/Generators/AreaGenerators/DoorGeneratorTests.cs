@@ -1,5 +1,4 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -26,6 +25,12 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedDoor.Descriptions = new[] { "complicated", DescriptionConstants.Wooden };
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(selectedDoor);
+        }
+
+        [Test]
+        public void AreaTypeIsDoor()
+        {
+            Assert.That(doorGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Door));
         }
 
         [Test]

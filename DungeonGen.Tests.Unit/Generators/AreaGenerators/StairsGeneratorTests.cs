@@ -1,5 +1,5 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -17,6 +17,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Area selectedStairs;
         private Mock<Dice> mockDice;
         private Mock<AreaGenerator> mockChamberGenerator;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
 
         [SetUp]
         public void Setup()
@@ -24,11 +25,19 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
             mockDice = new Mock<Dice>();
             mockChamberGenerator = new Mock<AreaGenerator>();
-            stairsGenerator = new StairsGenerator(mockAreaPercentileSelector.Object, mockDice.Object, mockChamberGenerator.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            stairsGenerator = new StairsGenerator(mockAreaPercentileSelector.Object, mockDice.Object, mockAreaGeneratorFactory.Object);
             selectedStairs = new Area();
 
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Chamber)).Returns(mockChamberGenerator.Object);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Stairs)).Returns(selectedStairs);
             mockDice.Setup(d => d.Roll(1).d(100).AsSum()).Returns(1);
+        }
+
+        [Test]
+        public void AreaTypeIsStairs()
+        {
+            Assert.That(stairsGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Stairs));
         }
 
         [Test]

@@ -1,5 +1,4 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -19,6 +18,12 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             mockPercentileSelector = new Mock<IPercentileSelector>();
             turnGenerator = new TurnGenerator(mockPercentileSelector.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsTurn()
+        {
+            Assert.That(turnGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Turn));
         }
 
         [Test]

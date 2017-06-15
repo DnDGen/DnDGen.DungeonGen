@@ -1,4 +1,4 @@
-﻿namespace DungeonGen.Domain.Generators
+﻿namespace DungeonGen.Domain.Generators.ContentGenerators
 {
     internal interface ContentsGenerator
     {

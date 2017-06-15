@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Domain.Generators;
 using DungeonGen.Domain.Generators.ContentGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
@@ -21,6 +22,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
         private string selectedPool;
         private Encounter encounter;
         private Treasure treasure;
+        private Mock<JustInTimeFactory> mockJustInTimeFactory;
 
         [SetUp]
         public void Setup()
@@ -28,14 +30,24 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockEncounterGenerator = new Mock<IEncounterGenerator>();
             mockTreasureGenerator = new Mock<ITreasureGenerator>();
-            poolGenerator = new DomainPoolGenerator(mockPercentileSelector.Object, mockEncounterGenerator.Object, mockTreasureGenerator.Object);
+            mockJustInTimeFactory = new Mock<JustInTimeFactory>();
+            poolGenerator = new DomainPoolGenerator(mockPercentileSelector.Object, mockJustInTimeFactory.Object);
 
             selectedPool = string.Empty;
             encounter = new Encounter();
             treasure = new Treasure();
 
+            mockJustInTimeFactory.Setup(f => f.Build<IEncounterGenerator>()).Returns(mockEncounterGenerator.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<ITreasureGenerator>()).Returns(mockTreasureGenerator.Object);
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Pools)).Returns(() => selectedPool);
-            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 9266, "temperature", EnvironmentConstants.TimesOfDay.Night)).Returns(encounter);
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   s.AllowAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 9266
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(encounter);
             mockTreasureGenerator.Setup(g => g.GenerateAtLevel(9266)).Returns(treasure);
         }
 

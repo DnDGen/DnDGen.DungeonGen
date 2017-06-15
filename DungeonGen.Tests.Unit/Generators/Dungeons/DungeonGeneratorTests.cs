@@ -1,5 +1,7 @@
 ﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.RuntimeFactories;
+using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.Dungeons;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
@@ -8,29 +10,34 @@ using Moq;
 using NUnit.Framework;
 using System.Linq;
 
-namespace DungeonGen.Tests.Unit.Generators
+namespace DungeonGen.Tests.Unit.Generators.Dungeons
 {
     [TestFixture]
     public class DungeonGeneratorTests
     {
         private IDungeonGenerator dungeonGenerator;
         private Mock<IAreaPercentileSelector> mockAreaPercentileSelector;
-        private Mock<IAreaGeneratorFactory> mockAreaGeneratorFactory;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
         private Mock<IEncounterGenerator> mockEncounterGenerator;
         private Mock<ITrapGenerator> mockTrapGenerator;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<AreaGenerator> mockHallGenerator;
+        private Mock<JustInTimeFactory> mockJustInTimeFactory;
 
         [SetUp]
         public void Setup()
         {
             mockAreaPercentileSelector = new Mock<IAreaPercentileSelector>();
             mockEncounterGenerator = new Mock<IEncounterGenerator>();
-            mockAreaGeneratorFactory = new Mock<IAreaGeneratorFactory>();
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
             mockTrapGenerator = new Mock<ITrapGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockHallGenerator = new Mock<AreaGenerator>();
-            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockEncounterGenerator.Object, mockTrapGenerator.Object, mockPercentileSelector.Object, mockHallGenerator.Object);
+            mockJustInTimeFactory = new Mock<JustInTimeFactory>();
+            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockJustInTimeFactory.Object, mockTrapGenerator.Object, mockPercentileSelector.Object);
+
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<IEncounterGenerator>()).Returns(mockEncounterGenerator.Object);
         }
 
         [Test]
@@ -222,7 +229,14 @@ namespace DungeonGen.Tests.Unit.Generators
             otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter };
 
             mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
-            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210, "temperature", EnvironmentConstants.TimesOfDay.Night)).Returns(() => new Encounter());
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   !s.AllowAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(() => new Encounter());
 
             var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
@@ -234,6 +248,84 @@ namespace DungeonGen.Tests.Unit.Generators
             Assert.That(generalArea.Contents.Encounters, Is.Unique);
             Assert.That(specificArea.Contents.Encounters.Count(), Is.EqualTo(1));
             Assert.That(otherSpecificArea.Contents.Encounters.Count(), Is.EqualTo(1));
+        }
+
+        [TestCase(ContentsConstants.Chasm, false)]
+        [TestCase(ContentsConstants.Gallery, false)]
+        [TestCase(ContentsConstants.GalleryStairs_Beginning, false)]
+        [TestCase(ContentsConstants.GalleryStairs_End, false)]
+        [TestCase(ContentsConstants.LikesAlignment, false)]
+        [TestCase(ContentsConstants.MagicPool, true)]
+        [TestCase(ContentsConstants.River, true)]
+        [TestCase(ContentsConstants.Stream, true)]
+        [TestCase(ContentsConstants.TeleportationPool, true)]
+        [TestCase(ContentsTypeConstants.Encounter, false)]
+        [TestCase(ContentsTypeConstants.Lake, true)]
+        [TestCase(ContentsTypeConstants.Pool, true)]
+        [TestCase(ContentsTypeConstants.Trap, false)]
+        [TestCase(ContentsTypeConstants.Treasure, false)]
+        public void EncountersFromHallIncludeAquatic(string content, bool hasAquatic)
+        {
+            var generalArea = new Area();
+            generalArea.Type = AreaTypeConstants.General;
+            generalArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, ContentsTypeConstants.Encounter };
+
+            var areaFromHall = new Area();
+            areaFromHall.Type = "area type";
+            areaFromHall.Width = 1;
+
+            mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromHall))
+                .Returns(generalArea).Returns(areaFromHall);
+
+            var mockAreaGenerator = new Mock<AreaGenerator>();
+            mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
+            mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
+
+            var specificArea = new Area();
+            var otherSpecificArea = new Area();
+
+            specificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, content };
+            otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, content };
+
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   s.AllowAquatic == hasAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(() => new Encounter());
+
+            var generalEncounter = new Encounter();
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   !s.AllowAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(generalEncounter);
+
+            var areas = dungeonGenerator.GenerateFromHall(9266, 90210, "temperature");
+            Assert.That(areas, Contains.Item(generalArea));
+            Assert.That(areas, Contains.Item(specificArea));
+            Assert.That(areas, Contains.Item(otherSpecificArea));
+            Assert.That(areas.Count(), Is.EqualTo(3));
+
+            Assert.That(generalArea.Contents.Encounters, Is.Not.Empty);
+            Assert.That(generalArea.Contents.Encounters, Is.Not.Null);
+            Assert.That(generalArea.Contents.Encounters, Is.All.EqualTo(generalEncounter));
+            Assert.That(specificArea.Contents.Encounters, Is.Not.Empty);
+            Assert.That(specificArea.Contents.Encounters, Is.Not.Null);
+            Assert.That(otherSpecificArea.Contents.Encounters, Is.Not.Empty);
+            Assert.That(otherSpecificArea.Contents.Encounters, Is.Not.Null);
+
+            if (content != ContentsTypeConstants.Encounter)
+            {
+                Assert.That(specificArea.Contents.Encounters, Is.Unique);
+                Assert.That(otherSpecificArea.Contents.Encounters, Is.Unique);
+            }
         }
 
         [Test]
@@ -679,7 +771,14 @@ namespace DungeonGen.Tests.Unit.Generators
             otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter };
 
             mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
-            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210, "temperature", EnvironmentConstants.TimesOfDay.Night)).Returns(() => new Encounter());
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   !s.AllowAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(() => new Encounter());
 
             var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
             Assert.That(areas, Contains.Item(generalArea));
@@ -691,6 +790,84 @@ namespace DungeonGen.Tests.Unit.Generators
             Assert.That(generalArea.Contents.Encounters, Is.Unique);
             Assert.That(specificArea.Contents.Encounters.Count(), Is.EqualTo(1));
             Assert.That(otherSpecificArea.Contents.Encounters.Count(), Is.EqualTo(1));
+        }
+
+        [TestCase(ContentsConstants.Chasm, false)]
+        [TestCase(ContentsConstants.Gallery, false)]
+        [TestCase(ContentsConstants.GalleryStairs_Beginning, false)]
+        [TestCase(ContentsConstants.GalleryStairs_End, false)]
+        [TestCase(ContentsConstants.LikesAlignment, false)]
+        [TestCase(ContentsConstants.MagicPool, true)]
+        [TestCase(ContentsConstants.River, true)]
+        [TestCase(ContentsConstants.Stream, true)]
+        [TestCase(ContentsConstants.TeleportationPool, true)]
+        [TestCase(ContentsTypeConstants.Encounter, false)]
+        [TestCase(ContentsTypeConstants.Lake, true)]
+        [TestCase(ContentsTypeConstants.Pool, true)]
+        [TestCase(ContentsTypeConstants.Trap, false)]
+        [TestCase(ContentsTypeConstants.Treasure, false)]
+        public void EncountersFromDoorIncludeAquatic(string content, bool hasAquatic)
+        {
+            var generalArea = new Area();
+            generalArea.Type = AreaTypeConstants.General;
+            generalArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, ContentsTypeConstants.Encounter };
+
+            var areaFromDoor = new Area();
+            areaFromDoor.Type = "area type";
+            areaFromDoor.Width = 1;
+
+            mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DungeonAreaFromDoor))
+                .Returns(generalArea).Returns(areaFromDoor);
+
+            var mockAreaGenerator = new Mock<AreaGenerator>();
+            mockAreaGeneratorFactory.Setup(f => f.HasSpecificGenerator("area type")).Returns(true);
+            mockAreaGeneratorFactory.Setup(f => f.Build("area type")).Returns(mockAreaGenerator.Object);
+
+            var specificArea = new Area();
+            var otherSpecificArea = new Area();
+
+            specificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, content };
+            otherSpecificArea.Contents.Miscellaneous = new[] { ContentsTypeConstants.Encounter, content };
+
+            mockAreaGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { specificArea, otherSpecificArea });
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   s.AllowAquatic == hasAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(() => new Encounter());
+
+            var generalEncounter = new Encounter();
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   !s.AllowAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(generalEncounter);
+
+            var areas = dungeonGenerator.GenerateFromDoor(9266, 90210, "temperature");
+            Assert.That(areas, Contains.Item(generalArea));
+            Assert.That(areas, Contains.Item(specificArea));
+            Assert.That(areas, Contains.Item(otherSpecificArea));
+            Assert.That(areas.Count(), Is.EqualTo(3));
+
+            Assert.That(generalArea.Contents.Encounters, Is.Not.Empty);
+            Assert.That(generalArea.Contents.Encounters, Is.Not.Null);
+            Assert.That(generalArea.Contents.Encounters, Is.All.EqualTo(generalEncounter));
+            Assert.That(specificArea.Contents.Encounters, Is.Not.Empty);
+            Assert.That(specificArea.Contents.Encounters, Is.Not.Null);
+            Assert.That(otherSpecificArea.Contents.Encounters, Is.Not.Empty);
+            Assert.That(otherSpecificArea.Contents.Encounters, Is.Not.Null);
+
+            if (content != ContentsTypeConstants.Encounter)
+            {
+                Assert.That(specificArea.Contents.Encounters, Is.Unique);
+                Assert.That(otherSpecificArea.Contents.Encounters, Is.Unique);
+            }
         }
 
         [Test]

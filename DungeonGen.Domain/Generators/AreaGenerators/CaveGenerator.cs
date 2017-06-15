@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
 using EncounterGen.Generators;
@@ -10,17 +11,20 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class CaveGenerator : AreaGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private PoolGenerator poolGenerator;
-        private IPercentileSelector percentileSelector;
-        private IEncounterGenerator encounterGenerator;
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Cave; }
+        }
 
-        public CaveGenerator(IAreaPercentileSelector areaPercentileSelector, PoolGenerator poolGenerator, IPercentileSelector percentileSelector, IEncounterGenerator encounterGenerator)
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly JustInTimeFactory justInTimeFactory;
+
+        public CaveGenerator(IAreaPercentileSelector areaPercentileSelector, JustInTimeFactory justInTimeFactory, IPercentileSelector percentileSelector)
         {
             this.areaPercentileSelector = areaPercentileSelector;
-            this.poolGenerator = poolGenerator;
+            this.justInTimeFactory = justInTimeFactory;
             this.percentileSelector = percentileSelector;
-            this.encounterGenerator = encounterGenerator;
         }
 
         public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
@@ -48,6 +52,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             {
                 if (cave.Contents.Miscellaneous.Contains(ContentsTypeConstants.Pool))
                 {
+                    var poolGenerator = justInTimeFactory.Build<PoolGenerator>();
                     cave.Contents.Pool = poolGenerator.Generate(partyLevel, temperature);
                 }
 
@@ -63,7 +68,15 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
                         if (section == ContentsTypeConstants.Encounter)
                         {
-                            var encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel, temperature, EnvironmentConstants.TimesOfDay.Night);
+                            var specifications = new EncounterSpecifications();
+                            specifications.Environment = EnvironmentConstants.Underground;
+                            specifications.Level = partyLevel;
+                            specifications.Temperature = temperature;
+                            specifications.TimeOfDay = EnvironmentConstants.TimesOfDay.Night;
+                            specifications.AllowAquatic = true; //INFO: Because this is for a lake
+
+                            var encounterGenerator = justInTimeFactory.Build<IEncounterGenerator>();
+                            var encounter = encounterGenerator.Generate(specifications);
                             cave.Contents.Encounters = cave.Contents.Encounters.Union(new[] { encounter });
                         }
                     }

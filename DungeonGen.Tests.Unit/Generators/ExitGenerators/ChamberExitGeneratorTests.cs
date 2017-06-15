@@ -1,12 +1,13 @@
-﻿using DungeonGen.Domain.Generators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Generators.ExitGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
 
-namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
+namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
 {
     [TestFixture]
     public class ChamberExitGeneratorTests
@@ -17,6 +18,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<AreaGenerator> mockDoorGenerator;
         private Area selectedExit;
         private Mock<IPercentileSelector> mockPercentileSelector;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
 
         [SetUp]
         public void Setup()
@@ -25,14 +27,18 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockHallGenerator = new Mock<AreaGenerator>();
             mockDoorGenerator = new Mock<AreaGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
-            chamberExitGenerator = new ChamberExitGenerator(mockAreaPercentileSelector.Object, mockHallGenerator.Object, mockDoorGenerator.Object, mockPercentileSelector.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            chamberExitGenerator = new ChamberExitGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockPercentileSelector.Object);
 
             selectedExit = new Area();
             selectedExit.Type = "exit type";
             selectedExit.Width = 1;
             selectedExit.Length = 42 * 600;
+            selectedExit.Type = AreaTypeConstants.Hall;
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ChamberExits)).Returns(selectedExit);
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Door)).Returns(mockDoorGenerator.Object);
         }
 
         [Test]
@@ -81,6 +87,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedExit.Length -= 1;
             selectedExit.Width = originalExits;
+
             mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(() => new[] { new Area() });
 
             var exits = chamberExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
@@ -91,6 +98,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         public void IfLimitIsZero_DoNotGetExtraExit()
         {
             selectedExit.Length = 0;
+
             mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(() => new[] { new Area() });
 
             var exits = chamberExitGenerator.Generate(9266, 90210, 42, 600, "temperature");

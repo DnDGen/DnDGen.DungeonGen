@@ -5,7 +5,11 @@ install:
   - nuget install NUnit.Runners -OutputDirectory testrunner
 script:
   - xbuild DungeonGen.sln /p:TargetFrameworkVersion="v4.5.1" /p:Configuration=Stress
+  - set -e
   - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Unit/bin/Stress/DungeonGen.Tests.Unit.dll
+  - set -e
   - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Integration.IoC/bin/Stress/DungeonGen.Tests.Integration.IoC.dll
+  - set -e
   - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Integration.Tables/bin/Stress/DungeonGen.Tests.Integration.Tables.dll
+  - set -e
   - mono ./testrunner/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./DungeonGen.Tests.Integration.Stress/bin/Stress/DungeonGen.Tests.Integration.Stress.dll

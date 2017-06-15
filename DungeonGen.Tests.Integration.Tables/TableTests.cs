@@ -2,7 +2,7 @@
 
 namespace DungeonGen.Tests.Integration.Tables
 {
-    [TestFixture, Table]
+    [TestFixture]
     public abstract class TableTests : IntegrationTests
     {
         protected abstract string tableName { get; }

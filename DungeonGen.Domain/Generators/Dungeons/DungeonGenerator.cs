@@ -1,4 +1,4 @@
-﻿using DungeonGen.Domain.Generators.RuntimeFactories;
+﻿using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
@@ -6,25 +6,34 @@ using EncounterGen.Generators;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DungeonGen.Domain.Generators
+namespace DungeonGen.Domain.Generators.Dungeons
 {
     internal class DungeonGenerator : IDungeonGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private IAreaGeneratorFactory areaGeneratorFactory;
-        private IEncounterGenerator encounterGenerator;
-        private ITrapGenerator trapGenerator;
-        private IPercentileSelector percentileSelector;
-        private AreaGenerator hallGenerator;
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
+        private readonly ITrapGenerator trapGenerator;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly IEnumerable<string> waterContents;
+        private readonly JustInTimeFactory justInTimeFactory;
 
-        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, IAreaGeneratorFactory areaGeneratorFactory, IEncounterGenerator encounterGenerator, ITrapGenerator trapGenerator, IPercentileSelector percentileSelector, AreaGenerator hallGenerator)
+        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGeneratorFactory areaGeneratorFactory, JustInTimeFactory justInTimeFactory, ITrapGenerator trapGenerator, IPercentileSelector percentileSelector)
         {
             this.areaGeneratorFactory = areaGeneratorFactory;
             this.areaPercentileSelector = areaPercentileSelector;
-            this.encounterGenerator = encounterGenerator;
+            this.justInTimeFactory = justInTimeFactory;
             this.trapGenerator = trapGenerator;
             this.percentileSelector = percentileSelector;
-            this.hallGenerator = hallGenerator;
+
+            waterContents = new[]
+            {
+                ContentsConstants.MagicPool,
+                ContentsConstants.River,
+                ContentsConstants.Stream,
+                ContentsConstants.TeleportationPool,
+                ContentsTypeConstants.Lake,
+                ContentsTypeConstants.Pool,
+            };
         }
 
         public IEnumerable<Area> GenerateFromDoor(int dungeonLevel, int partyLevel, string temperature)
@@ -39,12 +48,14 @@ namespace DungeonGen.Domain.Generators
 
         private IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string tableName, string temperature)
         {
-            var areas = GenerateAreas(dungeonLevel, partyLevel, tableName, temperature);
+            var areas = new List<Area>();
+            var newAreas = GenerateAreas(dungeonLevel, partyLevel, tableName, temperature);
+            areas.AddRange(newAreas);
 
             while (areas.Last().Type == AreaTypeConstants.General)
             {
-                var newAreas = GenerateAreas(dungeonLevel, partyLevel, tableName, temperature);
-                areas = areas.Union(newAreas);
+                newAreas = GenerateAreas(dungeonLevel, partyLevel, tableName, temperature);
+                areas.AddRange(newAreas);
             }
 
             var specificAreas = areas.Where(a => a.Type != AreaTypeConstants.General);
@@ -77,7 +88,7 @@ namespace DungeonGen.Domain.Generators
                 continuingHall.Length = 30;
                 continuingHall.Type = AreaTypeConstants.Hall;
 
-                areas = areas.Union(new[] { continuingHall });
+                areas.Add(continuingHall);
             }
 
             return areas;
@@ -89,6 +100,7 @@ namespace DungeonGen.Domain.Generators
 
             if (NeedToGenerateNewHall(area, tableName))
             {
+                var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
                 var newHall = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
                 newHall.Descriptions = newHall.Descriptions.Union(area.Descriptions);
 
@@ -120,9 +132,21 @@ namespace DungeonGen.Domain.Generators
             var encounters = new List<Encounter>();
             var encounterContents = area.Contents.Miscellaneous.Where(m => m == ContentsTypeConstants.Encounter);
 
+            if (!encounterContents.Any())
+                return encounters;
+
+            var encounterGenerator = justInTimeFactory.Build<IEncounterGenerator>();
+
             foreach (var encounterContent in encounterContents)
             {
-                var encounter = encounterGenerator.Generate(EnvironmentConstants.Dungeon, partyLevel, temperature, EnvironmentConstants.TimesOfDay.Night);
+                var specifications = new EncounterSpecifications();
+                specifications.Environment = EnvironmentConstants.Underground;
+                specifications.Level = partyLevel;
+                specifications.Temperature = temperature;
+                specifications.TimeOfDay = EnvironmentConstants.TimesOfDay.Night;
+                specifications.AllowAquatic = area.Contents.Miscellaneous.Intersect(waterContents).Any();
+
+                var encounter = encounterGenerator.Generate(specifications);
                 encounters.Add(encounter);
             }
 

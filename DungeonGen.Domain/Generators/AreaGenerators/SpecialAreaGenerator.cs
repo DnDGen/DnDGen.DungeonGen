@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,22 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class SpecialAreaGenerator : AreaGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private IPercentileSelector percentileSelector;
-        private PoolGenerator poolGenerator;
-        private AreaGenerator caveGenerator;
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Special; }
+        }
 
-        public SpecialAreaGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, PoolGenerator poolGenerator, AreaGenerator caveGenerator)
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly PoolGenerator poolGenerator;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
+
+        public SpecialAreaGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, PoolGenerator poolGenerator, AreaGeneratorFactory areaGeneratorFactory)
         {
             this.areaPercentileSelector = areaPercentileSelector;
             this.percentileSelector = percentileSelector;
             this.poolGenerator = poolGenerator;
-            this.caveGenerator = caveGenerator;
+            this.areaGeneratorFactory = areaGeneratorFactory;
         }
 
         public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
@@ -25,7 +31,11 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             var shape = percentileSelector.SelectFrom(TableNameConstants.SpecialAreaShapes);
 
             if (shape == AreaTypeConstants.Cave)
-                return caveGenerator.Generate(dungeonLevel, partyLevel, temperature);
+            {
+                var caveGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Cave);
+                var caves = caveGenerator.Generate(dungeonLevel, partyLevel, temperature);
+                return caves;
+            }
 
             var area = new Area();
             area.Width = 1;

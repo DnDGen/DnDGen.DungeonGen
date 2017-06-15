@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using RollGen;
 using System.Collections.Generic;
@@ -8,15 +9,20 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class StairsGenerator : AreaGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private Dice dice;
-        private AreaGenerator chamberGenerator;
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Stairs; }
+        }
 
-        public StairsGenerator(IAreaPercentileSelector areaPercentileSelector, Dice dice, AreaGenerator chamberGenerator)
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly Dice dice;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
+
+        public StairsGenerator(IAreaPercentileSelector areaPercentileSelector, Dice dice, AreaGeneratorFactory areaGeneratorFactory)
         {
             this.areaPercentileSelector = areaPercentileSelector;
             this.dice = dice;
-            this.chamberGenerator = chamberGenerator;
+            this.areaGeneratorFactory = areaGeneratorFactory;
         }
 
         public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
@@ -47,7 +53,10 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             if (stairs.Contents.Miscellaneous.Contains(AreaTypeConstants.Chamber))
             {
                 stairs.Contents.Miscellaneous = stairs.Contents.Miscellaneous.Except(new[] { AreaTypeConstants.Chamber });
+
+                var chamberGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Chamber);
                 var chambers = chamberGenerator.Generate(dungeonLevel, partyLevel, temperature);
+
                 allStairAreas.AddRange(chambers);
             }
             else if (dice.Roll().Percentile().AsSum() <= stairs.Width)

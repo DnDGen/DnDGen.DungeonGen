@@ -1,5 +1,4 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -24,6 +23,12 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockDice = new Mock<Dice>();
             hallGenerator = new HallGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockDice.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsHall()
+        {
+            Assert.That(hallGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Hall));
         }
 
         [Test]

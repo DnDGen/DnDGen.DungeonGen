@@ -1,5 +1,4 @@
 ﻿using DungeonGen.Domain.Selectors;
-using DungeonGen.Domain.Selectors;
 using Ninject.Modules;
 
 namespace DungeonGen.Domain.IoC.Modules

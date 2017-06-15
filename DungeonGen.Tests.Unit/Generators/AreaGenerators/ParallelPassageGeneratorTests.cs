@@ -1,5 +1,5 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -11,12 +11,22 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
     {
         private AreaGenerator parallelPassageGenerator;
         private Mock<AreaGenerator> mockHallGenerator;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
 
         [SetUp]
         public void Setup()
         {
             mockHallGenerator = new Mock<AreaGenerator>();
-            parallelPassageGenerator = new ParallelPassageGenerator(mockHallGenerator.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            parallelPassageGenerator = new ParallelPassageGenerator(mockAreaGeneratorFactory.Object);
+
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsHall()
+        {
+            Assert.That(parallelPassageGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Hall));
         }
 
         [Test]

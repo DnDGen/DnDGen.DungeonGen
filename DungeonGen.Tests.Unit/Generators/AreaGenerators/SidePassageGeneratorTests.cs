@@ -1,5 +1,5 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -14,13 +14,23 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private AreaGenerator sidePassageGenerator;
         private Mock<AreaGenerator> mockHallGenerator;
         private Mock<IPercentileSelector> mockPercentileSelector;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
 
         [SetUp]
         public void Setup()
         {
             mockHallGenerator = new Mock<AreaGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
-            sidePassageGenerator = new SidePassageGenerator(mockPercentileSelector.Object, mockHallGenerator.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            sidePassageGenerator = new SidePassageGenerator(mockPercentileSelector.Object, mockAreaGeneratorFactory.Object);
+
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsSidePassage()
+        {
+            Assert.That(sidePassageGenerator.AreaType, Is.EqualTo(AreaTypeConstants.SidePassage));
         }
 
         [Test]

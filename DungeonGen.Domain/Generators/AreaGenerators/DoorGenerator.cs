@@ -7,6 +7,11 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class DoorGenerator : AreaGenerator
     {
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Door; }
+        }
+
         private IAreaPercentileSelector areaPercentileSelector;
 
         public DoorGenerator(IAreaPercentileSelector areaPercentileSelector)

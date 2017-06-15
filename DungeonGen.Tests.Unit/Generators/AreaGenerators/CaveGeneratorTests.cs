@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Domain.Generators;
 using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
@@ -19,6 +20,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<PoolGenerator> mockPoolGenerator;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<IEncounterGenerator> mockEncounterGenerator;
+        private Mock<JustInTimeFactory> mockJustInTimeFactory;
 
         [SetUp]
         public void Setup()
@@ -27,10 +29,19 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPoolGenerator = new Mock<PoolGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockEncounterGenerator = new Mock<IEncounterGenerator>();
-            caveGenerator = new CaveGenerator(mockAreaPercentileSelector.Object, mockPoolGenerator.Object, mockPercentileSelector.Object, mockEncounterGenerator.Object);
+            mockJustInTimeFactory = new Mock<JustInTimeFactory>();
+            caveGenerator = new CaveGenerator(mockAreaPercentileSelector.Object, mockJustInTimeFactory.Object, mockPercentileSelector.Object);
             selectedCave = new Area();
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Caves)).Returns(selectedCave);
+            mockJustInTimeFactory.Setup(f => f.Build<PoolGenerator>()).Returns(mockPoolGenerator.Object);
+            mockJustInTimeFactory.Setup(f => f.Build<IEncounterGenerator>()).Returns(mockEncounterGenerator.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsCave()
+        {
+            Assert.That(caveGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Cave));
         }
 
         [Test]
@@ -142,7 +153,14 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Lakes)).Returns("laketown/Encounter");
 
             var encounter = new Encounter();
-            mockEncounterGenerator.Setup(g => g.Generate(EnvironmentConstants.Dungeon, 90210, "temperature", EnvironmentConstants.TimesOfDay.Night)).Returns(encounter);
+            mockEncounterGenerator.Setup(g => g.Generate(
+                It.Is<EncounterSpecifications>(s =>
+                   s.AllowAquatic
+                   && s.Environment == EnvironmentConstants.Underground
+                   && s.Level == 90210
+                   && s.Temperature == "temperature"
+                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                ))).Returns(encounter);
 
             var cave = caveGenerator.Generate(9266, 90210, "temperature").Single();
             Assert.That(cave, Is.EqualTo(selectedCave));

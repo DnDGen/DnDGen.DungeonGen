@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DungeonGen.Domain.Generators
+namespace DungeonGen.Domain.Generators.ExitGenerators
 {
     internal interface ExitGenerator
     {

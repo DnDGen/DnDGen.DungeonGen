@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Domain.Generators;
 using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
@@ -16,6 +17,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<PoolGenerator> mockPoolGenerator;
         private Mock<AreaGenerator> mockCaveGenerator;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
 
         [SetUp]
         public void Setup()
@@ -24,7 +26,16 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockPoolGenerator = new Mock<PoolGenerator>();
             mockCaveGenerator = new Mock<AreaGenerator>();
-            specialAreaGenerator = new SpecialAreaGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockPoolGenerator.Object, mockCaveGenerator.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            specialAreaGenerator = new SpecialAreaGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockPoolGenerator.Object, mockAreaGeneratorFactory.Object);
+
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Cave)).Returns(mockCaveGenerator.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsSpecial()
+        {
+            Assert.That(specialAreaGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Special));
         }
 
         [Test]

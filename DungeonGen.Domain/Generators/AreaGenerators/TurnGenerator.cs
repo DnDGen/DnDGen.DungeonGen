@@ -6,6 +6,11 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class TurnGenerator : AreaGenerator
     {
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Turn; }
+        }
+
         private IPercentileSelector percentileSelector;
 
         public TurnGenerator(IPercentileSelector percentileSelector)

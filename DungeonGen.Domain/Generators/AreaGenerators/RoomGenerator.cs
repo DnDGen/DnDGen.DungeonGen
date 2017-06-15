@@ -1,4 +1,7 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.ContentGenerators;
+using DungeonGen.Domain.Generators.ExitGenerators;
+using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +10,21 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class RoomGenerator : AreaGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private AreaGenerator specialAreaGenerator;
-        private ExitGenerator exitGenerator;
-        private ContentsGenerator contentsGenerator;
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Room; }
+        }
 
-        public RoomGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGenerator specialAreaGenerator, ExitGenerator exitGenerator, ContentsGenerator contentsGenerator)
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly JustInTimeFactory justInTimeFactory;
+        private readonly ContentsGenerator contentsGenerator;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
+
+        public RoomGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGeneratorFactory areaGeneratorFactory, JustInTimeFactory justInTimeFactory, ContentsGenerator contentsGenerator)
         {
             this.areaPercentileSelector = areaPercentileSelector;
-            this.specialAreaGenerator = specialAreaGenerator;
-            this.exitGenerator = exitGenerator;
+            this.areaGeneratorFactory = areaGeneratorFactory;
+            this.justInTimeFactory = justInTimeFactory;
             this.contentsGenerator = contentsGenerator;
         }
 
@@ -27,8 +35,9 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
             if (room.Type == AreaTypeConstants.Special)
             {
-                var specialChambers = specialAreaGenerator.Generate(dungeonLevel, partyLevel, temperature);
-                rooms.AddRange(specialChambers);
+                var specialAreaGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Special);
+                var specialAreas = specialAreaGenerator.Generate(dungeonLevel, partyLevel, temperature);
+                rooms.AddRange(specialAreas);
             }
             else
             {
@@ -37,9 +46,11 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
             for (var i = rooms.Count - 1; i >= 0; i--)
             {
+                //INFO: This is for special rooms
                 if (string.IsNullOrEmpty(rooms[i].Type))
                     rooms[i].Type = AreaTypeConstants.Room;
 
+                var exitGenerator = justInTimeFactory.Build<ExitGenerator>(AreaTypeConstants.Room);
                 var exits = exitGenerator.Generate(dungeonLevel, partyLevel, rooms[i].Length, rooms[i].Width, temperature);
 
                 if (i + 1 == rooms.Count)

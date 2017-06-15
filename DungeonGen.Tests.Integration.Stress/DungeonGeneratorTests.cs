@@ -16,36 +16,69 @@ namespace DungeonGen.Tests.Integration.Stress
         [Inject]
         public Random Random { get; set; }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void StressDungeonGenerator(bool fromHall)
+        private const int FromHall = 1;
+        private const int FromDoor = 0;
+        private const int FromRandom = -1;
+
+        private readonly IEnumerable<string> allTemperatures;
+        private readonly IEnumerable<string> allChambers;
+
+        public DungeonGeneratorTests()
         {
-            Stress(() => AssertRandomArea(fromHall));
+            allTemperatures = new[]
+            {
+                EnvironmentConstants.Temperatures.Cold,
+                EnvironmentConstants.Temperatures.Temperate,
+                EnvironmentConstants.Temperatures.Warm
+            };
+
+            allChambers = new[]
+            {
+                AreaTypeConstants.Cave,
+                AreaTypeConstants.Chamber,
+                AreaTypeConstants.Room,
+            };
         }
 
-        protected void AssertRandomArea(bool fromHall)
+        [Test]
+        public void StressDungeonGeneratorFromDoor()
+        {
+            Stress(() => AssertRandomArea(FromDoor));
+        }
+
+        [Test]
+        public void StressDungeonGeneratorFromHall()
+        {
+            Stress(() => AssertRandomArea(FromHall));
+        }
+
+        protected void AssertRandomArea(int fromHall)
         {
             var areas = GenerateAreas(fromHall);
             AssertAreas(areas);
         }
 
-        private IEnumerable<Area> GenerateAreas(bool fromHall)
+        private IEnumerable<Area> GenerateAreas(int fromHall = FromRandom, int presetPartyLevel = 0)
         {
             var dungeonLevel = Random.Next(20) + 1;
-            var partyLevel = Random.Next(20) + 1;
-            var temperature = GetRandomTemperature();
+            var partyLevel = presetPartyLevel > 0 ? presetPartyLevel : Random.Next(20) + 1;
+            var temperature = GetRandomFrom(allTemperatures);
 
-            if (fromHall)
+            if (fromHall == FromRandom)
+                fromHall = Random.Next(2);
+
+            var actuallyFromHall = Convert.ToBoolean(fromHall);
+
+            if (actuallyFromHall)
                 return DungeonGenerator.GenerateFromHall(dungeonLevel, partyLevel, temperature);
 
             return DungeonGenerator.GenerateFromDoor(dungeonLevel, partyLevel, temperature);
         }
 
-        private string GetRandomTemperature()
+        private string GetRandomFrom(IEnumerable<string> collection)
         {
-            var temperatures = new[] { EnvironmentConstants.Temperatures.Cold, EnvironmentConstants.Temperatures.Temperate, EnvironmentConstants.Temperatures.Warm };
-            var index = Random.Next(temperatures.Count());
-            return temperatures.ElementAt(index);
+            var index = Random.Next(collection.Count());
+            return collection.ElementAt(index);
         }
 
         private void AssertAreas(IEnumerable<Area> areas)
@@ -54,6 +87,13 @@ namespace DungeonGen.Tests.Integration.Stress
 
             foreach (var area in areas)
                 AssertArea(area);
+
+            var chambers = areas.Select(a => a.Type).Intersect(allChambers);
+            if (chambers.Any())
+            {
+                var primaryExit = chambers.First() == AreaTypeConstants.Room ? AreaTypeConstants.Door : AreaTypeConstants.Hall;
+                AssertExits(areas, primaryExit);
+            }
         }
 
         private void AssertArea(Area area)
@@ -73,6 +113,7 @@ namespace DungeonGen.Tests.Integration.Stress
             foreach (var encounter in area.Contents.Encounters)
             {
                 Assert.That(encounter.Creatures, Is.Not.Empty);
+                Assert.That(encounter.Creatures, Is.All.Not.Null);
                 Assert.That(encounter.Characters, Is.Not.Null);
                 Assert.That(encounter.Characters, Is.All.Not.Null);
                 Assert.That(encounter.Treasures, Is.Not.Null);
@@ -83,7 +124,6 @@ namespace DungeonGen.Tests.Integration.Stress
             foreach (var trap in area.Contents.Traps)
             {
                 Assert.That(trap.ChallengeRating, Is.Positive);
-                Assert.That(trap.Descriptions, Is.Not.Empty);
                 Assert.That(trap.DisableDeviceDC, Is.Positive);
                 Assert.That(trap.SearchDC, Is.Positive);
                 Assert.That(trap.Name, Is.Not.Empty);
@@ -193,31 +233,19 @@ namespace DungeonGen.Tests.Integration.Stress
         [Test]
         public void BUG_ContinuingHallHasSamePassageWidth()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(true),
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromHall, 1),
                 aa => aa.Count() == 1 && aa.Single().Type == AreaTypeConstants.Hall);
 
             AssertAreas(areas);
 
             var hall = areas.Single();
+            Assert.That(hall.Type == AreaTypeConstants.Hall);
             Assert.That(hall.Width, Is.EqualTo(0));
         }
 
-        [TestCase(true, AreaTypeConstants.Chamber, AreaTypeConstants.Hall)]
-        [TestCase(false, AreaTypeConstants.Chamber, AreaTypeConstants.Hall)]
-        [TestCase(true, AreaTypeConstants.Room, AreaTypeConstants.Door, IgnoreReason = "Halls can't generate rooms - they generate doors which can generate rooms")]
-        [TestCase(false, AreaTypeConstants.Room, AreaTypeConstants.Door)]
-        public void StressExits(bool fromHall, string areaType, string primaryExitType)
+        private void AssertExits(IEnumerable<Area> areas, string primaryExitType)
         {
-            Stress(() => AssertExits(fromHall, areaType, primaryExitType));
-        }
-
-        private void AssertExits(bool fromHall, string areaType, string primaryExitType)
-        {
-            var areas = Generate(() => GenerateAreas(fromHall),
-                aa => aa.Any(a => a.Type == areaType));
-
-            AssertAreas(areas);
-
             var exits = areas.Where(a => a.Type == AreaTypeConstants.Door || a.Type == AreaTypeConstants.Hall);
             var halls = exits.Where(e => e.Type == AreaTypeConstants.Hall);
             var doors = exits.Where(e => e.Type == AreaTypeConstants.Door);
@@ -259,197 +287,141 @@ namespace DungeonGen.Tests.Integration.Stress
                 .Or.Contains("45 degrees right"));
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ContentsHappen(bool fromHall)
+        [Test]
+        public void ContentsHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.IsEmpty == false));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => !a.Contents.IsEmpty));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.IsEmpty), Is.Not.All.True);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ContentsDoNotHappen(bool fromHall)
+        [Test]
+        public void ContentsDoNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.IsEmpty));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.IsEmpty));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.IsEmpty), Is.All.True);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void EncountersHappen(bool fromHall)
+        [Test]
+        public void EncountersHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Encounters.Any()));
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Encounters.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Encounters.Any()), Is.Not.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void EncountersDoNotHappen(bool fromHall)
+        [Test]
+        public void EncountersDoNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.Encounters.Any() == false));
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => a.Contents.Encounters.Any() == false));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Encounters.Any()), Is.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void TrapsHappen(bool fromHall)
+        [Test]
+        public void TrapsHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Traps.Any()));
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Traps.Any()), Is.Not.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void TrapsDoNotHappen(bool fromHall)
+        [Test]
+        public void TrapsDoNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.Traps.Any() == false));
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => a.Contents.Traps.Any() == false));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Traps.Any()), Is.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void DungeonTreasuresHappen(bool fromHall)
+        [Test]
+        public void DungeonTreasuresHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Treasures.Any()));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Treasures.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Treasures.Any()), Is.Not.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void DungeonTreasuresDoNotHappen(bool fromHall)
+        [Test]
+        public void DungeonTreasuresDoNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.Treasures.Any() == false));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Treasures.Any() == false));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Treasures.Any()), Is.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ConcealedTreasuresHappen(bool fromHall)
+        [Test]
+        public void MiscellaneousContentsHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Treasures.Any(t => t.Concealment != string.Empty)));
-            AssertAreas(areas);
-
-            var treasures = areas.SelectMany(a => a.Contents.Treasures);
-            Assert.That(treasures.Select(t => t.Concealment), Is.Not.All.Empty);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void UnconcealedTreasuresHappen(bool fromHall)
-        {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Treasures.Any(t => t.Concealment == string.Empty)));
-            AssertAreas(areas);
-
-            var treasures = areas.SelectMany(a => a.Contents.Treasures);
-            Assert.That(treasures.Select(t => t.Concealment), Is.Not.All.Not.Empty);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void ContainedTreasuresHappen(bool fromHall)
-        {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Treasures.Any(t => t.Container != string.Empty)));
-            AssertAreas(areas);
-
-            var treasures = areas.SelectMany(a => a.Contents.Treasures);
-            Assert.That(treasures.Select(t => t.Container), Is.Not.All.Empty);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void UncontainedTreasuresHappen(bool fromHall)
-        {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Treasures.Any(t => t.Container == string.Empty)));
-            AssertAreas(areas);
-
-            var treasures = areas.SelectMany(a => a.Contents.Treasures);
-            Assert.That(treasures.Select(t => t.Container), Is.Not.All.Not.Empty);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void TreasureHappens(bool fromHall)
-        {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Treasures.Any(t => t.Treasure.IsAny)));
-            AssertAreas(areas);
-
-            var treasures = areas.SelectMany(a => a.Contents.Treasures);
-            Assert.That(treasures.Select(t => t.Treasure.IsAny), Is.Not.All.False);
-        }
-
-        [TestCase(true, IgnoreReason = "Whether there is any treasure is dependent on TreasureGen, not DungeonGen.  We just care that treasure does happen and that whole Dungeon Treasures might not happen")]
-        [TestCase(false, IgnoreReason = "Whether there is any treasure is dependent on TreasureGen, not DungeonGen.  We just care that treasure does happen and that whole Dungeon Treasures might not happen")]
-        public void TreasureDoesNotHappen(bool fromHall)
-        {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.Treasures.Any(t => t.Treasure.IsAny == false)));
-            AssertAreas(areas);
-
-            var treasures = areas.SelectMany(a => a.Contents.Treasures);
-            Assert.That(treasures.Select(t => t.Treasure.IsAny), Is.All.False);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void MiscellaneousContentsHappen(bool fromHall)
-        {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Miscellaneous.Any()));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Miscellaneous.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Miscellaneous.Any()), Is.Not.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void MiscellaneousContentsDoNotHappen(bool fromHall)
+        [Test]
+        public void MiscellaneousContentsDoNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.Miscellaneous.Any() == false));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Miscellaneous.Any() == false));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Miscellaneous.Any()), Is.All.False);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PoolHappens(bool fromHall)
+        [Test]
+        public void PoolHappens()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Pool), Is.Not.All.Null);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PoolDoesNotHappen(bool fromHall)
+        [Test]
+        public void PoolDoesNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.All(a => a.Contents.Pool == null));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Pool == null));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Pool), Is.All.Null);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void MagicPoolHappens(bool fromHall)
+        [Test]
+        [Ignore("These are too rare to occur within the stress duration limit")]
+        public void MagicPoolHappens()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower != string.Empty));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower != string.Empty));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -461,11 +433,12 @@ namespace DungeonGen.Tests.Integration.Stress
             Assert.That(magicPowers, Is.Not.All.Empty);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void MundanePoolHappens(bool fromHall)
+        [Test]
+        public void MundanePoolHappens()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower == string.Empty));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower == string.Empty));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -477,11 +450,12 @@ namespace DungeonGen.Tests.Integration.Stress
             Assert.That(magicPowers, Is.All.Empty);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PoolEncounterHappens(bool fromHall)
+        [Test]
+        public void PoolEncounterHappens()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter != null));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter != null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -493,11 +467,12 @@ namespace DungeonGen.Tests.Integration.Stress
             Assert.That(encounters.Select(e => e.Creatures.Count()), Is.All.Positive);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PoolEncounterDoesNotHappen(bool fromHall)
+        [Test]
+        public void PoolEncounterDoesNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter == null));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter == null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -508,11 +483,12 @@ namespace DungeonGen.Tests.Integration.Stress
             Assert.That(encounters, Is.All.Null);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PoolTreasureHappens(bool fromHall)
+        [Test]
+        public void PoolTreasureHappens()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure != null));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure != null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -521,14 +497,14 @@ namespace DungeonGen.Tests.Integration.Stress
 
             var treasures = pools.Select(p => p.Treasure);
             Assert.That(treasures, Is.All.Not.Null);
-            Assert.That(treasures.Select(t => t.Treasure.IsAny), Is.All.True);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void PoolTreasureDoesNotHappen(bool fromHall)
+        [Test]
+        public void PoolTreasureDoesNotHappen()
         {
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure == null));
+            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure == null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -539,12 +515,12 @@ namespace DungeonGen.Tests.Integration.Stress
             Assert.That(treasures, Is.All.Null);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void BUG_TrapWithRollHappens(bool fromHall)
+        [Test]
+        public void BUG_TrapWithRollHappens()
         {
             var rollRegex = new Regex("\\d+d\\d+");
-            var areas = GenerateOrFail(() => GenerateAreas(fromHall), aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)))));
+            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
+            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)))));
             AssertAreas(areas);
 
             var traps = areas.SelectMany(a => a.Contents.Traps);

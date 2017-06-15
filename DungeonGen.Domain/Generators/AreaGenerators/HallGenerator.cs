@@ -8,6 +8,11 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 {
     internal class HallGenerator : AreaGenerator
     {
+        public string AreaType
+        {
+            get { return AreaTypeConstants.Hall; }
+        }
+
         private IAreaPercentileSelector areaPercentileSelector;
         private IPercentileSelector percentileSelector;
         private Dice dice;

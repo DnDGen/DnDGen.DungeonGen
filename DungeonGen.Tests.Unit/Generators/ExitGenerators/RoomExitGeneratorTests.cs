@@ -1,12 +1,13 @@
-﻿using DungeonGen.Domain.Generators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Generators.ExitGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
 
-namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
+namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
 {
     [TestFixture]
     public class RoomExitGeneratorTests
@@ -17,6 +18,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<AreaGenerator> mockDoorGenerator;
         private Area selectedExit;
         private Mock<IPercentileSelector> mockPercentileSelector;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
 
         [SetUp]
         public void Setup()
@@ -25,14 +27,18 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockHallGenerator = new Mock<AreaGenerator>();
             mockDoorGenerator = new Mock<AreaGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
-            roomExitGenerator = new RoomExitGenerator(mockAreaPercentileSelector.Object, mockHallGenerator.Object, mockDoorGenerator.Object, mockPercentileSelector.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            roomExitGenerator = new RoomExitGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockPercentileSelector.Object);
 
             selectedExit = new Area();
             selectedExit.Type = "exit type";
             selectedExit.Width = 1;
             selectedExit.Length = 42 * 600;
+            selectedExit.Type = AreaTypeConstants.Door;
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.RoomExits)).Returns(selectedExit);
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Door)).Returns(mockDoorGenerator.Object);
         }
 
         [Test]

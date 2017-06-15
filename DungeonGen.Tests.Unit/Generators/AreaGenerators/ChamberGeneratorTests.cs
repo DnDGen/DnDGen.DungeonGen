@@ -1,5 +1,7 @@
-﻿using DungeonGen.Domain.Generators;
-using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DungeonGen.Domain.Generators.AreaGenerators;
+using DungeonGen.Domain.Generators.ContentGenerators;
+using DungeonGen.Domain.Generators.ExitGenerators;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
@@ -18,6 +20,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<AreaGenerator> mockSpecialAreaGenerator;
         private Mock<ExitGenerator> mockExitGenerator;
         private Mock<ContentsGenerator> mockContentsGenerator;
+        private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
+        private Mock<JustInTimeFactory> mockJustInTimeFactory;
 
         [SetUp]
         public void Setup()
@@ -26,14 +30,24 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockSpecialAreaGenerator = new Mock<AreaGenerator>();
             mockExitGenerator = new Mock<ExitGenerator>();
             mockContentsGenerator = new Mock<ContentsGenerator>();
-            chamberGenerator = new ChamberGenerator(mockAreaPercentileSelector.Object, mockSpecialAreaGenerator.Object, mockExitGenerator.Object, mockContentsGenerator.Object);
+            mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
+            mockJustInTimeFactory = new Mock<JustInTimeFactory>();
+            chamberGenerator = new ChamberGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockJustInTimeFactory.Object, mockContentsGenerator.Object);
 
             selectedChamber = new Area();
             selectedChamber.Length = 9266;
             selectedChamber.Width = 90210;
 
+            mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Special)).Returns(mockSpecialAreaGenerator.Object);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Chambers)).Returns(selectedChamber);
             mockContentsGenerator.Setup(g => g.Generate(It.IsAny<int>())).Returns(() => new Contents());
+            mockJustInTimeFactory.Setup(f => f.Build<ExitGenerator>(AreaTypeConstants.Chamber)).Returns(mockExitGenerator.Object);
+        }
+
+        [Test]
+        public void AreaTypeIsChamber()
+        {
+            Assert.That(chamberGenerator.AreaType, Is.EqualTo(AreaTypeConstants.Chamber));
         }
 
         [Test]

@@ -1,9 +1,12 @@
 ﻿using DungeonGen.Domain.Generators;
 using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Generators.ContentGenerators;
+using DungeonGen.Domain.Generators.Dungeons;
 using DungeonGen.Domain.Generators.ExitGenerators;
-using DungeonGen.Domain.Generators.RuntimeFactories;
+using DungeonGen.Domain.Generators.Factories;
+using EncounterGen.Generators;
 using NUnit.Framework;
+using TreasureGen.Generators;
 
 namespace DungeonGen.Tests.Integration.IoC.Modules
 {
@@ -11,15 +14,15 @@ namespace DungeonGen.Tests.Integration.IoC.Modules
     public class GeneratorModuleTests : IoCTests
     {
         [Test]
-        public void DungeonGeneratorIsInjected()
+        public void DungeonGeneratorIsInjectedAndDecorated()
         {
-            AssertInstanceOf<IDungeonGenerator, DungeonGenerator>();
+            AssertInstanceOf<IDungeonGenerator, DungeonGeneratorEventDecorator>();
         }
 
         [Test]
         public void AreaGeneratorFactoryIsInjected()
         {
-            AssertInstanceOf<IAreaGeneratorFactory, AreaGeneratorFactory>();
+            AssertInstanceOf<AreaGeneratorFactory, DomainAreaGeneratorFactory>();
         }
 
         [Test]
@@ -29,51 +32,51 @@ namespace DungeonGen.Tests.Integration.IoC.Modules
         }
 
         [Test]
-        public void SpecialChamberGeneratorIsInjected()
+        public void SpecialAreaGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, SpecialAreaGenerator>(AreaTypeConstants.Special);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Special);
         }
 
         [Test]
         public void ChamberGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, ChamberGenerator>(AreaTypeConstants.Chamber);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Chamber);
         }
 
         [Test]
         public void DoorGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, DoorGenerator>(AreaTypeConstants.Door);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Door);
         }
 
         [Test]
         public void HallGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, HallGenerator>(AreaTypeConstants.Hall);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Hall);
         }
 
         [Test]
         public void RoomGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, RoomGenerator>(AreaTypeConstants.Room);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Room);
         }
 
         [Test]
         public void SidePassageGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, SidePassageGenerator>(AreaTypeConstants.SidePassage);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.SidePassage);
         }
 
         [Test]
         public void StairsGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, StairsGenerator>(AreaTypeConstants.Stairs);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Stairs);
         }
 
         [Test]
         public void TurnGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, TurnGenerator>(AreaTypeConstants.Turn);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Turn);
         }
 
         [Test]
@@ -103,13 +106,31 @@ namespace DungeonGen.Tests.Integration.IoC.Modules
         [Test]
         public void CaveGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, CaveGenerator>(AreaTypeConstants.Cave);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(AreaTypeConstants.Cave);
         }
 
         [Test]
         public void ParallelPassageGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, ParallelPassageGenerator>(SidePassageConstants.ParallelPassage);
+            AssertInstanceOf<AreaGenerator, AreaGeneratorEventDecorator>(SidePassageConstants.ParallelPassage);
+        }
+
+        [Test]
+        public void JustInTimeFactoryIsInjected()
+        {
+            AssertInstanceOf<JustInTimeFactory, NinjectJustInTimeFactory>();
+        }
+
+        [Test]
+        public void EXTERNAL_TreasureGeneratorIsInjected()
+        {
+            AssertInstanceOf<ITreasureGenerator>();
+        }
+
+        [Test]
+        public void EXTERNAL_EncounterGeneratorIsInjected()
+        {
+            AssertInstanceOf<IEncounterGenerator>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DungeonGen.Domain.Generators.Factories;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,14 @@ namespace DungeonGen.Domain.Generators.ExitGenerators
 {
     internal class ChamberExitGenerator : ExitGenerator
     {
-        private IAreaPercentileSelector areaPercentileSelector;
-        private AreaGenerator hallGenerator;
-        private AreaGenerator doorGenerator;
-        private IPercentileSelector percentileSelector;
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
 
-        public ChamberExitGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGenerator hallGenerator, AreaGenerator doorGenerator, IPercentileSelector percentileSelector)
+        public ChamberExitGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGeneratorFactory areaGeneratorFactory, IPercentileSelector percentileSelector)
         {
             this.areaPercentileSelector = areaPercentileSelector;
-            this.hallGenerator = hallGenerator;
-            this.doorGenerator = doorGenerator;
+            this.areaGeneratorFactory = areaGeneratorFactory;
             this.percentileSelector = percentileSelector;
         }
 
@@ -43,10 +42,8 @@ namespace DungeonGen.Domain.Generators.ExitGenerators
 
         private Area GetExit(int dungeonLevel, int partyLevel, string type, string temperature)
         {
-            if (type == AreaTypeConstants.Door)
-                return doorGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
-
-            return hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
+            var exitGenerator = areaGeneratorFactory.Build(type);
+            return exitGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
         }
 
         private IEnumerable<string> GetDescription(Area exit)
