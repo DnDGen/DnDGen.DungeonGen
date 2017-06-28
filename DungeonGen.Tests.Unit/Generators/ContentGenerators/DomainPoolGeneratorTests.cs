@@ -23,6 +23,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
         private Encounter encounter;
         private Treasure treasure;
         private Mock<JustInTimeFactory> mockJustInTimeFactory;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -33,9 +34,15 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             mockJustInTimeFactory = new Mock<JustInTimeFactory>();
             poolGenerator = new DomainPoolGenerator(mockPercentileSelector.Object, mockJustInTimeFactory.Object);
 
+            specifications = new EncounterSpecifications();
             selectedPool = string.Empty;
             encounter = new Encounter();
             treasure = new Treasure();
+
+            specifications.Environment = "environment";
+            specifications.Level = 9266;
+            specifications.Temperature = "temperature";
+            specifications.TimeOfDay = "time of day";
 
             mockJustInTimeFactory.Setup(f => f.Build<IEncounterGenerator>()).Returns(mockEncounterGenerator.Object);
             mockJustInTimeFactory.Setup(f => f.Build<ITreasureGenerator>()).Returns(mockTreasureGenerator.Object);
@@ -43,18 +50,18 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             mockEncounterGenerator.Setup(g => g.Generate(
                 It.Is<EncounterSpecifications>(s =>
                    s.AllowAquatic
-                   && s.Environment == EnvironmentConstants.Underground
-                   && s.Level == 9266
-                   && s.Temperature == "temperature"
-                   && s.TimeOfDay == EnvironmentConstants.TimesOfDay.Night
+                   && s.Environment == specifications.Environment
+                   && s.Level == specifications.Level
+                   && s.Temperature == specifications.Temperature
+                   && s.TimeOfDay == specifications.TimeOfDay
                 ))).Returns(encounter);
-            mockTreasureGenerator.Setup(g => g.GenerateAtLevel(9266)).Returns(treasure);
+            mockTreasureGenerator.Setup(g => g.GenerateAtLevel(specifications.Level)).Returns(treasure);
         }
 
         [Test]
         public void GenerateNoPool()
         {
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Null);
         }
 
@@ -63,7 +70,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
         {
             selectedPool = "swimming pool";
 
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Not.Null);
             Assert.That(pool.Encounter, Is.Null);
             Assert.That(pool.MagicPower, Is.Empty);
@@ -75,7 +82,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
         {
             selectedPool = ContentsTypeConstants.Encounter;
 
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Not.Null);
             Assert.That(pool.Encounter, Is.EqualTo(encounter));
             Assert.That(pool.MagicPower, Is.Empty);
@@ -88,7 +95,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             selectedPool = ContentsTypeConstants.Encounter + "/" + ContentsTypeConstants.Treasure;
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.TreasureContainers)).Returns("fannypack");
 
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Not.Null);
             Assert.That(pool.Encounter, Is.EqualTo(encounter));
             Assert.That(pool.MagicPower, Is.Empty);
@@ -103,7 +110,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.MagicPoolPowers)).Returns("grant wishes");
 
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Not.Null);
             Assert.That(pool.Encounter, Is.Null);
             Assert.That(pool.MagicPower, Is.EqualTo("grant wishes"));
@@ -118,7 +125,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.MagicPoolPowers)).Returns(ContentsConstants.LikesAlignment);
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.MagicPoolAlignments)).Returns("buttheady");
 
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Not.Null);
             Assert.That(pool.Encounter, Is.Null);
             Assert.That(pool.MagicPower, Is.EqualTo("Talking pool (grants wish to buttheady characters, deals 1d20 points of damage to anyone else who speaks to it)"));
@@ -133,7 +140,7 @@ namespace DungeonGen.Tests.Unit.Generators.ContentGenerators
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.MagicPoolPowers)).Returns(ContentsConstants.TeleportationPool);
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.MagicPoolTeleportationDestinations)).Returns("to your mom's house");
 
-            var pool = poolGenerator.Generate(9266, "temperature");
+            var pool = poolGenerator.Generate(specifications);
             Assert.That(pool, Is.Not.Null);
             Assert.That(pool.Encounter, Is.Null);
             Assert.That(pool.MagicPower, Is.EqualTo("Wading into the pool teleports the character to your mom's house"));

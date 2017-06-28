@@ -1,7 +1,9 @@
-﻿namespace DungeonGen.Domain.Generators
+﻿using EncounterGen.Generators;
+
+namespace DungeonGen.Domain.Generators
 {
     internal interface PoolGenerator
     {
-        Pool Generate(int partyLevel, string temperature);
+        Pool Generate(EncounterSpecifications environment);
     }
 }

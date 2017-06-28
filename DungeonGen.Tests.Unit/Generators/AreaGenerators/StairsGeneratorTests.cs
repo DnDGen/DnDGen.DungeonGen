@@ -2,6 +2,7 @@
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
 using RollGen;
@@ -18,6 +19,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<Dice> mockDice;
         private Mock<AreaGenerator> mockChamberGenerator;
         private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -28,6 +30,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
             stairsGenerator = new StairsGenerator(mockAreaPercentileSelector.Object, mockDice.Object, mockAreaGeneratorFactory.Object);
             selectedStairs = new Area();
+            specifications = new EncounterSpecifications();
 
             mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Chamber)).Returns(mockChamberGenerator.Object);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Stairs)).Returns(selectedStairs);
@@ -43,7 +46,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateStairs()
         {
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature");
+            var stairs = stairsGenerator.Generate(9266, specifications);
             Assert.That(stairs, Is.Not.Null);
             Assert.That(stairs, Is.Not.Empty);
             Assert.That(stairs.Count(), Is.EqualTo(1));
@@ -54,7 +57,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedStairs.Length = 600;
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature").Single();
+            var stairs = stairsGenerator.Generate(9266, specifications).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
             Assert.That(stairs.Descriptions.Single(), Is.EqualTo("Down to level 9866"));
             Assert.That(stairs.Length, Is.EqualTo(0));
@@ -70,7 +73,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockDice.Setup(d => d.Roll(1).d(100).AsSum()).Returns(roll);
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature");
+            var stairs = stairsGenerator.Generate(9266, specifications);
             Assert.That(stairs.Count(), Is.EqualTo(2));
 
             var first = stairs.First();
@@ -95,7 +98,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockDice.Setup(d => d.Roll(1).d(100).AsSum()).Returns(43);
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature").Single();
+            var stairs = stairsGenerator.Generate(9266, specifications).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
             Assert.That(stairs.Descriptions.Single(), Is.EqualTo("Down to level 9866"));
             Assert.That(stairs.Length, Is.EqualTo(0));
@@ -107,7 +110,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedStairs.Length = -42;
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature").Single();
+            var stairs = stairsGenerator.Generate(9266, specifications).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
             Assert.That(stairs.Descriptions.Single(), Is.EqualTo("Up to level 9224"));
             Assert.That(stairs.Length, Is.EqualTo(0));
@@ -120,7 +123,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedStairs.Length = levelsDown;
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature").Single();
+            var stairs = stairsGenerator.Generate(9266, specifications).Single();
             Assert.That(stairs.Type, Is.EqualTo(AreaTypeConstants.DeadEnd));
             Assert.That(stairs.Contents.IsEmpty, Is.True);
             Assert.That(stairs.Descriptions, Is.Empty);
@@ -134,7 +137,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedStairs.Length = -600;
             selectedStairs.Descriptions = new[] { DescriptionConstants.Chimney };
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature");
+            var stairs = stairsGenerator.Generate(9266, specifications);
             Assert.That(stairs.Count(), Is.EqualTo(2));
 
             var first = stairs.First();
@@ -160,7 +163,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedStairs.Length = levelsDown;
             selectedStairs.Descriptions = new[] { DescriptionConstants.Chimney };
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature").Single();
+            var stairs = stairsGenerator.Generate(9266, specifications).Single();
             Assert.That(stairs.Type, Is.EqualTo(AreaTypeConstants.Hall));
             Assert.That(stairs.Contents.IsEmpty, Is.True);
             Assert.That(stairs.Descriptions, Is.Empty);
@@ -174,7 +177,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedStairs.Length = 600;
             selectedStairs.Descriptions = new[] { DescriptionConstants.TrapDoor };
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature");
+            var stairs = stairsGenerator.Generate(9266, specifications);
             Assert.That(stairs.Count(), Is.EqualTo(2));
 
             var first = stairs.First();
@@ -202,9 +205,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var chamber = new Area();
             var exit = new Area();
 
-            mockChamberGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { chamber, exit });
+            mockChamberGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { chamber, exit });
 
-            var stairs = stairsGenerator.Generate(9266, 90210, "temperature");
+            var stairs = stairsGenerator.Generate(9266, specifications);
             Assert.That(stairs.Count(), Is.EqualTo(3));
             Assert.That(stairs, Contains.Item(selectedStairs));
             Assert.That(stairs, Contains.Item(chamber));

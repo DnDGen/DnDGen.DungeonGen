@@ -1,6 +1,7 @@
 ﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
 using RollGen;
@@ -15,6 +16,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<IAreaPercentileSelector> mockAreaPercentileSelector;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<Dice> mockDice;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -23,6 +25,8 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockDice = new Mock<Dice>();
             hallGenerator = new HallGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockDice.Object);
+
+            specifications = new EncounterSpecifications();
         }
 
         [Test]
@@ -37,7 +41,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var selectedHall = new Area();
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Halls)).Returns(selectedHall);
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(selectedHall));
         }
 
@@ -53,7 +57,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var tableName = string.Format(TableNameConstants.SpecialAREA, AreaTypeConstants.Hall);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(tableName)).Returns(specialHall);
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
         }
 
@@ -73,7 +77,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.GalleryStairs)).Returns("escalator");
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Gallery));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("escalator"));
@@ -97,7 +101,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.GalleryStairs)).Returns(ContentsConstants.GalleryStairs_Beginning);
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.AdditionalGalleryStairs)).Returns("escalator");
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Gallery));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.GalleryStairs_Beginning));
@@ -121,7 +125,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.StreamCrossing)).Returns("ferry");
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Stream));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("ferry"));
@@ -144,7 +148,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.StreamCrossing)).Returns(string.Empty);
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Stream));
             Assert.That(hall.Contents.Miscellaneous.Count(), Is.EqualTo(1));
@@ -166,7 +170,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.RiverCrossing)).Returns("ferry");
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.River));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("ferry"));
@@ -189,7 +193,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ChasmCrossing)).Returns("zip line");
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Chasm));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("zip line"));
@@ -214,7 +218,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockDice.Setup(d => d.ContainsRoll("zip line", false)).Returns(true);
             mockDice.Setup(d => d.ReplaceExpressionWithTotal("zip line", false)).Returns("roll replaced");
 
-            var hall = hallGenerator.Generate(9266, 90210, "temperature").Single();
+            var hall = hallGenerator.Generate(9266, specifications).Single();
             Assert.That(hall, Is.EqualTo(specialHall));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item(ContentsConstants.Chasm));
             Assert.That(hall.Contents.Miscellaneous, Contains.Item("roll replaced"));

@@ -3,6 +3,7 @@ using DungeonGen.Domain.Generators.ExitGenerators;
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,7 +29,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.contentsGenerator = contentsGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
             var chamber = areaPercentileSelector.SelectFrom(TableNameConstants.Chambers);
             var chambers = new List<Area>();
@@ -36,7 +37,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             if (chamber.Type == AreaTypeConstants.Special)
             {
                 var specialAreaGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Special);
-                var specialAreas = specialAreaGenerator.Generate(dungeonLevel, partyLevel, temperature);
+                var specialAreas = specialAreaGenerator.Generate(dungeonLevel, environment);
                 chambers.AddRange(specialAreas);
             }
             else
@@ -51,14 +52,14 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
                     chambers[i].Type = AreaTypeConstants.Chamber;
 
                 var exitGenerator = justInTimeFactory.Build<ExitGenerator>(AreaTypeConstants.Chamber);
-                var exits = exitGenerator.Generate(dungeonLevel, partyLevel, chambers[i].Length, chambers[i].Width, temperature);
+                var exits = exitGenerator.Generate(dungeonLevel, environment, chambers[i].Length, chambers[i].Width);
 
                 if (i + 1 == chambers.Count)
                     chambers.AddRange(exits);
                 else
                     chambers.InsertRange(i + 1, exits);
 
-                var newContents = contentsGenerator.Generate(partyLevel);
+                var newContents = contentsGenerator.Generate(environment.Level);
                 chambers[i].Contents.Encounters = chambers[i].Contents.Encounters.Union(newContents.Encounters);
                 chambers[i].Contents.Miscellaneous = chambers[i].Contents.Miscellaneous.Union(newContents.Miscellaneous);
                 chambers[i].Contents.Traps = chambers[i].Contents.Traps.Union(newContents.Traps);

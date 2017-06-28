@@ -1,6 +1,7 @@
 ﻿using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using RollGen;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.areaGeneratorFactory = areaGeneratorFactory;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
             var stairs = areaPercentileSelector.SelectFrom(TableNameConstants.Stairs);
             var endLevel = dungeonLevel + stairs.Length;
@@ -55,7 +56,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
                 stairs.Contents.Miscellaneous = stairs.Contents.Miscellaneous.Except(new[] { AreaTypeConstants.Chamber });
 
                 var chamberGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Chamber);
-                var chambers = chamberGenerator.Generate(dungeonLevel, partyLevel, temperature);
+                var chambers = chamberGenerator.Generate(dungeonLevel, environment);
 
                 allStairAreas.AddRange(chambers);
             }

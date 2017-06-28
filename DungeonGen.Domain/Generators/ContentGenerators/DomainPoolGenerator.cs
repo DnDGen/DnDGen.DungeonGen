@@ -1,7 +1,6 @@
 ﻿using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
-using EncounterGen.Common;
 using EncounterGen.Generators;
 using TreasureGen.Generators;
 
@@ -18,7 +17,7 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
             this.justInTimeFactory = justInTimeFactory;
         }
 
-        public Pool Generate(int partyLevel, string temperature)
+        public Pool Generate(EncounterSpecifications environment)
         {
             var selectedPool = percentileSelector.SelectFrom(TableNameConstants.Pools);
 
@@ -32,11 +31,7 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
             {
                 if (section == ContentsTypeConstants.Encounter)
                 {
-                    var specifications = new EncounterSpecifications();
-                    specifications.Environment = EnvironmentConstants.Underground;
-                    specifications.Level = partyLevel;
-                    specifications.Temperature = temperature;
-                    specifications.TimeOfDay = EnvironmentConstants.TimesOfDay.Night;
+                    var specifications = environment.Clone();
                     specifications.AllowAquatic = true;
 
                     var encounterGenerator = justInTimeFactory.Build<IEncounterGenerator>();
@@ -49,7 +44,7 @@ namespace DungeonGen.Domain.Generators.ContentGenerators
                     pool.Treasure.Container = percentileSelector.SelectFrom(TableNameConstants.TreasureContainers);
 
                     var treasureGenerator = justInTimeFactory.Build<ITreasureGenerator>();
-                    pool.Treasure.Treasure = treasureGenerator.GenerateAtLevel(partyLevel);
+                    pool.Treasure.Treasure = treasureGenerator.GenerateAtLevel(environment.Level);
                 }
 
                 if (section == ContentsConstants.MagicPool)

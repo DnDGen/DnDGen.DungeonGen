@@ -2,6 +2,7 @@
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<AreaGenerator> mockHallGenerator;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -24,6 +26,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
             sidePassageGenerator = new SidePassageGenerator(mockPercentileSelector.Object, mockAreaGeneratorFactory.Object);
 
+            specifications = new EncounterSpecifications();
             mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
         }
 
@@ -39,9 +42,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SidePassages)).Returns("description");
 
             var generatedSidePassage = new Area();
-            mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { generatedSidePassage });
+            mockHallGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { generatedSidePassage });
 
-            var sidePassages = sidePassageGenerator.Generate(9266, 90210, "temperature");
+            var sidePassages = sidePassageGenerator.Generate(9266, specifications);
             Assert.That(sidePassages.Count(), Is.EqualTo(2));
 
             var originalHall = sidePassages.First();
@@ -62,9 +65,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var leftHall = new Area();
             var rightHall = new Area();
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { leftHall }).Returns(new[] { rightHall });
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, specifications)).Returns(new[] { leftHall }).Returns(new[] { rightHall });
 
-            var sidePassages = sidePassageGenerator.Generate(9266, 90210, "temperature");
+            var sidePassages = sidePassageGenerator.Generate(9266, specifications);
             Assert.That(sidePassages.Count(), Is.EqualTo(2));
 
             var first = sidePassages.First();
@@ -83,9 +86,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var leftHall = new Area();
             var rightHall = new Area();
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { leftHall }).Returns(new[] { rightHall });
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, specifications)).Returns(new[] { leftHall }).Returns(new[] { rightHall });
 
-            var sidePassages = sidePassageGenerator.Generate(9266, 90210, "temperature");
+            var sidePassages = sidePassageGenerator.Generate(9266, specifications);
             Assert.That(sidePassages.Count(), Is.EqualTo(2));
 
             var first = sidePassages.First();
@@ -104,9 +107,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var leftHall = new Area();
             var rightHall = new Area();
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { leftHall }).Returns(new[] { rightHall });
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, specifications)).Returns(new[] { leftHall }).Returns(new[] { rightHall });
 
-            var sidePassages = sidePassageGenerator.Generate(9266, 90210, "temperature");
+            var sidePassages = sidePassageGenerator.Generate(9266, specifications);
             Assert.That(sidePassages.Count(), Is.EqualTo(3));
 
             var first = sidePassages.First();
@@ -131,11 +134,11 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var leftAheadHall = new Area();
             var rightAheadHall = new Area();
             var rightBehindHall = new Area();
-            mockHallGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature"))
+            mockHallGenerator.SetupSequence(g => g.Generate(9266, specifications))
                 .Returns(new[] { leftBehindHall }).Returns(new[] { leftAheadHall })
                 .Returns(new[] { rightAheadHall }).Returns(new[] { rightBehindHall });
 
-            var sidePassages = sidePassageGenerator.Generate(9266, 90210, "temperature").ToArray();
+            var sidePassages = sidePassageGenerator.Generate(9266, specifications).ToArray();
             Assert.That(sidePassages.Length, Is.EqualTo(4));
 
             Assert.That(sidePassages[0], Is.EqualTo(leftBehindHall));

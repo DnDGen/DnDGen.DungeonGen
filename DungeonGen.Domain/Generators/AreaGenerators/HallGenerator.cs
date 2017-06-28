@@ -1,5 +1,6 @@
 ﻿using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using RollGen;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.dice = dice;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
             var hall = areaPercentileSelector.SelectFrom(TableNameConstants.Halls);
 

@@ -1,6 +1,7 @@
 ﻿using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +20,7 @@ namespace DungeonGen.Domain.Generators.ExitGenerators
             this.percentileSelector = percentileSelector;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, int length, int width, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment, int length, int width)
         {
             var selectedExit = areaPercentileSelector.SelectFrom(TableNameConstants.RoomExits);
 
@@ -30,7 +31,7 @@ namespace DungeonGen.Domain.Generators.ExitGenerators
 
             while (selectedExit.Width-- > 0)
             {
-                var exit = GetExit(dungeonLevel, partyLevel, selectedExit.Type, temperature);
+                var exit = GetExit(dungeonLevel, environment, selectedExit.Type);
                 var additionalDescriptions = GetDescription(exit);
                 exit.Descriptions = exit.Descriptions.Union(additionalDescriptions);
 
@@ -40,10 +41,10 @@ namespace DungeonGen.Domain.Generators.ExitGenerators
             return exits;
         }
 
-        private Area GetExit(int dungeonLevel, int partyLevel, string type, string temperature)
+        private Area GetExit(int dungeonLevel, EncounterSpecifications environment, string exitType)
         {
-            var exitGenerator = areaGeneratorFactory.Build(type);
-            return exitGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
+            var exitGenerator = areaGeneratorFactory.Build(exitType);
+            return exitGenerator.Generate(dungeonLevel, environment).Single();
         }
 
         private IEnumerable<string> GetDescription(Area exit)

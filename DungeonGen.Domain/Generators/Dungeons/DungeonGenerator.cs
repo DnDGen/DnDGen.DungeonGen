@@ -36,25 +36,25 @@ namespace DungeonGen.Domain.Generators.Dungeons
             };
         }
 
-        public IEnumerable<Area> GenerateFromDoor(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> GenerateFromDoor(int dungeonLevel, EncounterSpecifications environment)
         {
-            return Generate(dungeonLevel, partyLevel, TableNameConstants.DungeonAreaFromDoor, temperature);
+            return Generate(dungeonLevel, environment, TableNameConstants.DungeonAreaFromDoor);
         }
 
-        public IEnumerable<Area> GenerateFromHall(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> GenerateFromHall(int dungeonLevel, EncounterSpecifications environment)
         {
-            return Generate(dungeonLevel, partyLevel, TableNameConstants.DungeonAreaFromHall, temperature);
+            return Generate(dungeonLevel, environment, TableNameConstants.DungeonAreaFromHall);
         }
 
-        private IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string tableName, string temperature)
+        private IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment, string tableName)
         {
             var areas = new List<Area>();
-            var newAreas = GenerateAreas(dungeonLevel, partyLevel, tableName, temperature);
+            var newAreas = GenerateAreas(dungeonLevel, environment, tableName);
             areas.AddRange(newAreas);
 
             while (areas.Last().Type == AreaTypeConstants.General)
             {
-                newAreas = GenerateAreas(dungeonLevel, partyLevel, tableName, temperature);
+                newAreas = GenerateAreas(dungeonLevel, environment, tableName);
                 areas.AddRange(newAreas);
             }
 
@@ -78,8 +78,8 @@ namespace DungeonGen.Domain.Generators.Dungeons
                     area.Descriptions = area.Descriptions.Union(new[] { doorLocation });
                 }
 
-                area.Contents.Encounters = GenerateEncounters(area, partyLevel, temperature);
-                area.Contents.Traps = GenerateTraps(area, partyLevel);
+                area.Contents.Encounters = GenerateEncounters(area, environment);
+                area.Contents.Traps = GenerateTraps(area, environment.Level);
             }
 
             if (doorsAreFromHall && areas.Any(a => a.Descriptions.Contains(DescriptionConstants.StraightAhead)) == false)
@@ -94,14 +94,14 @@ namespace DungeonGen.Domain.Generators.Dungeons
             return areas;
         }
 
-        private IEnumerable<Area> GenerateAreas(int dungeonLevel, int partyLevel, string tableName, string temperature)
+        private IEnumerable<Area> GenerateAreas(int dungeonLevel, EncounterSpecifications environment, string tableName)
         {
             var area = areaPercentileSelector.SelectFrom(tableName);
 
             if (NeedToGenerateNewHall(area, tableName))
             {
                 var hallGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Hall);
-                var newHall = hallGenerator.Generate(dungeonLevel, partyLevel, temperature).Single();
+                var newHall = hallGenerator.Generate(dungeonLevel, environment).Single();
                 newHall.Descriptions = newHall.Descriptions.Union(area.Descriptions);
 
                 return new[] { newHall };
@@ -115,7 +115,7 @@ namespace DungeonGen.Domain.Generators.Dungeons
 
             while (area.Width-- > 0)
             {
-                var newAreas = areaGenerator.Generate(dungeonLevel, partyLevel, temperature);
+                var newAreas = areaGenerator.Generate(dungeonLevel, environment);
                 specificAreas.AddRange(newAreas);
             }
 
@@ -127,7 +127,7 @@ namespace DungeonGen.Domain.Generators.Dungeons
             return area.Type == AreaTypeConstants.Hall && tablename == TableNameConstants.DungeonAreaFromDoor;
         }
 
-        private IEnumerable<Encounter> GenerateEncounters(Area area, int partyLevel, string temperature)
+        private IEnumerable<Encounter> GenerateEncounters(Area area, EncounterSpecifications environment)
         {
             var encounters = new List<Encounter>();
             var encounterContents = area.Contents.Miscellaneous.Where(m => m == ContentsTypeConstants.Encounter);
@@ -139,11 +139,7 @@ namespace DungeonGen.Domain.Generators.Dungeons
 
             foreach (var encounterContent in encounterContents)
             {
-                var specifications = new EncounterSpecifications();
-                specifications.Environment = EnvironmentConstants.Underground;
-                specifications.Level = partyLevel;
-                specifications.Temperature = temperature;
-                specifications.TimeOfDay = EnvironmentConstants.TimesOfDay.Night;
+                var specifications = environment.Clone();
                 specifications.AllowAquatic = area.Contents.Miscellaneous.Intersect(waterContents).Any();
 
                 var encounter = encounterGenerator.Generate(specifications);

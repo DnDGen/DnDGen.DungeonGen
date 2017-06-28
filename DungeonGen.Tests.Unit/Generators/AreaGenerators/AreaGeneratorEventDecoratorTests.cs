@@ -1,4 +1,5 @@
 ﻿using DungeonGen.Domain.Generators.AreaGenerators;
+using EncounterGen.Generators;
 using EventGen;
 using Moq;
 using NUnit.Framework;
@@ -11,6 +12,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private AreaGenerator decorator;
         private Mock<AreaGenerator> mockInnerGenerator;
         private Mock<GenEventQueue> mockEventQueue;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -19,6 +21,12 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockEventQueue = new Mock<GenEventQueue>();
 
             decorator = new AreaGeneratorEventDecorator(mockInnerGenerator.Object, mockEventQueue.Object);
+            specifications = new EncounterSpecifications();
+
+            specifications.Environment = "environment";
+            specifications.Level = 90210;
+            specifications.Temperature = "temperature";
+            specifications.TimeOfDay = "time of day";
 
             mockInnerGenerator.SetupGet(g => g.AreaType).Returns("area type");
         }
@@ -33,9 +41,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         public void ReturnInnerAreas()
         {
             var areas = new[] { new Area(), new Area() };
-            mockInnerGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(areas);
+            mockInnerGenerator.Setup(g => g.Generate(9266, specifications)).Returns(areas);
 
-            var generatedAreas = decorator.Generate(9266, 90210, "temperature");
+            var generatedAreas = decorator.Generate(9266, specifications);
             Assert.That(generatedAreas, Is.EqualTo(areas));
         }
 
@@ -43,13 +51,26 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         public void LogEventsForAreas()
         {
             var areas = new[] { new Area { Type = "area type" }, new Area { Type = "other area type" } };
-            mockInnerGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(areas);
+            mockInnerGenerator.Setup(g => g.Generate(9266, specifications)).Returns(areas);
 
-            var generatedAreas = decorator.Generate(9266, 90210, "temperature");
+            var generatedAreas = decorator.Generate(9266, specifications);
             Assert.That(generatedAreas, Is.EqualTo(areas));
             mockEventQueue.Verify(q => q.Enqueue(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
-            mockEventQueue.Verify(q => q.Enqueue("DungeonGen", $"Generating temperature area types for level 90210 party on dungeon level 9266"), Times.Once);
-            mockEventQueue.Verify(q => q.Enqueue("DungeonGen", $"Finished generating 2 area types: [area type, other area type]"), Times.Once);
+            mockEventQueue.Verify(q => q.Enqueue("DungeonGen", $"Generating {specifications.Description} area type on dungeon level 9266"), Times.Once);
+            mockEventQueue.Verify(q => q.Enqueue("DungeonGen", $"Generated 2 areas for area type: [area type, other area type]"), Times.Once);
+        }
+
+        [Test]
+        public void LogEventsForAreasWithoutTypes()
+        {
+            var areas = new[] { new Area(), new Area() };
+            mockInnerGenerator.Setup(g => g.Generate(9266, specifications)).Returns(areas);
+
+            var generatedAreas = decorator.Generate(9266, specifications);
+            Assert.That(generatedAreas, Is.EqualTo(areas));
+            mockEventQueue.Verify(q => q.Enqueue(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(2));
+            mockEventQueue.Verify(q => q.Enqueue("DungeonGen", $"Generating {specifications.Description} area type on dungeon level 9266"), Times.Once);
+            mockEventQueue.Verify(q => q.Enqueue("DungeonGen", $"Generated 2 areas for area type"), Times.Once);
         }
     }
 }

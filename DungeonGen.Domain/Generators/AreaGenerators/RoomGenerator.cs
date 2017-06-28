@@ -3,6 +3,7 @@ using DungeonGen.Domain.Generators.ExitGenerators;
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,7 +29,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.contentsGenerator = contentsGenerator;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
             var room = areaPercentileSelector.SelectFrom(TableNameConstants.Rooms);
             var rooms = new List<Area>();
@@ -36,7 +37,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             if (room.Type == AreaTypeConstants.Special)
             {
                 var specialAreaGenerator = areaGeneratorFactory.Build(AreaTypeConstants.Special);
-                var specialAreas = specialAreaGenerator.Generate(dungeonLevel, partyLevel, temperature);
+                var specialAreas = specialAreaGenerator.Generate(dungeonLevel, environment);
                 rooms.AddRange(specialAreas);
             }
             else
@@ -51,14 +52,14 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
                     rooms[i].Type = AreaTypeConstants.Room;
 
                 var exitGenerator = justInTimeFactory.Build<ExitGenerator>(AreaTypeConstants.Room);
-                var exits = exitGenerator.Generate(dungeonLevel, partyLevel, rooms[i].Length, rooms[i].Width, temperature);
+                var exits = exitGenerator.Generate(dungeonLevel, environment, rooms[i].Length, rooms[i].Width);
 
                 if (i + 1 == rooms.Count)
                     rooms.AddRange(exits);
                 else
                     rooms.InsertRange(i + 1, exits);
 
-                var newContents = contentsGenerator.Generate(partyLevel);
+                var newContents = contentsGenerator.Generate(environment.Level);
                 rooms[i].Contents.Encounters = rooms[i].Contents.Encounters.Union(newContents.Encounters);
                 rooms[i].Contents.Miscellaneous = rooms[i].Contents.Miscellaneous.Union(newContents.Miscellaneous);
                 rooms[i].Contents.Traps = rooms[i].Contents.Traps.Union(newContents.Traps);

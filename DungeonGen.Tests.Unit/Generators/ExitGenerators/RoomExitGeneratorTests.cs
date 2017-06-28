@@ -3,6 +3,7 @@ using DungeonGen.Domain.Generators.ExitGenerators;
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
         private Area selectedExit;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -29,6 +31,8 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
             roomExitGenerator = new RoomExitGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockPercentileSelector.Object);
+
+            specifications = new EncounterSpecifications();
 
             selectedExit = new Area();
             selectedExit.Type = "exit type";
@@ -45,9 +49,9 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
         public void GetExitFromSelector()
         {
             var exit = new Area();
-            mockDoorGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { exit });
+            mockDoorGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { exit });
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Single(), Is.EqualTo(exit));
         }
 
@@ -58,9 +62,9 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
 
             var exit = new Area();
             var otherExit = new Area();
-            mockDoorGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { exit }).Returns(new[] { otherExit });
+            mockDoorGenerator.SetupSequence(g => g.Generate(9266, specifications)).Returns(new[] { exit }).Returns(new[] { otherExit });
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Count(), Is.EqualTo(2));
 
             var first = exits.First();
@@ -75,7 +79,7 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
         {
             selectedExit.Width = 0;
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits, Is.Empty);
         }
 
@@ -87,9 +91,9 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
         {
             selectedExit.Length -= 1;
             selectedExit.Width = originalExits;
-            mockDoorGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(() => new[] { new Area() });
+            mockDoorGenerator.Setup(g => g.Generate(9266, specifications)).Returns(() => new[] { new Area() });
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Count(), Is.EqualTo(totalExits));
         }
 
@@ -97,9 +101,9 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
         public void IfLimitIsZero_DoNotGetExtraExit()
         {
             selectedExit.Length = 0;
-            mockDoorGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(() => new[] { new Area() });
+            mockDoorGenerator.Setup(g => g.Generate(9266, specifications)).Returns(() => new[] { new Area() });
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Count(), Is.EqualTo(1));
         }
 
@@ -109,9 +113,9 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
             selectedExit.Type = AreaTypeConstants.Hall;
 
             var hall = new Area { Type = AreaTypeConstants.Hall };
-            mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { hall });
+            mockHallGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { hall });
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Single(), Is.EqualTo(hall));
         }
 
@@ -121,11 +125,11 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
             selectedExit.Type = AreaTypeConstants.Hall;
 
             var hall = new Area { Type = AreaTypeConstants.Hall };
-            mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { hall });
+            mockHallGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { hall });
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling");
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right");
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Single(), Is.EqualTo(hall));
             Assert.That(hall.Descriptions, Contains.Item("on the ceiling"));
             Assert.That(hall.Descriptions, Contains.Item("to the right"));
@@ -138,11 +142,11 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
             selectedExit.Type = AreaTypeConstants.Hall;
 
             var hall = new Area { Type = AreaTypeConstants.Hall, Descriptions = new[] { "dark", "dank" } };
-            mockHallGenerator.Setup(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { hall });
+            mockHallGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { hall });
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling");
             mockPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right");
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Single(), Is.EqualTo(hall));
             Assert.That(hall.Descriptions, Contains.Item("on the ceiling"));
             Assert.That(hall.Descriptions, Contains.Item("to the right"));
@@ -158,12 +162,12 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
 
             var exit = new Area { Type = AreaTypeConstants.Door };
             var otherExit = new Area { Type = AreaTypeConstants.Door };
-            mockDoorGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { exit }).Returns(new[] { otherExit });
+            mockDoorGenerator.SetupSequence(g => g.Generate(9266, specifications)).Returns(new[] { exit }).Returns(new[] { otherExit });
 
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling").Returns("behind you");
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right").Returns("to the left");
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Count(), Is.EqualTo(2));
 
             var first = exits.First();
@@ -182,12 +186,12 @@ namespace DungeonGen.Tests.Unit.Generators.ExitGenerators
 
             var exit = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "door-like" } };
             var otherExit = new Area { Type = AreaTypeConstants.Door, Descriptions = new[] { "sliding", "like Star Trek" } };
-            mockDoorGenerator.SetupSequence(g => g.Generate(9266, 90210, "temperature")).Returns(new[] { exit }).Returns(new[] { otherExit });
+            mockDoorGenerator.SetupSequence(g => g.Generate(9266, specifications)).Returns(new[] { exit }).Returns(new[] { otherExit });
 
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitLocation)).Returns("on the ceiling").Returns("behind you");
             mockPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.ExitDirection)).Returns("to the right").Returns("to the left");
 
-            var exits = roomExitGenerator.Generate(9266, 90210, 42, 600, "temperature");
+            var exits = roomExitGenerator.Generate(9266, specifications, 42, 600);
             Assert.That(exits.Count(), Is.EqualTo(2));
 
             var first = exits.First();

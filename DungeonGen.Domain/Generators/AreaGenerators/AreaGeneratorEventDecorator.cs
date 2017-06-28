@@ -1,4 +1,5 @@
-﻿using EventGen;
+﻿using EncounterGen.Generators;
+using EventGen;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,13 +21,18 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.eventQueue = eventQueue;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
-            eventQueue.Enqueue("DungeonGen", $"Generating {temperature} {AreaType}s for level {partyLevel} party on dungeon level {dungeonLevel}");
-            var areas = innerGenerator.Generate(dungeonLevel, partyLevel, temperature);
+            eventQueue.Enqueue("DungeonGen", $"Generating {environment.Description} {AreaType} on dungeon level {dungeonLevel}");
+            var areas = innerGenerator.Generate(dungeonLevel, environment);
 
             var areaTypes = areas.Select(a => a.Type);
-            eventQueue.Enqueue("DungeonGen", $"Finished generating {areas.Count()} {AreaType}s: [{string.Join(", ", areaTypes)}]");
+            var message = $"Generated {areas.Count()} areas for {AreaType}";
+
+            if (areaTypes.Any(t => !string.IsNullOrEmpty(t)))
+                message += $": [{string.Join(", ", areaTypes)}]";
+
+            eventQueue.Enqueue("DungeonGen", message);
 
             return areas;
         }

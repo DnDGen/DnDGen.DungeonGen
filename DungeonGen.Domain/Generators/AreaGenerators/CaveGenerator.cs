@@ -1,7 +1,6 @@
 ﻿using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
-using EncounterGen.Common;
 using EncounterGen.Generators;
 using System;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             this.percentileSelector = percentileSelector;
         }
 
-        public IEnumerable<Area> Generate(int dungeonLevel, int partyLevel, string temperature)
+        public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
             var selectedCave = areaPercentileSelector.SelectFrom(TableNameConstants.Caves);
 
@@ -53,7 +52,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
                 if (cave.Contents.Miscellaneous.Contains(ContentsTypeConstants.Pool))
                 {
                     var poolGenerator = justInTimeFactory.Build<PoolGenerator>();
-                    cave.Contents.Pool = poolGenerator.Generate(partyLevel, temperature);
+                    cave.Contents.Pool = poolGenerator.Generate(environment);
                 }
 
                 if (cave.Contents.Miscellaneous.Contains(ContentsTypeConstants.Lake))
@@ -68,11 +67,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
 
                         if (section == ContentsTypeConstants.Encounter)
                         {
-                            var specifications = new EncounterSpecifications();
-                            specifications.Environment = EnvironmentConstants.Underground;
-                            specifications.Level = partyLevel;
-                            specifications.Temperature = temperature;
-                            specifications.TimeOfDay = EnvironmentConstants.TimesOfDay.Night;
+                            var specifications = environment.Clone();
                             specifications.AllowAquatic = true; //INFO: Because this is for a lake
 
                             var encounterGenerator = justInTimeFactory.Build<IEncounterGenerator>();

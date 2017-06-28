@@ -3,6 +3,7 @@ using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private Mock<PoolGenerator> mockPoolGenerator;
         private Mock<AreaGenerator> mockCaveGenerator;
         private Mock<AreaGeneratorFactory> mockAreaGeneratorFactory;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -29,6 +31,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaGeneratorFactory = new Mock<AreaGeneratorFactory>();
             specialAreaGenerator = new SpecialAreaGenerator(mockAreaPercentileSelector.Object, mockPercentileSelector.Object, mockPoolGenerator.Object, mockAreaGeneratorFactory.Object);
 
+            specifications = new EncounterSpecifications();
             mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Cave)).Returns(mockCaveGenerator.Object);
         }
 
@@ -46,7 +49,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var size = new Area { Length = 90210 };
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
-            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
+            var area = specialAreaGenerator.Generate(9266, specifications).Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo("dodecahedron"));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -61,7 +64,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             var size = new Area { Length = 90210 };
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(biggerSize).Returns(size);
 
-            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
+            var area = specialAreaGenerator.Generate(9266, specifications).Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo("dodecahedron"));
             Assert.That(area.Length, Is.EqualTo(90252));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -76,9 +79,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
             var pool = new Pool();
-            mockPoolGenerator.Setup(g => g.Generate(600, "temperature")).Returns(pool);
+            mockPoolGenerator.Setup(g => g.Generate(specifications)).Returns(pool);
 
-            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
+            var area = specialAreaGenerator.Generate(9266, specifications).Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo(DescriptionConstants.Circular));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -94,9 +97,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
             var pool = new Pool();
-            mockPoolGenerator.Setup(g => g.Generate(9266, "temperature")).Returns(pool);
+            mockPoolGenerator.Setup(g => g.Generate(specifications)).Returns(pool);
 
-            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
+            var area = specialAreaGenerator.Generate(9266, specifications).Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo("dodecahedron"));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -112,9 +115,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.SpecialAreaSizes)).Returns(size);
 
             Pool noPool = null;
-            mockPoolGenerator.Setup(g => g.Generate(9266, "temperature")).Returns(noPool);
+            mockPoolGenerator.Setup(g => g.Generate(specifications)).Returns(noPool);
 
-            var area = specialAreaGenerator.Generate(9266, 600, "temperature").Single();
+            var area = specialAreaGenerator.Generate(9266, specifications).Single();
             Assert.That(area.Descriptions.Single(), Is.EqualTo(DescriptionConstants.Circular));
             Assert.That(area.Length, Is.EqualTo(90210));
             Assert.That(area.Width, Is.EqualTo(1));
@@ -128,9 +131,9 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var cave = new Area();
             var otherCave = new Area();
-            mockCaveGenerator.Setup(g => g.Generate(9266, 600, "temperature")).Returns(new[] { cave, otherCave });
+            mockCaveGenerator.Setup(g => g.Generate(9266, specifications)).Returns(new[] { cave, otherCave });
 
-            var areas = specialAreaGenerator.Generate(9266, 600, "temperature");
+            var areas = specialAreaGenerator.Generate(9266, specifications);
             Assert.That(areas.Count(), Is.EqualTo(2));
             Assert.That(areas.First(), Is.EqualTo(cave));
             Assert.That(areas.Last(), Is.EqualTo(otherCave));

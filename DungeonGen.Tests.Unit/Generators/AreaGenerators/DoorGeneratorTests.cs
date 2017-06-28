@@ -1,6 +1,7 @@
 ﻿using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
+using EncounterGen.Generators;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         private AreaGenerator doorGenerator;
         private Mock<IAreaPercentileSelector> mockAreaPercentileSelector;
         private Area selectedDoor;
+        private EncounterSpecifications specifications;
 
         [SetUp]
         public void Setup()
@@ -24,6 +26,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedDoor.Type = "door type";
             selectedDoor.Descriptions = new[] { "complicated", DescriptionConstants.Wooden };
 
+            specifications = new EncounterSpecifications();
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(selectedDoor);
         }
 
@@ -36,7 +39,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateDoor()
         {
-            var doors = doorGenerator.Generate(9266, 90210, "temperature");
+            var doors = doorGenerator.Generate(9266, specifications);
             Assert.That(doors, Is.Not.Null);
             Assert.That(doors, Is.Not.Empty);
             Assert.That(doors.Count(), Is.EqualTo(1));
@@ -45,7 +48,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GetDoor()
         {
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
         }
 
@@ -54,7 +57,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedDoor.Length = 600;
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Stuck (Break DC 600)"));
             Assert.That(door.Descriptions, Contains.Item("complicated"));
@@ -69,7 +72,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedDoor.Width = 600;
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Locked (Break DC 600)"));
             Assert.That(door.Descriptions, Contains.Item("complicated"));
@@ -89,7 +92,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("a very special door"));
             Assert.That(door.Descriptions, Contains.Item("complicated"));
@@ -111,7 +114,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Stuck (Break DC 90252)"));
             Assert.That(door.Descriptions, Contains.Item("a very special door"));
@@ -134,7 +137,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Locked (Break DC 642)"));
             Assert.That(door.Descriptions, Contains.Item("a very special door"));
@@ -162,7 +165,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(otherSpecialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Stuck (Break DC 642)"));
             Assert.That(door.Descriptions, Contains.Item("a very special door"));
@@ -183,7 +186,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item(DescriptionConstants.MagicallyReinforced));
             Assert.That(door.Descriptions, Contains.Item("complicated"));
@@ -205,7 +208,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item(DescriptionConstants.MagicallyReinforced));
             Assert.That(door.Descriptions, Contains.Item("complicated"));
@@ -227,7 +230,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Stuck (Break DC 1337)"));
             Assert.That(door.Descriptions, Contains.Item(DescriptionConstants.MagicallyReinforced));
@@ -252,7 +255,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Stuck (Break DC 42)"));
             Assert.That(door.Descriptions, Contains.Item(DescriptionConstants.MagicallyReinforced));
@@ -275,7 +278,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Locked (Break DC 1337)"));
             Assert.That(door.Descriptions, Contains.Item(DescriptionConstants.MagicallyReinforced));
@@ -300,7 +303,7 @@ namespace DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaPercentileSelector.SetupSequence(s => s.SelectFrom(TableNameConstants.DoorTypes)).Returns(specialDoor).Returns(selectedDoor);
 
-            var door = doorGenerator.Generate(9266, 90210, "temperature").Single();
+            var door = doorGenerator.Generate(9266, specifications).Single();
             Assert.That(door, Is.EqualTo(selectedDoor));
             Assert.That(door.Descriptions, Contains.Item("Locked (Break DC 42)"));
             Assert.That(door.Descriptions, Contains.Item(DescriptionConstants.MagicallyReinforced));
