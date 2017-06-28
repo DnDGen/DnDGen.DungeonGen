@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DungeonGen</id>
-    <version>3.0.0</version>
+    <version>3.1.2</version>
     <title>DungeonGen</title>
     <authors>Karl M. Speer</authors>
     <owners>cidthecoatrack</owners>
@@ -10,7 +10,7 @@
       This generates dungeons for the Dungeons and Dragons 3.5 system.  Dungeons are fully fleshed out with details, traps, and encounters
     </description>
     <releaseNotes>
-      Feature #18
+      Feature #19, #21, #22
     </releaseNotes>
     <summary>
       This generates dungeons for the Dungeons and Dragons 3.5 system.
@@ -22,14 +22,14 @@
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="EncounterGen" version="1.0.0" />
-      <dependency id="CharacterGen" version="7.0.0" />
-      <dependency id="DnDGen.TreasureGen" version="5.0.0" />
+      <dependency id="EncounterGen" version="3.0.4" />
+      <dependency id="CharacterGen" version="9.0.3" />
+      <dependency id="DnDGen.TreasureGen" version="7.1.2" />
     </dependencies>
     <references></references>
     <tags> dungeon encounter treasure generator dice dungeons dragons d20 dnd 3.5 gen </tags>
   </metadata>
   <files>
-    <file src="..\DungeonGen\bin\Debug\DungeonGen.dll" target="lib" />
+    <file src="bin/Stress/DungeonGen.dll" target="lib" />
   </files>
 </package>

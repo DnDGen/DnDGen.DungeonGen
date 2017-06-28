@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DungeonGen.Domain</id>
-    <version>3.1.0</version>
+    <version>3.1.2</version>
     <title>DungeonGen.Domain</title>
     <authors>Karl M. Speer</authors>
     <owners>cidthecoatrack</owners>
@@ -10,7 +10,7 @@
       This is the Ninject-based bootstrapper for DungeonGen
     </description>
     <releaseNotes>
-      Feature #18
+      Feature #19, #21, #22
     </releaseNotes>
     <summary>
       This generates dungeons for the Dungeons and Dragons 3.5 system.
@@ -22,17 +22,17 @@
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="DungeonGen" version="3.0.0" />
-      <dependency id="EncounterGen" version="1.0.0" />
-      <dependency id="CharacterGen" version="7.0.0" />
-      <dependency id="DnDGen.TreasureGen" version="5.0.0" />
-      <dependency id="DnDGen.RollGen" version="12.2.0" />
+      <dependency id="DungeonGen" version="3.1.1" />
+      <dependency id="EncounterGen" version="3.0.4" />
+      <dependency id="CharacterGen" version="9.0.3" />
+      <dependency id="DnDGen.TreasureGen" version="7.1.2" />
+      <dependency id="DnDGen.RollGen" version="13.3.0" />
       <dependency id="Ninject" version="3.2.2" />
     </dependencies>
     <references></references>
     <tags> dungeon encounter treasure generator dice dungeons dragons d20 dnd 3.5 gen </tags>
   </metadata>
   <files>
-    <file src="..\DungeonGen.Domain\bin\Debug\DungeonGen.Domain.dll" target="lib" />
+    <file src="bin/Stress/DungeonGen.Domain.dll" target="lib" />
   </files>
 </package>
