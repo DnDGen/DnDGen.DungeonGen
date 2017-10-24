@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Generators.Factories;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Generators;

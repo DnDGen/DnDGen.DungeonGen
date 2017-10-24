@@ -1,5 +1,5 @@
-﻿using DungeonGen.Domain.Generators.AreaGenerators;
-using DungeonGen.Domain.Selectors;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Generators;
 using Moq;

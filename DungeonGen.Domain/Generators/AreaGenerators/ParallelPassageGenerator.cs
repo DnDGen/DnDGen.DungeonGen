@@ -13,7 +13,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             get { return AreaTypeConstants.Hall; }
         }
 
-        private AreaGeneratorFactory areaGeneratorFactory;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
 
         public ParallelPassageGenerator(AreaGeneratorFactory areaGeneratorFactory)
         {

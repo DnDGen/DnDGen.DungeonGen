@@ -1,49 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Hall{30x0}</content>
         <upper>10</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>11</lower>
         <content>Door{0x1d3}</content>
         <upper>25</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>26</lower>
         <content>Side passage{30x1}</content>
         <upper>50</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>51</lower>
         <content>Turn{30x1}</content>
         <upper>65</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>66</lower>
         <content>Chamber{0x1}</content>
         <upper>80</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>81</lower>
     <content>Stairs{0x1}</content>
     <upper>85</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>86</lower>
         <content>Dead end(Check for secret doors along already mapped walls)</content>
         <upper>90</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>91</lower>
         <content>General[Trap]</content>
         <upper>95</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>96</lower>
     <content>General[Encounter]</content>
     <upper>100</upper>
-  </object>
-</percentile>
+  </percentile>
+</percentiles>

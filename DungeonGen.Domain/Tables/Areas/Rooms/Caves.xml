@@ -1,44 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Cave{40x60}</content>
         <upper>25</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>26</lower>
     <content>Cave{50x75}</content>
     <upper>35</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>36</lower>
         <content>Cave(Double cavern)[60/60]{20x30}</content>
         <upper>45</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>46</lower>
         <content>Cave(Double cavern)[80/90/Pool]{35x50}</content>
         <upper>55</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>56</lower>
         <content>Cave[Pool]{95x125}</content>
         <upper>70</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>71</lower>
         <content>Cave{125x150}</content>
         <upper>80</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>81</lower>
     <content>Cave{150x200}</content>
     <upper>90</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>91</lower>
     <content>Cave[Lake]{1d12*5+250x1d12*5+350}</content>
     <upper>100</upper>
-    </object>
-</percentile>
+    </percentile>
+</percentiles>

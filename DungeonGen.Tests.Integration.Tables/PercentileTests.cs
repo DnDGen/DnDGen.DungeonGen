@@ -1,4 +1,4 @@
-﻿using DungeonGen.Domain.Mappers;
+﻿using DnDGen.Core.Mappers.Percentiles;
 using Ninject;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ namespace DungeonGen.Tests.Integration.Tables
     public abstract class PercentileTests : TableTests
     {
         [Inject]
-        internal PercentileMapper PercentileMapper { get; set; }
+        public PercentileMapper PercentileMapper { get; set; }
 
         private Dictionary<int, string> table;
 

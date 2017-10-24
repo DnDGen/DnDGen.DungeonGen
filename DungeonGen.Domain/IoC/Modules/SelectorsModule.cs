@@ -7,7 +7,6 @@ namespace DungeonGen.Domain.IoC.Modules
     {
         public override void Load()
         {
-            Bind<IPercentileSelector>().To<PercentileSelector>();
             Bind<IAreaPercentileSelector>().To<AreaPercentileSelector>();
         }
     }

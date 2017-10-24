@@ -1,34 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Parallel passage{30x1}</content>
         <upper>20</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>21</lower>
         <content>Hall(Straight ahead){30x0}</content>
         <upper>40</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>41</lower>
         <content>Hall(45 degrees left){30x0}</content>
         <upper>45</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>46</lower>
         <content>Hall(45 degrees right){30x0}</content>
         <upper>50</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>51</lower>
         <content>Room{0x1}</content>
         <upper>90</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>91</lower>
     <content>Chamber{0x1}</content>
     <upper>100</upper>
-    </object>
-</percentile>
+    </percentile>
+</percentiles>

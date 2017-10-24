@@ -1,34 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Back to the surface or outside</content>
         <upper>35</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>36</lower>
     <content>Somewhere on the same level (same every time)</content>
     <upper>50</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>51</lower>
     <content>Somewhere on the same level (different every time)</content>
     <upper>60</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>61</lower>
     <content>Somewhere down one level (same every time)</content>
     <upper>75</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>76</lower>
     <content>Somewhere down one level (different every time)</content>
     <upper>80</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>81</lower>
     <content>100 miles away, outdoors</content>
     <upper>100</upper>
-  </object>
-</percentile>
+  </percentile>
+</percentiles>

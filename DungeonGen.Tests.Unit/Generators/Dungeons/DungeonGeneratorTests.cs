@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Generators;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Generators;
 using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Generators.Dungeons;
 using DungeonGen.Domain.Generators.Factories;
@@ -22,7 +23,6 @@ namespace DungeonGen.Tests.Unit.Generators.Dungeons
         private Mock<ITrapGenerator> mockTrapGenerator;
         private Mock<IPercentileSelector> mockPercentileSelector;
         private Mock<AreaGenerator> mockHallGenerator;
-        private Mock<JustInTimeFactory> mockJustInTimeFactory;
         private EncounterSpecifications specifications;
 
         [SetUp]
@@ -34,8 +34,7 @@ namespace DungeonGen.Tests.Unit.Generators.Dungeons
             mockTrapGenerator = new Mock<ITrapGenerator>();
             mockPercentileSelector = new Mock<IPercentileSelector>();
             mockHallGenerator = new Mock<AreaGenerator>();
-            mockJustInTimeFactory = new Mock<JustInTimeFactory>();
-            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockJustInTimeFactory.Object, mockTrapGenerator.Object, mockPercentileSelector.Object);
+            dungeonGenerator = new DungeonGenerator(mockAreaPercentileSelector.Object, mockAreaGeneratorFactory.Object, mockTrapGenerator.Object, mockPercentileSelector.Object, mockEncounterGenerator.Object);
 
             specifications = new EncounterSpecifications();
             specifications.Environment = "environment";
@@ -44,7 +43,6 @@ namespace DungeonGen.Tests.Unit.Generators.Dungeons
             specifications.TimeOfDay = "time of day";
 
             mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Hall)).Returns(mockHallGenerator.Object);
-            mockJustInTimeFactory.Setup(f => f.Build<IEncounterGenerator>()).Returns(mockEncounterGenerator.Object);
         }
 
         [Test]

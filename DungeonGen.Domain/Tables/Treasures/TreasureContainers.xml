@@ -1,54 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Bags</content>
         <upper>10</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>11</lower>
     <content>Sacks</content>
     <upper>20</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>21</lower>
     <content>Small coffers</content>
     <upper>30</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>31</lower>
     <content>Chests</content>
     <upper>40</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>41</lower>
     <content>Huge chests</content>
     <upper>50</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>51</lower>
     <content>Pottery jars</content>
     <upper>60</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>61</lower>
     <content>Metal urns</content>
     <upper>70</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>71</lower>
     <content>Stone containers</content>
     <upper>80</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>81</lower>
         <content>Iron trunks</content>
         <upper>90</upper>
-    </object>
-    <object>
+    </percentile>
+    <percentile>
         <lower>91</lower>
         <content></content>
         <upper>100</upper>
-    </object>
-</percentile>
+    </percentile>
+</percentiles>

@@ -1,5 +1,6 @@
-﻿using DungeonGen.Domain.Generators.ContentGenerators;
-using DungeonGen.Domain.Generators.Factories;
+﻿using DnDGen.Core.Generators;
+using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Generators.ContentGenerators;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using Moq;

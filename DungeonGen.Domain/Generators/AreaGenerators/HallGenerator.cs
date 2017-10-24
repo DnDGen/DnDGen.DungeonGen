@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Generators;
 using RollGen;
@@ -14,9 +15,9 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             get { return AreaTypeConstants.Hall; }
         }
 
-        private IAreaPercentileSelector areaPercentileSelector;
-        private IPercentileSelector percentileSelector;
-        private Dice dice;
+        private readonly IAreaPercentileSelector areaPercentileSelector;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly Dice dice;
 
         public HallGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, Dice dice)
         {

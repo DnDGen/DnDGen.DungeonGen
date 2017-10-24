@@ -7,12 +7,6 @@ namespace DungeonGen.Tests.Integration.IoC.Modules
     public class SelectorModuleTests : IoCTests
     {
         [Test]
-        public void PercentileSelectorIsNotASingleton()
-        {
-            AssertInstanceOf<IPercentileSelector, PercentileSelector>();
-        }
-
-        [Test]
         public void AreaPercentileSelectorIsNotASingleton()
         {
             AssertInstanceOf<IAreaPercentileSelector, AreaPercentileSelector>();

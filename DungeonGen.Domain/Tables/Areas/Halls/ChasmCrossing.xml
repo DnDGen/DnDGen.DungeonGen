@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Jumping place 1d6+4 feet across</content>
         <upper>25</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>26</lower>
     <content>Bridge</content>
     <upper>100</upper>
-  </object>
-</percentile>
+  </percentile>
+</percentiles>

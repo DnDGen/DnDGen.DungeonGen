@@ -1,4 +1,4 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DnDGen.Core.Selectors.Percentiles;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Generators;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             get { return AreaTypeConstants.Turn; }
         }
 
-        private IPercentileSelector percentileSelector;
+        private readonly IPercentileSelector percentileSelector;
 
         public TurnGenerator(IPercentileSelector percentileSelector)
         {

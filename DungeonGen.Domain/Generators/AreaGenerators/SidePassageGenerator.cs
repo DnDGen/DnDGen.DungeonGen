@@ -1,5 +1,5 @@
-﻿using DungeonGen.Domain.Generators.Factories;
-using DungeonGen.Domain.Selectors;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Generators;
 using System.Collections.Generic;
@@ -14,8 +14,8 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             get { return AreaTypeConstants.SidePassage; }
         }
 
-        private IPercentileSelector percentileSelector;
-        private AreaGeneratorFactory areaGeneratorFactory;
+        private readonly IPercentileSelector percentileSelector;
+        private readonly AreaGeneratorFactory areaGeneratorFactory;
 
         public SidePassageGenerator(IPercentileSelector percentileSelector, AreaGeneratorFactory areaGeneratorFactory)
         {

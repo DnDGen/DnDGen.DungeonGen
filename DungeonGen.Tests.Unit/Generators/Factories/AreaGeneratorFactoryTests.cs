@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Generators.AreaGenerators;
+﻿using DnDGen.Core.Generators;
+using DungeonGen.Domain.Generators.AreaGenerators;
 using DungeonGen.Domain.Generators.Factories;
 using Moq;
 using NUnit.Framework;

@@ -1,44 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Circular</content>
         <upper>25</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>26</lower>
     <content>Triangular</content>
     <upper>40</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>41</lower>
     <content>Trapezoidal</content>
     <upper>55</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>56</lower>
     <content>Odd shape (DM's choice)</content>
     <upper>65</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>66</lower>
     <content>Ovular</content>
     <upper>75</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>76</lower>
     <content>Hexagonal</content>
     <upper>85</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>86</lower>
     <content>Octagonal</content>
     <upper>95</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>96</lower>
     <content>Cave</content>
     <upper>100</upper>
-  </object>
-</percentile>
+  </percentile>
+</percentiles>

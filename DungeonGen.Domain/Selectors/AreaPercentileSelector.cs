@@ -1,4 +1,5 @@
-﻿using RollGen;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using RollGen;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content></content>
         <upper>50</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>51</lower>
     <content>Lake</content>
     <upper>75</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>76</lower>
     <content>Lake/Encounter</content>
     <upper>90</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>91</lower>
     <content>Enchanted lake leading to different dimension, special temple, or map/Encounter</content>
     <upper>99</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>100</lower>
     <content>Enchanted lake leading to different dimension, special temple, or map</content>
     <upper>100</upper>
-  </object>
-</percentile>
+  </percentile>
+</percentiles>

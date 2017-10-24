@@ -1,189 +1,189 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Basic arrow trap(Mechanical/proximity trigger/manual reset/BA +10 ranged, 1d6 arrow damage, crit x3)[1]{20x20}</content>
         <upper>3</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>4</lower>
     <content>Camouflaged pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/10' deep, 1d6 fall damage)[1]{20x23}</content>
     <upper>6</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>7</lower>
     <content>Deeper pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/20' deep, 2d6 fall damage/multiple targets: first 2 within 5')[1]{20x23}</content>
     <upper>9</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>10</lower>
     <content>Touchable surface smeared with contact poison(Mechanical/touch trigger, attached/manual reset/poison: carrion crawler brain juice, DC 13 Fortitude save, primary is paralysis for 2d6 rounds, no secondary damage)[1]{19x19}</content>
     <upper>11</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>12</lower>
     <content>Fusillade of darts(Mechanical/location trigger/manual reset/BA +10 ranged, 1d4+1 dart damage/multiple targets: 1d4 darts at each target within 5')[1]{14x20}</content>
     <upper>14</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>15</lower>
     <content>Poisoned dart trap(Mechanical/location trigger/manual reset/BA +8 ranged, 1d4 dart damage plus poison/poison: bloodroot, DC 12 Fortitude save, no primary damage, secondary is 1d4 Constitution and 1d3 Wisdom)[1]{20x18}</content>
     <upper>16</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>17</lower>
     <content>Poisoned needle trap(Mechanical/touch trigger/manual reset/BA +8 ranged, 1 needle damage plus poison/poison: greenblood oil, DC 13 Fortitude save, primary is 1 Constitution, secondary is 1d2 Constitution)[1]{22x20}</content>
     <upper>19</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>20</lower>
     <content>Portcullis trap(Mechanical/location trigger/manual reset/BA +10 melee, 3d6 portcullis damage, only those underneath portcullis/blocks passageway once triggered)[1]{20x20}</content>
     <upper>22</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>23</lower>
     <content>Razor-wire across area(Mechanical/location trigger/no reset/BA +10 melee, 2d6 wire damage/multiple targets: first 2 within 5')[1]{22x15}</content>
     <upper>24</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>25</lower>
     <content>Rolling rock trap(Mechanical/location trigger/manual reset/BA +10 melee, 2d6 rock damage)[1]{20x22}</content>
     <upper>27</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>28</lower>
     <content>Scything blade trap(Mechanical/location trigger/manual reset/BA +8 melee, 1d8 scythe damage, crit x3)[1]{21x20}</content>
     <upper>30</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>31</lower>
         <content>Spear trap(Mechanical/location trigger/manual reset/BA +12 ranged, 1d8 spear damage, crit x3/200' max range/target determined randomly from those in its path)[1]{20x20}</content>
         <upper>33</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>34</lower>
     <content>Swinging block trap(Mechanical/touch trigger/manual reset/BA +5 melee, 4d6 block damage)[1]{20x20}</content>
     <upper>35</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>36</lower>
     <content>Wall blade trap(Mechanical/touch trigger/manual reset/hidden switch bypass: Search DC 25/BA +10 melee, 2d4 scythe damage, crit x4)[1]{22x22}</content>
     <upper>38</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>39</lower>
     <content>Box of brown mold(Mechanical/touch trigger, opening the box/automatic reset/5' cold aura, 3d6 cold damage, nonlethal)[2]{22x16}</content>
     <upper>41</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>42</lower>
         <content>Bricks from ceiling(Mechanical/touch trigger/repair reset/BA +12 melee, 2d6 brick damage/multiple targets: all within 5')[2]{20x20}</content>
         <upper>44</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>45</lower>
     <content>Burning hands trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: burning hands, 1st-level wizard, 1d4 fire damage, DC 11 Reflex save for half damage)[2]{26x26}</content>
     <upper>47</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>48</lower>
     <content>Camouflaged pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/20' deep, 2d6 fall damage/multiple targets: first 2 within 5')[2]{24x19}</content>
     <upper>50</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>51</lower>
     <content>Inflict light wounds trap(Magic device/touch trigger/automatic reset/spell effect: inflict light wounds, 1st-level cleric, 1d8+1 damage, DC 11 Will save for half damage)[2]{26x26}</content>
     <upper>53</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>54</lower>
     <content>Javelin trap(Mechanical/location trigger/manual reset/BA +16 ranged, 1d6+4 javelin damage)[2]{20x18}</content>
     <upper>56</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>57</lower>
     <content>Large net trap(Mechanical/location trigger/manual reset/BA +5 melee, characters in 10' square are grappled by net if they fail a DC 14 Reflex save/net has grapple Strength of 18)[2]{20x25}</content>
     <upper>58</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>59</lower>
     <content>Pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/40' deep, 4d6 fall damage)[2]{20x20}</content>
     <upper>61</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>62</lower>
     <content>Poison needle trap(Mechanical/touch trigger/repair reset/lock bypass: Open Lock DC 30/BA +17 melee, 1 needle damage plus poison/poison: blue whinnis, DC 14 Fortitude save, primary damage is 1 Constitution, secondary damage is unconsciousness)[2]{22x17}</content>
     <upper>64</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>65</lower>
     <content>Spiked pit trap(Mechanical/location trigger/automatic reset/DC 20 Reflex save avoids/20' deep, 2d6 fall damage/multiple targets: first 2 within 5'/pit spikes: BA +10 melee, 1d4 spikes per target, 1d4+2 damage each)[2]{18x15}</content>
     <upper>67</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>68</lower>
     <content>Tripping chain(Mechanical/location trigger/automatic reset/multiple traps/trip: BA +15 melee touch/spiked chain: BA +15 melee, 2d4+2 damage/If trip attack succeeds, spiked chain is +4 to hit because target is prone)[2]{15x18}</content>
     <upper>69</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>70</lower>
         <content>Well-camouflaged pit trap(Mechanical/location trigger/repair reset/DC 20 Reflex save avoids/10' deep, 1d6 fall damage)[2]{27x20}</content>
         <upper>72</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>73</lower>
     <content>Burning hands trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: burning hands, 5th-level wizard, 5d4 fire damage, DC 11 Reflex save for half damage)[3]{26x26}</content>
     <upper>75</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>76</lower>
     <content>Camouflaged pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/30' deep, 3d6 fall damage/multiple targets: first 2 within 5')[3]{24x18}</content>
     <upper>78</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>79</lower>
         <content>Ceiling pendulum(Mechanical/location trigger/automatic reset/BA +15 melee, 1d12 greataxe damage, crit x3)[3]{15x27}</content>
         <upper>80</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>81</lower>
     <content>Fire trap(Spell/spell trigger, see spell description/no reset/spell effect: fire trap, 3rd-level druid, 1d4+3 fire damage, DC 13 Reflex save for half damage)[3]{27x27}</content>
     <upper>83</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>84</lower>
     <content>Extended bane trap(Magic device/proximity trigger, detect good spell/automatic reset/spell effect: extended bane, 3rd-level cleric, DC 13 Will save negates)[3]{27x27}</content>
     <upper>85</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>86</lower>
     <content>Ghoul touch trap(Magic device/touch trigger/automatic reset/spell effect: ghoul touch, 3rd-level wizard, DC 13 Fortitude save negates)[3]{27x27}</content>
     <upper>87</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>88</lower>
     <content>Hail of needles(Mechanical/location trigger/manual reset/BA +20 ranged, 2d4 needle damage)[3]{22x22}</content>
     <upper>90</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>91</lower>
     <content>Melf's acid arrow trap(Magic device/proximity trigger, alarm spell/automatic reset/BA +2 ranged, touch/spell effect: melf's acid arrow, 3rd-level wizard, 2d4 acid per round for 2 rounds)[3]{27x27}</content>
     <upper>92</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>93</lower>
     <content>Pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/60' deep, 6d6 fall damage)[3]{20x20}</content>
     <upper>95</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>96</lower>
     <content>Spiked pit trap(Mechanical/location trigger/manual reset/DC 20 Reflex save avoids/20' deep, 2d6 fall damage/multiple targets: first 2 within 5'/pit spikes: BA +10, 1d4 spikes per target, 1d4+2 damage each)[3]{21x20}</content>
     <upper>98</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>99</lower>
     <content>Stone blocks from ceiling(Mechanical/location trigger/repair reset/BA +10 melee, 4d6 stone block damage)[3]{25x20}</content>
     <upper>100</upper>
-    </object>
-</percentile>
+    </percentile>
+</percentiles>

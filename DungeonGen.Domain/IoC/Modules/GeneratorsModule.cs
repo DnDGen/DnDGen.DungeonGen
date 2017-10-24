@@ -4,7 +4,6 @@ using DungeonGen.Domain.Generators.ContentGenerators;
 using DungeonGen.Domain.Generators.Dungeons;
 using DungeonGen.Domain.Generators.ExitGenerators;
 using DungeonGen.Domain.Generators.Factories;
-using DungeonGen.Domain.IoC.Providers;
 using Ninject.Activation;
 using Ninject.Modules;
 using System;
@@ -20,7 +19,6 @@ namespace DungeonGen.Domain.IoC.Modules
             Bind<IDungeonGenerator>().To<DungeonGenerator>().WhenInjectedInto<DungeonGeneratorEventDecorator>();
             Bind<IDungeonGenerator>().To<DungeonGeneratorEventDecorator>();
 
-            Bind<JustInTimeFactory>().ToProvider<JustInTimeFactoryProvider>();
             Bind<AreaGeneratorFactory>().To<DomainAreaGeneratorFactory>();
 
             Bind<ITrapGenerator>().To<TrapGenerator>();

@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Generators.ContentGenerators;
+﻿using DnDGen.Core.Generators;
+using DungeonGen.Domain.Generators.ContentGenerators;
 using DungeonGen.Domain.Generators.ExitGenerators;
 using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;

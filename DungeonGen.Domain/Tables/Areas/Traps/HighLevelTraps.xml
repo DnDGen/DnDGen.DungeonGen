@@ -1,159 +1,159 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content>Acid fog trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: acid fog, 11th-level wizard, 2d6 acid damage per round for 11 rounds)[7]{31x31}</content>
         <upper>4</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>5</lower>
     <content>Blade barrier trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: blade barrier, 11th-level cleric, 11d6 slashing damage, DC 19 Reflex save for half damage)[7]{31x31}</content>
     <upper>7</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>8</lower>
     <content>Burnt othur vapor trap(Mechanical/location trigger/repair reset/gas/multiple targets: all targets within a 10' x 10' room/never miss/onset delay: 3 rounds/poison: burnt othur fumes, DC 18 Fortitude save, primary damage is 1 permanent Constitution, secondary damage is 3d6 Constitution)[7]{21x21}</content>
     <upper>10</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>11</lower>
     <content>Chain lightning trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: chain lightning, 11th-level wizard, 11d6 electricity damage to closest target, 5d6 electricity damage to each of up to 11 secondary targets, DC 19 Reflex save for half damage)[7]{31x31}</content>
     <upper>14</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>15</lower>
     <content>Evard's black tentacles trap(Magic device/proximity trigger, alarm spell/no reset/spell effect: evard's black tentacles, 7th-level wizard, 1d4+7 tentacles, BA +7 melee per tentacle, 1d6+4 damage per tentacle/multiple targets: up to 6 tentacles per target within 5')[7]{29x29}</content>
     <upper>17</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>18</lower>
     <content>Fusillade of greenblood oil darts(Mechanical/location trigger/manual reset/BA +18 ranged, 1d4+1 dart damage plus poison/poison: greenblood oil, DC 13 Fortitude save, primary damage is 1 Constitution, secondary damage is 1d2 Constitution/multiple targets: 1d8 darts per target in a 10' x 10' area)[7]{25x25}</content>
     <upper>20</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>21</lower>
     <content>Touchable surface covered in dragon bile(Mechanical/touch trigger, attached/no reset/poison: dragon bile, DC 26 Fortitude save, primary damage is 3d6 Strength, no secondary damage)[7]{27x16}</content>
     <upper>23</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>24</lower>
     <content>Summon monster VI trap(Magic device/proximity trigger, alarm spell/no reset/spell effect: summon monster VI, 11th-level wizard)[7]{31x31}</content>
     <upper>26</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>27</lower>
     <content>Water-filled room(Mechanical/location trigger/manual reset/multiple targets: all within a 10' x 10' room/never miss/onset delay: 3 rounds/water)[7]{20x25}</content>
     <upper>30</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>31</lower>
         <content>Well-camouflaged pit trap(Mechanical/location trigger/repair reset/DC 25 Reflex save avoids/70' deep, 7d6 fall damage/multiple targets: first 2 within 5')[7]{27x18}</content>
         <upper>33</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>34</lower>
     <content>Deathblade wall scythe(Mechanical/touch trigger/manual reset/BA +16 melee, 2d4+8 scythe damage plus poison/poison: deathblade, DC 20 Fortitude save, primary damage is 1d6 Constitution, secondary damage is 2d6 Constitution)[8]{24x19}</content>
     <upper>36</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>37</lower>
     <content>Destruction trap(Magic device/touch trigger, alarm spell/automatic reset/spell effect: destruction, 13th-level cleric, DC 20 Fortitude save for 10d6 damage)[8]{32x32}</content>
     <upper>39</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>40</lower>
         <content>Earthquake trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: earthquake, 13th-level cleric, 65' radius, DC 15 or 20 Reflex save, depending on terrain)[8]{32x32}</content>
         <upper>42</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>43</lower>
     <content>Insanity mist vapor trap(Mechanical/location trigger/repair reset/gas/never miss/onset delay: 1 round/poison: insanity mist, DC 15 Fortitude save, primary damage is 1d4 Wisdom, secondary damage is 2d6 Wisdom/multiple targets: all targets within a 10' x 10' room)[8]{25x20}</content>
     <upper>46</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>47</lower>
     <content>Melf's acid arrow trap(Magic device/visual trigger, true seeing/automatic reset/multiple traps: two simultaneous Melf's acid arrow traps/BA +9 ranged touch/spell effect: Melf's acid arrow, 18th-level wizard, 2d4 acid damage for 7 rounds)[8]{27x27}</content>
     <upper>49</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>50</lower>
     <content>Power word stun trap(Magic device/touch trigger/no reset/spell effect: power word stun, 13th-level wizard)[8]{32x32}</content>
     <upper>52</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>53</lower>
     <content>Prismatic spray trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: prismatic spray, 13th-level wizard, DC 20 Reflex, Fortitude, or Will save, depending on effect)[8]{32x32}</content>
     <upper>55</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>56</lower>
     <content>Reverse gravity trap(Magic device/proximity trigger, alarm, 10' area/automatic reset/spell effect: reverse gravity, 13th-level wizard, 1d6 fall damage per 10' from hitting ceiling, 1d6 fall damage per 10' from hitting floor after spell ends, DC 20 Reflex save avoids damage)[8]{32x32}</content>
     <upper>59</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>60</lower>
     <content>Well-camouflaged pit trap(Mechanical/location trigger/repair reset/DC 20 Reflex save avoids/100' deep, 10d6 fall damage)[8]{27x18}</content>
     <upper>62</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>63</lower>
     <content>Word of chaos trap(Magic device/proximity trigger, detect law/automatic reset/spell effect: word of chaos, 13th-level cleric)[8]{32x32}</content>
     <upper>65</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>66</lower>
     <content>Touchable surface smeared with contact poison(Mechanical/touch trigger, attached/manual reset/poison: black lotus extract, DC 20 Fortitude save, primary damage is 3d6 Constitution, secondary damage is 3d6 Constitution)[9]{18x26}</content>
     <upper>68</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>69</lower>
         <content>Dropping ceiling(Mechanical/location trigger/repair reset/ceiling moves down, 12d6 crushing damage/multiple targets: all targets in a 10' x 10' room/never miss/onset delay: 1 round)[9]{20x16}</content>
         <upper>71</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>72</lower>
     <content>Incendiary cloud trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: incendiary cloud, 15th-level wizard, 4d6 damage per round for 15 rounds, DC 22 Reflex save for half damage)[9]{33x33}</content>
     <upper>74</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>75</lower>
     <content>Wide-mouth pit trap(Mechanical/location trigger/manual reset/DC 25 Reflex save avoids/100' deep, 10d6 fall damage/multiple targets: all targets within a 10' x 10' area)[9]{25x25}</content>
     <upper>77</upper>
-  </object>
-    <object>
+  </percentile>
+    <percentile>
         <lower>78</lower>
         <content>Wide mouth spiked pit with poisoned spikes(Mechanical/location trigger/manual reset/hidden lock bypass: Search DC 25, Open Lock DC 30/DC 20 Reflex save avoids/70' deep, 7d6 fall damage/multiple targets: all targets within a 10' x 10' area/pit spikes: BA +10 melee, 1d4 spikes per target, 1d4+5 damage plus poison each/poison: giant wasp poison, DC 14 Fortitude save, primary damage is 1d6 Dexterity, secondary damage is 1d6 Dexterity)[9]{20x20}</content>
         <upper>80</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>81</lower>
     <content>Crushing room(Mechanical/location trigger/automatic reset/walls move together, 16d6 crushing damage/multiple targets: all targets in a 10' x 10' room/never miss/onset delay: 2 rounds)[10]{22x20}</content>
     <upper>84</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>85</lower>
     <content>Crushing wall trap(Mechanical/location trigger/automatic reset/no attack roll required, 18d6 crushing damage)[10]{20x25}</content>
     <upper>88</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>89</lower>
     <content>Energy drain trap(Magic device/visual trigger, true seeing/automatic reset/BA +8 ranged touch/spell effect: energy drain, 17th-level wizard, 2d4 negative levels for 24 hours, DC 23 Fortitude save negates)[10]{34x34}</content>
     <upper>91</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>92</lower>
     <content>Forcecage and summon monster VII trap(Magic device/proximity trigger, alarm spell/automatic reset/multiple traps: one forcecage trap and one summon monster VII trap that summons a Hamatula/spell effect: forcecage, 13th-level wizard/spell effect: summon monster VII, 13th-level wizard, summons Hamatula)[10]{32x32}</content>
     <upper>94</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>95</lower>
     <content>Poisoned spiked pit trap(Mechanical/location trigger/manual reset/hidden lock bypass: Search DC 25, Open Lock DC 30/DC 20 Reflex save avoids/50' deep, 5d6 fall damage/multiple targets: first 2 within 5'/pit spikes: BA +10 melee, 1d4 spikes per target, 1d4+5 damage plus poison each/poison: purple worm poison, DC 24 Fortitude save, primary damage is 1d6 Strength, secondary damage is 2d6 Strength)[10]{16x25}</content>
     <upper>97</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>98</lower>
     <content>Wail of the banshee trap(Magic device/proximity trigger, alarm spell/automatic reset/spell effect: wail of the banshee, 17th-level wizard, DC 23 Fortitude save negates/multiple targets: up to 17 creatures)[10]{34x34}</content>
     <upper>100</upper>
-    </object>
-</percentile>
+    </percentile>
+</percentiles>

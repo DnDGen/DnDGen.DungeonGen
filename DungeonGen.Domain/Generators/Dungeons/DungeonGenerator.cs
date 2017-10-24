@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Generators.Factories;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Generators.Factories;
 using DungeonGen.Domain.Selectors;
 using DungeonGen.Domain.Tables;
 using EncounterGen.Common;
@@ -15,15 +16,19 @@ namespace DungeonGen.Domain.Generators.Dungeons
         private readonly ITrapGenerator trapGenerator;
         private readonly IPercentileSelector percentileSelector;
         private readonly IEnumerable<string> waterContents;
-        private readonly JustInTimeFactory justInTimeFactory;
+        private readonly IEncounterGenerator encounterGenerator;
 
-        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector, AreaGeneratorFactory areaGeneratorFactory, JustInTimeFactory justInTimeFactory, ITrapGenerator trapGenerator, IPercentileSelector percentileSelector)
+        public DungeonGenerator(IAreaPercentileSelector areaPercentileSelector,
+            AreaGeneratorFactory areaGeneratorFactory,
+            ITrapGenerator trapGenerator,
+            IPercentileSelector percentileSelector,
+            IEncounterGenerator encounterGenerator)
         {
             this.areaGeneratorFactory = areaGeneratorFactory;
             this.areaPercentileSelector = areaPercentileSelector;
-            this.justInTimeFactory = justInTimeFactory;
             this.trapGenerator = trapGenerator;
             this.percentileSelector = percentileSelector;
+            this.encounterGenerator = encounterGenerator;
 
             waterContents = new[]
             {
@@ -134,8 +139,6 @@ namespace DungeonGen.Domain.Generators.Dungeons
 
             if (!encounterContents.Any())
                 return encounters;
-
-            var encounterGenerator = justInTimeFactory.Build<IEncounterGenerator>();
 
             foreach (var encounterContent in encounterContents)
             {

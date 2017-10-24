@@ -1,4 +1,5 @@
 ﻿using CharacterGen.Domain.IoC;
+using DnDGen.Core.IoC;
 using DungeonGen.Domain.IoC;
 using EncounterGen.Domain.IoC;
 using EventGen.IoC;
@@ -12,7 +13,7 @@ namespace DungeonGen.Tests.Integration
     [TestFixture]
     public class IntegrationTests
     {
-        private IKernel kernel;
+        protected IKernel kernel;
 
         [OneTimeSetUp]
         public void IntegrationTestsFixtureSetup()
@@ -24,6 +25,9 @@ namespace DungeonGen.Tests.Integration
 
             var eventGenLoader = new EventGenModuleLoader();
             eventGenLoader.LoadModules(kernel);
+
+            var coreLoader = new CoreModuleLoader();
+            coreLoader.LoadModules(kernel);
 
             var treasureGenLoader = new TreasureGenModuleLoader();
             treasureGenLoader.LoadModules(kernel);

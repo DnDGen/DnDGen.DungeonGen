@@ -1,4 +1,5 @@
-﻿using DungeonGen.Domain.Selectors;
+﻿using DnDGen.Core.Selectors.Percentiles;
+using DungeonGen.Domain.Selectors;
 using Moq;
 using NUnit.Framework;
 using RollGen;

@@ -116,12 +116,6 @@ namespace DungeonGen.Tests.Integration.IoC.Modules
         }
 
         [Test]
-        public void JustInTimeFactoryIsInjected()
-        {
-            AssertInstanceOf<JustInTimeFactory, NinjectJustInTimeFactory>();
-        }
-
-        [Test]
         public void EXTERNAL_TreasureGeneratorIsInjected()
         {
             AssertInstanceOf<ITreasureGenerator>();

@@ -13,7 +13,7 @@ namespace DungeonGen.Domain.Generators.AreaGenerators
             get { return AreaTypeConstants.Door; }
         }
 
-        private IAreaPercentileSelector areaPercentileSelector;
+        private readonly IAreaPercentileSelector areaPercentileSelector;
 
         public DoorGenerator(IAreaPercentileSelector areaPercentileSelector)
         {

@@ -1,4 +1,5 @@
-﻿using EncounterGen.Common;
+﻿using DnDGen.Core.Selectors.Collections;
+using EncounterGen.Common;
 using EncounterGen.Generators;
 using Ninject;
 using NUnit.Framework;
@@ -16,6 +17,8 @@ namespace DungeonGen.Tests.Integration.Stress
         public IDungeonGenerator DungeonGenerator { get; set; }
         [Inject]
         public Random Random { get; set; }
+        [Inject]
+        public ICollectionSelector CollectionSelector { get; set; }
 
         private const int FromHall = 1;
         private const int FromDoor = 0;
@@ -64,13 +67,13 @@ namespace DungeonGen.Tests.Integration.Stress
         [Test]
         public void StressDungeonGeneratorFromDoor()
         {
-            Stress(() => AssertRandomArea(FromDoor));
+            stressor.Stress(() => AssertRandomArea(FromDoor));
         }
 
         [Test]
         public void StressDungeonGeneratorFromHall()
         {
-            Stress(() => AssertRandomArea(FromHall));
+            stressor.Stress(() => AssertRandomArea(FromHall));
         }
 
         protected void AssertRandomArea(int fromHall)
@@ -110,8 +113,7 @@ namespace DungeonGen.Tests.Integration.Stress
 
         private string GetRandomFrom(IEnumerable<string> collection)
         {
-            var index = Random.Next(collection.Count());
-            return collection.ElementAt(index);
+            return CollectionSelector.SelectRandomFrom(collection);
         }
 
         private void AssertAreas(IEnumerable<Area> areas)
@@ -267,7 +269,7 @@ namespace DungeonGen.Tests.Integration.Stress
         public void BUG_ContinuingHallHasSamePassageWidth()
         {
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromHall, 1),
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromHall, 1),
                 aa => aa.Count() == 1 && aa.Single().Type == AreaTypeConstants.Hall);
 
             AssertAreas(areas);
@@ -326,7 +328,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => !a.Contents.IsEmpty));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => !a.Contents.IsEmpty));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.IsEmpty), Is.Not.All.True);
@@ -337,7 +339,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.IsEmpty));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.IsEmpty));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.IsEmpty), Is.All.True);
@@ -347,7 +349,7 @@ namespace DungeonGen.Tests.Integration.Stress
         public void EncountersHappen()
         {
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Encounters.Any()));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Encounters.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Encounters.Any()), Is.Not.All.False);
@@ -357,7 +359,7 @@ namespace DungeonGen.Tests.Integration.Stress
         public void EncountersDoNotHappen()
         {
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => a.Contents.Encounters.Any() == false));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => !a.Contents.Encounters.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Encounters.Any()), Is.All.False);
@@ -367,7 +369,7 @@ namespace DungeonGen.Tests.Integration.Stress
         public void TrapsHappen()
         {
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any()));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Traps.Any()), Is.Not.All.False);
@@ -377,7 +379,7 @@ namespace DungeonGen.Tests.Integration.Stress
         public void TrapsDoNotHappen()
         {
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => a.Contents.Traps.Any() == false));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => !a.Contents.Traps.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Traps.Any()), Is.All.False);
@@ -388,7 +390,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Treasures.Any()));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Treasures.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Treasures.Any()), Is.Not.All.False);
@@ -399,7 +401,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Treasures.Any() == false));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => !a.Contents.Treasures.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Treasures.Any()), Is.All.False);
@@ -410,7 +412,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Miscellaneous.Any()));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Miscellaneous.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Miscellaneous.Any()), Is.Not.All.False);
@@ -421,7 +423,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Miscellaneous.Any() == false));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => !a.Contents.Miscellaneous.Any()));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Miscellaneous.Any()), Is.All.False);
@@ -433,7 +435,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Pool), Is.Not.All.Null);
@@ -444,7 +446,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Pool == null));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Pool == null));
             AssertAreas(areas);
 
             Assert.That(areas.Select(a => a.Contents.Pool), Is.All.Null);
@@ -456,7 +458,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower != string.Empty));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower != string.Empty));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -474,7 +476,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower == string.Empty));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower == string.Empty));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -492,7 +494,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter != null));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter != null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -510,7 +512,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter == null));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter == null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -527,7 +529,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure != null));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure != null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -544,7 +546,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure == null));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure == null));
             AssertAreas(areas);
 
             var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
@@ -560,7 +562,7 @@ namespace DungeonGen.Tests.Integration.Stress
         {
             var rollRegex = new Regex("\\d+d\\d+");
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)))));
+            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)))));
             AssertAreas(areas);
 
             var traps = areas.SelectMany(a => a.Contents.Traps);

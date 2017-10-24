@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<percentile>
-  <object>
+<percentiles>
+  <percentile>
         <lower>1</lower>
         <content></content>
         <upper>40</upper>
-    </object>
-  <object>
+    </percentile>
+  <percentile>
     <lower>41</lower>
     <content>Pool</content>
     <upper>50</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>51</lower>
     <content>Encounter</content>
     <upper>60</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>61</lower>
     <content>Encounter/Treasure</content>
     <upper>90</upper>
-  </object>
-  <object>
+  </percentile>
+  <percentile>
     <lower>91</lower>
     <content>Magic pool</content>
     <upper>100</upper>
-  </object>
-</percentile>
+  </percentile>
+</percentiles>
