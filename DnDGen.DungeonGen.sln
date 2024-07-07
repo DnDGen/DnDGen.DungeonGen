@@ -1,21 +1,19 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen", "DungeonGen\DungeonGen.csproj", "{F9D7C4F5-3467-4216-9E2B-8AAF3CF0271B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDGen.DungeonGen", "DnDGen.DungeonGen\DnDGen.DungeonGen.csproj", "{F9D7C4F5-3467-4216-9E2B-8AAF3CF0271B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen.Domain", "DungeonGen.Domain\DungeonGen.Domain.csproj", "{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDGen.DungeonGen.Tests.Unit", "DnDGen.DungeonGen.Tests.Unit\DnDGen.DungeonGen.Tests.Unit.csproj", "{B4CCAD67-C4BA-45AD-AD7E-B325EBE88DD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen.Tests.Unit", "DungeonGen.Tests.Unit\DungeonGen.Tests.Unit.csproj", "{B4CCAD67-C4BA-45AD-AD7E-B325EBE88DD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDGen.DungeonGen.Tests.Integration", "DnDGen.DungeonGen.Tests.Integration\DnDGen.DungeonGen.Tests.Integration.csproj", "{F70CBFED-51BC-4308-B3CF-93AD35EB1C64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen.Tests.Integration", "DungeonGen.Tests.Integration\DungeonGen.Tests.Integration.csproj", "{F70CBFED-51BC-4308-B3CF-93AD35EB1C64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDGen.DungeonGen.Tests.Integration.IoC", "DnDGen.DungeonGen.Tests.Integration.IoC\DnDGen.DungeonGen.Tests.Integration.IoC.csproj", "{CBB43B85-1A40-46DC-9CAC-92E0F9CD4E1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen.Tests.Integration.IoC", "DungeonGen.Tests.Integration.IoC\DungeonGen.Tests.Integration.IoC.csproj", "{CBB43B85-1A40-46DC-9CAC-92E0F9CD4E1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDGen.DungeonGen.Tests.Integration.Tables", "DnDGen.DungeonGen.Tests.Integration.Tables\DnDGen.DungeonGen.Tests.Integration.Tables.csproj", "{3342DE6A-CC90-4F17-AE50-F176921AD565}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen.Tests.Integration.Tables", "DungeonGen.Tests.Integration.Tables\DungeonGen.Tests.Integration.Tables.csproj", "{3342DE6A-CC90-4F17-AE50-F176921AD565}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonGen.Tests.Integration.Stress", "DungeonGen.Tests.Integration.Stress\DungeonGen.Tests.Integration.Stress.csproj", "{AE418C32-4B1A-4FFD-A892-266CD6ABFA50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDGen.DungeonGen.Tests.Integration.Stress", "DnDGen.DungeonGen.Tests.Integration.Stress\DnDGen.DungeonGen.Tests.Integration.Stress.csproj", "{AE418C32-4B1A-4FFD-A892-266CD6ABFA50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,12 +28,6 @@ Global
 		{F9D7C4F5-3467-4216-9E2B-8AAF3CF0271B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9D7C4F5-3467-4216-9E2B-8AAF3CF0271B}.Stress|Any CPU.ActiveCfg = Stress|Any CPU
 		{F9D7C4F5-3467-4216-9E2B-8AAF3CF0271B}.Stress|Any CPU.Build.0 = Stress|Any CPU
-		{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}.Stress|Any CPU.ActiveCfg = Stress|Any CPU
-		{7ADC00A1-2C4D-4E61-975B-4BEC3F38AE1A}.Stress|Any CPU.Build.0 = Stress|Any CPU
 		{B4CCAD67-C4BA-45AD-AD7E-B325EBE88DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4CCAD67-C4BA-45AD-AD7E-B325EBE88DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4CCAD67-C4BA-45AD-AD7E-B325EBE88DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,5 +61,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84790D87-7652-4025-9A10-C05A5E4FD858}
 	EndGlobalSection
 EndGlobal
