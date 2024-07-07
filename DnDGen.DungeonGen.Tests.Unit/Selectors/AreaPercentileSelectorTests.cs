@@ -32,7 +32,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Selectors
                 throw new ArgumentException(roll + " is not set up to be rolled");
 
             var mockPartialRoll = new Mock<PartialRoll>();
-            mockPartialRoll.Setup(r => r.AsSum()).Returns(result);
+            mockPartialRoll.Setup(r => r.AsSum<int>()).Returns(result);
 
             return mockPartialRoll.Object;
         }
@@ -40,7 +40,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Selectors
         private void SetUpRoll(string roll, int result)
         {
             var mockPartialRoll = new Mock<PartialRoll>();
-            mockPartialRoll.Setup(r => r.AsSum()).Returns(result);
+            mockPartialRoll.Setup(r => r.AsSum<int>()).Returns(result);
             mockDice.Setup(d => d.Roll(roll)).Returns(mockPartialRoll.Object);
         }
 
@@ -121,7 +121,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Selectors
         [Test]
         public void ReturnRandomLength()
         {
-            mockDice.Setup(d => d.Roll("1d2").AsSum()).Returns(9266);
+            mockDice.Setup(d => d.Roll("1d2").AsSum<int>()).Returns(9266);
             mockInnerSelector.Setup(s => s.SelectFrom(Config.Name, "table name")).Returns("area type{1d2x0}");
 
             var area = areaPercentileSelector.SelectFrom("table name");
@@ -150,7 +150,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Selectors
         [Test]
         public void ReturnRandomWidth()
         {
-            mockDice.Setup(d => d.Roll("3d4").AsSum()).Returns(90210);
+            mockDice.Setup(d => d.Roll("3d4").AsSum<int>()).Returns(90210);
             mockInnerSelector.Setup(s => s.SelectFrom(Config.Name, "table name")).Returns("area type{0x3d4}");
 
             var area = areaPercentileSelector.SelectFrom("table name");

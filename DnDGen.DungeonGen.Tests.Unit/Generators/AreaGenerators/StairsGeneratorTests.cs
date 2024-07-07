@@ -35,7 +35,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Chamber)).Returns(mockChamberGenerator.Object);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Stairs)).Returns(selectedStairs);
-            mockDice.Setup(d => d.Roll(1).d(100).AsSum()).Returns(1);
+            mockDice.Setup(d => d.Roll(1).d(100).AsSum<int>()).Returns(1);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedStairs.Length = 600;
             selectedStairs.Width = 42;
 
-            mockDice.Setup(d => d.Roll(1).d(100).AsSum()).Returns(roll);
+            mockDice.Setup(d => d.Roll(1).d(100).AsSum<int>()).Returns(roll);
 
             var stairs = stairsGenerator.Generate(9266, specifications);
             Assert.That(stairs.Count(), Is.EqualTo(2));
@@ -97,7 +97,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
             selectedStairs.Length = 600;
             selectedStairs.Width = 42;
 
-            mockDice.Setup(d => d.Roll(1).d(100).AsSum()).Returns(43);
+            mockDice.Setup(d => d.Roll(1).d(100).AsSum<int>()).Returns(43);
 
             var stairs = stairsGenerator.Generate(9266, specifications).Single();
             Assert.That(stairs, Is.EqualTo(selectedStairs));
