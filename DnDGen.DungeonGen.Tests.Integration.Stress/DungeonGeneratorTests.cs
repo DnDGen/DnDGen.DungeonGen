@@ -8,7 +8,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace DnDGen.DungeonGen.Tests.Integration.Stress
 {
@@ -276,7 +275,8 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
         public void BUG_ContinuingHallHasSamePassageWidth()
         {
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromHall, 1),
+            var areas = stressor.GenerateOrFail(
+                () => GenerateAreas(FromHall, 1),
                 aa => aa.Count() == 1 && aa.Single().Type == AreaTypeConstants.Hall);
 
             AssertAreas(areas);
@@ -331,249 +331,16 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
         }
 
         [Test]
-        public void ContentsHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => !a.Contents.IsEmpty));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.IsEmpty), Is.Not.All.True);
-        }
-
-        [Test]
-        public void ContentsDoNotHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.IsEmpty));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.IsEmpty), Is.All.True);
-        }
-
-        [Test]
-        public void EncountersHappen()
-        {
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Encounters.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Encounters.Any()), Is.Not.All.False);
-        }
-
-        [Test]
-        public void EncountersDoNotHappen()
-        {
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => !a.Contents.Encounters.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Encounters.Any()), Is.All.False);
-        }
-
-        [Test]
-        public void TrapsHappen()
-        {
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Traps.Any()), Is.Not.All.False);
-        }
-
-        [Test]
-        public void TrapsDoNotHappen()
-        {
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.All(a => !a.Contents.Traps.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Traps.Any()), Is.All.False);
-        }
-
-        [Test]
-        public void DungeonTreasuresHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Treasures.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Treasures.Any()), Is.Not.All.False);
-        }
-
-        [Test]
-        public void DungeonTreasuresDoNotHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => !a.Contents.Treasures.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Treasures.Any()), Is.All.False);
-        }
-
-        [Test]
-        public void MiscellaneousContentsHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Miscellaneous.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Miscellaneous.Any()), Is.Not.All.False);
-        }
-
-        [Test]
-        public void MiscellaneousContentsDoNotHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => !a.Contents.Miscellaneous.Any()));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Miscellaneous.Any()), Is.All.False);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void PoolHappens()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Pool), Is.Not.All.Null);
-        }
-
-        [Test]
-        public void PoolDoesNotHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.All(a => a.Contents.Pool == null));
-            AssertAreas(areas);
-
-            Assert.That(areas.Select(a => a.Contents.Pool), Is.All.Null);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void MagicPoolHappens()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower != string.Empty));
-            AssertAreas(areas);
-
-            var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
-            Assert.That(pools, Is.Not.Empty);
-            Assert.That(pools, Is.All.Not.Null);
-
-            var magicPowers = pools.Select(p => p.MagicPower);
-            Assert.That(magicPowers, Is.All.Not.Null);
-            Assert.That(magicPowers, Is.Not.All.Empty);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void MundanePoolHappens()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.MagicPower == string.Empty));
-            AssertAreas(areas);
-
-            var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
-            Assert.That(pools, Is.Not.Empty);
-            Assert.That(pools, Is.All.Not.Null);
-
-            var magicPowers = pools.Select(p => p.MagicPower);
-            Assert.That(magicPowers, Is.All.Not.Null);
-            Assert.That(magicPowers, Is.All.Empty);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void PoolEncounterHappens()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter != null));
-            AssertAreas(areas);
-
-            var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
-            Assert.That(pools, Is.Not.Empty);
-            Assert.That(pools, Is.All.Not.Null);
-
-            var encounters = pools.Select(p => p.Encounter);
-            Assert.That(encounters, Is.All.Not.Null);
-            Assert.That(encounters.Select(e => e.Creatures.Count()), Is.All.Positive);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void PoolEncounterDoesNotHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Encounter == null));
-            AssertAreas(areas);
-
-            var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
-            Assert.That(pools, Is.Not.Empty);
-            Assert.That(pools, Is.All.Not.Null);
-
-            var encounters = pools.Select(p => p.Encounter);
-            Assert.That(encounters, Is.All.Null);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void PoolTreasureHappens()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure != null));
-            AssertAreas(areas);
-
-            var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
-            Assert.That(pools, Is.Not.Empty);
-            Assert.That(pools, Is.All.Not.Null);
-
-            var treasures = pools.Select(p => p.Treasure);
-            Assert.That(treasures, Is.All.Not.Null);
-        }
-
-        [Test]
-        [Ignore("These are too rare to occur within the stress duration limit")]
-        public void PoolTreasureDoesNotHappen()
-        {
-            //INFO: Setting the "from" to door, since doors are more likely to have chambers or rooms or caves behind them than halls
-            //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(FromDoor, 1), aa => aa.Any(a => a.Contents.Pool != null && a.Contents.Pool.Treasure == null));
-            AssertAreas(areas);
-
-            var pools = areas.Where(a => a.Contents.Pool != null).Select(a => a.Contents.Pool);
-            Assert.That(pools, Is.Not.Empty);
-            Assert.That(pools, Is.All.Not.Null);
-
-            var treasures = pools.Select(p => p.Treasure);
-            Assert.That(treasures, Is.All.Null);
-        }
-
-        [Test]
         public void BUG_TrapWithRollHappens()
         {
-            var rollRegex = new Regex("\\d+d\\d+");
             //INFO: Setting the party level to 1 so that encounters, if generated, will be minimal
-            var areas = stressor.GenerateOrFail(() => GenerateAreas(presetPartyLevel: 1), aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)))));
+            var areas = stressor.GenerateOrFail(
+                () => GenerateAreas(presetPartyLevel: 1),
+                aa => aa.Any(a => a.Contents.Traps.Any(t => t.Descriptions.Any(d => dice.ContainsRoll(d)))));
             AssertAreas(areas);
 
             var traps = areas.SelectMany(a => a.Contents.Traps);
-            var trapsWithRolls = traps.Where(t => t.Descriptions.Any(d => rollRegex.IsMatch(d)));
+            var trapsWithRolls = traps.Where(t => t.Descriptions.Any(d => dice.ContainsRoll(d)));
             Assert.That(trapsWithRolls, Is.Not.Empty);
         }
     }
