@@ -1,0 +1,35 @@
+pool:
+  vmImage: 'windows-latest'
+
+trigger: none
+pr: none
+
+resources:
+  pipelines:
+  - pipeline: DnDGen.DungeonGen
+    source: 'DnDGen.DungeonGen - Build'
+    trigger: 
+      branches:
+      - master
+
+jobs:
+
+- deployment: DungeonGen_Nuget
+  displayName: Deploy DungeonGen NuGet Package
+  environment: Prod
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: NuGetCommand@2
+          displayName: 'NuGet push'
+          inputs:
+            command: push
+            packagesToPush: '$(Pipeline.Workspace)/**/DnDGen.DungeonGen.*.nupkg'
+            nuGetFeedType: external
+            publishFeedCredentials: NuGet.org
+        - task: GitHubRelease@1
+          displayName: 'GitHub release (create)'
+          inputs:
+            gitHubConnection: 'github.com_cidthecoatrack'
+            assets: '$(Pipeline.Workspace)/**/DnDGen.DungeonGen.*.nupkg'
