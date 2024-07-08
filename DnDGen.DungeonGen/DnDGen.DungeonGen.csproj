@@ -1,0 +1,144 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>4.0.0</Version>
+		<Authors>Karl M. Speer</Authors>
+		<Company>DnDGen</Company>
+		<Product>DungeonGen</Product>
+		<Description>This generates dungeons for the Dungeons and Dragons 3.5 system.  Dungeons are fully fleshed out with details, traps, and encounters.</Description>
+		<PackageReleaseNotes>
+			4.0.0: .Net 8, ADO, Consolidate packages
+		</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/DnDGen/DungeonGen</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DnDGen/DungeonGen</RepositoryUrl>
+		<PackageTags>dungeon encounter treasure generator dice dungeons dragons d20 dnd 3.5 gen</PackageTags>
+		<PackageIcon>18531-twenty-sided-dice-vector-thumb.png</PackageIcon>
+		<PackageIconUrl />
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stress|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Stress\</OutputPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DnDGen.CharacterGen" Version="11.0.6" />
+    <PackageReference Include="DnDGen.EncounterGen" Version="5.0.1" />
+    <PackageReference Include="DnDGen.Infrastructure" Version="5.1.0" />
+    <PackageReference Include="DnDGen.RollGen" Version="15.5.7" />
+    <PackageReference Include="DnDGen.TreasureGen" Version="10.5.7" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\DungeonAreaFromDoor.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\DungeonAreaFromHall.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\AdditionalGalleryStairs.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\ChasmCrossing.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\DoorLocations.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\GalleryStairs.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\Halls.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\RiverCrossing.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\SidePassages.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\SpecialHall.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\Stairs.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\StreamCrossing.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Halls\Turns.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\Caves.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\ChamberExits.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\Chambers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\Contents.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\DoorTypes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\ExitDirection.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\ExitLocation.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\Lakes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\MagicPoolAlignments.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\MagicPoolPowers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\MagicPoolTeleportationDestinations.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\MajorFeatures.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\MinorFeatures.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\Pools.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\RoomExits.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\Rooms.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\SpecialAreaShapes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Rooms\SpecialAreaSizes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Traps\HighLevelTraps.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Traps\LowLevelTraps.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Areas\Traps\MidLevelTraps.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Treasures\TreasureConcealment.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tables\Treasures\TreasureContainers.xml" />
+  </ItemGroup>
+	<ItemGroup>
+		<None Include="18531-twenty-sided-dice-vector-thumb.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+</Project>
