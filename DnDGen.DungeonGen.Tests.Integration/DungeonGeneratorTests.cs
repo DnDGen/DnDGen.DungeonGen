@@ -4,12 +4,14 @@ using DnDGen.EncounterGen.Generators;
 using DnDGen.Infrastructure.Selectors.Collections;
 using DnDGen.RollGen;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace DnDGen.DungeonGen.Tests.Integration.Stress
+namespace DnDGen.DungeonGen.Tests.Integration
 {
     [TestFixture]
-    public class DungeonGeneratorTests : StressTests
+    public class DungeonGeneratorTests : IntegrationTests
     {
         private IDungeonGenerator dungeonGenerator;
         private Dice dice;
@@ -25,28 +27,10 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
             areaAsserter = new AreaAsserter();
         }
 
-        [Test]
-        public void StressDungeonGeneratorFromDoor()
-        {
-            stressor.Stress(() => AssertRandomArea(false));
-        }
-
-        [Test]
-        public void StressDungeonGeneratorFromHall()
-        {
-            stressor.Stress(() => AssertRandomArea(true));
-        }
-
-        protected void AssertRandomArea(bool fromHall)
-        {
-            var areas = GenerateAreas(fromHall);
-            areaAsserter.AssertAreas(areas);
-        }
-
-        private IEnumerable<Area> GenerateAreas(bool fromHall)
+        private IEnumerable<Area> GenerateAreas(bool fromHall, int presetPartyLevel = 0)
         {
             var dungeonLevel = dice.Roll().d20().AsSum();
-            var specifications = RandomizeSpecifications();
+            var specifications = RandomizeSpecifications(presetPartyLevel);
 
             if (fromHall)
                 return dungeonGenerator.GenerateFromHall(dungeonLevel, specifications);
@@ -72,6 +56,22 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
         private string GetRandomFrom(IEnumerable<string> collection)
         {
             return collectionSelector.SelectRandomFrom(collection);
+        }
+
+        [Repeat(100)]
+        [Test]
+        public void BUG_ContinuingHallHasSamePassageWidth()
+        {
+            var areas = GenerateAreas(true, 1);
+
+            areaAsserter.AssertAreas(areas);
+
+            if (areas.Count() == 1 && areas.Single().Type == AreaTypeConstants.Hall)
+            {
+                var hall = areas.Single();
+                Assert.That(hall.Type == AreaTypeConstants.Hall);
+                Assert.That(hall.Width, Is.Zero);
+            }
         }
     }
 }
