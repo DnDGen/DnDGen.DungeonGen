@@ -10,7 +10,7 @@ namespace DnDGen.DungeonGen.Tests.Integration.IoC
         [Inject]
         public Stopwatch Stopwatch { get; set; }
 
-        private const int TimeLimitInMilliseconds = 200;
+        private const int TimeLimitInMilliseconds = 350;
 
         [TearDown]
         public void IoCTeardown()

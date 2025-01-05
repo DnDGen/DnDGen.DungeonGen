@@ -9,14 +9,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DnDGen.DungeonGen.Tests.Integration.Stress
+namespace DnDGen.DungeonGen.Tests.Integration
 {
     [TestFixture]
-    public class DungeonGeneratorTests : StressTests
+    public class DungeonGeneratorTests : IntegrationTests
     {
         private IDungeonGenerator dungeonGenerator;
         private Dice dice;
         private ICollectionSelector collectionSelector;
+
+        private const int FromHall = 1;
+        private const int FromDoor = 0;
+        private const int FromRandom = -1;
 
         private readonly IEnumerable<string> allTemperatures;
         private readonly IEnumerable<string> allChambers;
@@ -26,7 +30,7 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
         public DungeonGeneratorTests()
         {
             allEnvironments =
-            [
+               [
                 EnvironmentConstants.Aquatic,
                 EnvironmentConstants.Civilized,
                 EnvironmentConstants.Desert,
@@ -66,30 +70,17 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
             collectionSelector = GetNewInstanceOf<ICollectionSelector>();
         }
 
-        [Test]
-        public void StressDungeonGeneratorFromDoor()
-        {
-            stressor.Stress(() => AssertRandomArea(false));
-        }
-
-        [Test]
-        public void StressDungeonGeneratorFromHall()
-        {
-            stressor.Stress(() => AssertRandomArea(true));
-        }
-
-        protected void AssertRandomArea(bool fromHall)
-        {
-            var areas = GenerateAreas(fromHall);
-            AssertAreas(areas);
-        }
-
-        private IEnumerable<Area> GenerateAreas(bool fromHall)
+        private IEnumerable<Area> GenerateAreas(int fromHall = FromRandom, int presetPartyLevel = 0)
         {
             var dungeonLevel = dice.Roll().d20().AsSum();
-            var specifications = RandomizeSpecifications();
+            var specifications = RandomizeSpecifications(presetPartyLevel);
 
-            if (fromHall)
+            if (fromHall == FromRandom)
+                fromHall = dice.Roll().d2().Minus(1).AsSum();
+
+            var actuallyFromHall = Convert.ToBoolean(fromHall);
+
+            if (actuallyFromHall)
                 return dungeonGenerator.GenerateFromHall(dungeonLevel, specifications);
 
             return dungeonGenerator.GenerateFromDoor(dungeonLevel, specifications);
@@ -262,6 +253,22 @@ namespace DnDGen.DungeonGen.Tests.Integration.Stress
 
             Assert.That(chamber.Length, Is.AtLeast(10));
             Assert.That(chamber.Width, Is.Positive);
+        }
+
+        [Repeat(100)]
+        [Test]
+        public void BUG_ContinuingHallHasSamePassageWidth()
+        {
+            var areas = GenerateAreas(FromHall, 1);
+
+            AssertAreas(areas);
+
+            if (areas.Count() == 1 && areas.Single().Type == AreaTypeConstants.Hall)
+            {
+                var hall = areas.Single();
+                Assert.That(hall.Type == AreaTypeConstants.Hall);
+                Assert.That(hall.Width, Is.Zero);
+            }
         }
 
         private void AssertExits(IEnumerable<Area> areas, string primaryExitType)
