@@ -104,10 +104,12 @@ namespace DnDGen.DungeonGen.Tests.Integration.IoC.Modules
             AssertInstanceOf<PoolGenerator, DomainPoolGenerator>();
         }
 
+        [Repeat(1000)]
         [Test]
         public void CaveGeneratorIsInjected()
         {
-            AssertInstanceOf<AreaGenerator, CaveGenerator>(AreaTypeConstants.Cave);
+            //INFO: For some reason, the cave generator is always slower to instantiate when this test runs in the pipeline. Doubling the limit from 200ms to 400ms
+            AssertInstanceOf<AreaGenerator, CaveGenerator>(AreaTypeConstants.Cave, 400);
         }
 
         [Test]
