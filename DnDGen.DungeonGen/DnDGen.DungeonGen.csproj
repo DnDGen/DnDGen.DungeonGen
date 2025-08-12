@@ -1,16 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<Version>5.0.0</Version>
+		<Version>5.0.1</Version>
 		<Authors>Karl M. Speer</Authors>
 		<Company>DnDGen</Company>
 		<Product>DungeonGen</Product>
 		<Description>This generates dungeons for the Dungeons and Dragons 3.5 system.  Dungeons are fully fleshed out with details, traps, and encounters.</Description>
-		<PackageReleaseNotes>
-			5.0.0:
-			* Fix security vulnerabilities
-			* CharacterGen has a breaking change at 13.0.0, so major version update is required
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>Update default branch to main</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/DnDGen/DungeonGen</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/DnDGen/DungeonGen</RepositoryUrl>
 		<PackageTags>dungeon encounter treasure generator dice dungeons dragons d20 dnd 3.5 gen</PackageTags>

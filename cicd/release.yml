@@ -10,7 +10,7 @@ resources:
     source: 'DnDGen.DungeonGen - Build'
     trigger: 
       branches:
-      - master
+      - main
 
 jobs:
 
