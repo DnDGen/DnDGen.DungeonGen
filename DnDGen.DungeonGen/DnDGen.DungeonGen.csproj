@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<Version>5.0.2</Version>
+		<Version>5.0.3</Version>
 		<Authors>Karl M. Speer</Authors>
 		<Company>DnDGen</Company>
 		<Product>DungeonGen</Product>
 		<Description>This generates dungeons for the Dungeons and Dragons 3.5 system.  Dungeons are fully fleshed out with details, traps, and encounters.</Description>
-		<PackageReleaseNotes>Verify CI triggers</PackageReleaseNotes>
+		<PackageReleaseNotes>Update packages</PackageReleaseNotes>
 		<PackageProjectUrl>https://github.com/DnDGen/DungeonGen</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/DnDGen/DungeonGen</RepositoryUrl>
 		<PackageTags>dungeon encounter treasure generator dice dungeons dragons d20 dnd 3.5 gen</PackageTags>
@@ -21,10 +21,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DnDGen.CharacterGen" Version="14.0.0" />
-    <PackageReference Include="DnDGen.EncounterGen" Version="6.0.0" />
+    <PackageReference Include="DnDGen.CharacterGen" Version="16.0.0" />
+    <PackageReference Include="DnDGen.EncounterGen" Version="6.0.3" />
     <PackageReference Include="DnDGen.Infrastructure" Version="6.0.1" />
-    <PackageReference Include="DnDGen.RollGen" Version="16.0.1" />
+    <PackageReference Include="DnDGen.RollGen" Version="16.0.3" />
     <PackageReference Include="DnDGen.TreasureGen" Version="12.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
