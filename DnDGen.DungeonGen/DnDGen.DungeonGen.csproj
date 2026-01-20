@@ -137,6 +137,7 @@
     <EmbeddedResource Include="Tables\Treasures\TreasureContainers.xml" />
   </ItemGroup>
 	<ItemGroup>
+  	<PackageReference Include="Albatross.Expression" Version="5.0.0" />
 		<None Include="18531-twenty-sided-dice-vector-thumb.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 </Project>
