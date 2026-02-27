@@ -1,7 +1,7 @@
 ﻿using DnDGen.DungeonGen.Models;
 using DnDGen.DungeonGen.Selectors;
 using DnDGen.DungeonGen.Tables;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using DnDGen.TreasureGen.Generators;
 using System.Collections.Generic;
@@ -9,19 +9,8 @@ using System.Linq;
 
 namespace DnDGen.DungeonGen.Generators.ContentGenerators
 {
-    internal class DomainContentsGenerator : ContentsGenerator
+    internal class DomainContentsGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, JustInTimeFactory justInTimeFactory) : ContentsGenerator
     {
-        private readonly IAreaPercentileSelector areaPercentileSelector;
-        private readonly IPercentileSelector percentileSelector;
-        private readonly JustInTimeFactory justInTimeFactory;
-
-        public DomainContentsGenerator(IAreaPercentileSelector areaPercentileSelector, IPercentileSelector percentileSelector, JustInTimeFactory justInTimeFactory)
-        {
-            this.areaPercentileSelector = areaPercentileSelector;
-            this.percentileSelector = percentileSelector;
-            this.justInTimeFactory = justInTimeFactory;
-        }
-
         public Contents Generate(int partyLevel)
         {
             var areaContents = areaPercentileSelector.SelectFrom(TableNameConstants.Contents);
@@ -39,9 +28,11 @@ namespace DnDGen.DungeonGen.Generators.ContentGenerators
 
             if (areaContents.Contents.Miscellaneous.Contains(ContentsTypeConstants.Treasure))
             {
-                var dungeonTreasure = new DungeonTreasure();
-                dungeonTreasure.Concealment = percentileSelector.SelectFrom(Config.Name, TableNameConstants.TreasureConcealment);
-                dungeonTreasure.Container = percentileSelector.SelectFrom(Config.Name, TableNameConstants.TreasureContainers);
+                var dungeonTreasure = new DungeonTreasure
+                {
+                    Concealment = percentileSelector.SelectFrom(Config.Name, TableNameConstants.TreasureConcealment),
+                    Container = percentileSelector.SelectFrom(Config.Name, TableNameConstants.TreasureContainers)
+                };
 
                 var treasureGenerator = justInTimeFactory.Build<ITreasureGenerator>();
                 dungeonTreasure.Treasure = treasureGenerator.GenerateAtLevel(partyLevel);

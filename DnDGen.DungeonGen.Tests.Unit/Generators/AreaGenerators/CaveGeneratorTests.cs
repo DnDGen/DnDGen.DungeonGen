@@ -5,7 +5,7 @@ using DnDGen.DungeonGen.Selectors;
 using DnDGen.DungeonGen.Tables;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.EncounterGen.Models;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using Moq;
 using NUnit.Framework;
@@ -35,12 +35,13 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
             mockJustInTimeFactory = new Mock<JustInTimeFactory>();
             caveGenerator = new CaveGenerator(mockAreaPercentileSelector.Object, mockJustInTimeFactory.Object, mockPercentileSelector.Object);
             selectedCave = new Area();
-            specifications = new EncounterSpecifications();
-
-            specifications.Environment = "environment";
-            specifications.Level = 90210;
-            specifications.Temperature = "temperature";
-            specifications.TimeOfDay = "time of day";
+            specifications = new EncounterSpecifications
+            {
+                Environment = "environment",
+                Level = 90210,
+                Temperature = "temperature",
+                TimeOfDay = "time of day"
+            };
 
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Caves)).Returns(selectedCave);
             mockJustInTimeFactory.Setup(f => f.Build<PoolGenerator>()).Returns(mockPoolGenerator.Object);
@@ -71,8 +72,8 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateDoubleCave()
         {
-            selectedCave.Descriptions = new[] { DescriptionConstants.DoubleCavern };
-            selectedCave.Contents.Miscellaneous = new[] { "42", "600" };
+            selectedCave.Descriptions = [DescriptionConstants.DoubleCavern];
+            selectedCave.Contents.Miscellaneous = ["42", "600"];
 
             var caves = caveGenerator.Generate(9266, specifications);
             Assert.That(caves.Count(), Is.EqualTo(2));
@@ -93,7 +94,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateCaveWithPool()
         {
-            selectedCave.Contents.Miscellaneous = new[] { ContentsTypeConstants.Pool };
+            selectedCave.Contents.Miscellaneous = [ContentsTypeConstants.Pool];
 
             var pool = new Pool();
             mockPoolGenerator.Setup(g => g.Generate(specifications)).Returns(pool);
@@ -106,8 +107,8 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
         [Test]
         public void GenerateDoubleCaveWithPool()
         {
-            selectedCave.Descriptions = new[] { DescriptionConstants.DoubleCavern };
-            selectedCave.Contents.Miscellaneous = new[] { "42", "600", ContentsTypeConstants.Pool };
+            selectedCave.Descriptions = [DescriptionConstants.DoubleCavern];
+            selectedCave.Contents.Miscellaneous = ["42", "600", ContentsTypeConstants.Pool];
 
             var pool = new Pool();
             mockPoolGenerator.Setup(g => g.Generate(specifications)).Returns(pool);

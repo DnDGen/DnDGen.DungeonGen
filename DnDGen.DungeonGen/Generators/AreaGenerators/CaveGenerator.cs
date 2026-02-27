@@ -2,7 +2,7 @@
 using DnDGen.DungeonGen.Selectors;
 using DnDGen.DungeonGen.Tables;
 using DnDGen.EncounterGen.Generators;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using System;
 using System.Collections.Generic;
@@ -10,20 +10,9 @@ using System.Linq;
 
 namespace DnDGen.DungeonGen.Generators.AreaGenerators
 {
-    internal class CaveGenerator : AreaGenerator
+    internal class CaveGenerator(IAreaPercentileSelector areaPercentileSelector, JustInTimeFactory justInTimeFactory, IPercentileSelector percentileSelector) : AreaGenerator
     {
         public string AreaType => AreaTypeConstants.Cave;
-
-        private readonly IAreaPercentileSelector areaPercentileSelector;
-        private readonly IPercentileSelector percentileSelector;
-        private readonly JustInTimeFactory justInTimeFactory;
-
-        public CaveGenerator(IAreaPercentileSelector areaPercentileSelector, JustInTimeFactory justInTimeFactory, IPercentileSelector percentileSelector)
-        {
-            this.areaPercentileSelector = areaPercentileSelector;
-            this.justInTimeFactory = justInTimeFactory;
-            this.percentileSelector = percentileSelector;
-        }
 
         public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {
@@ -36,15 +25,17 @@ namespace DnDGen.DungeonGen.Generators.AreaGenerators
 
             if (selectedCave.Descriptions.Contains(DescriptionConstants.DoubleCavern))
             {
-                var secondCave = new Area();
-                secondCave.Type = AreaTypeConstants.Cave;
-                secondCave.Length = Convert.ToInt32(selectedCave.Contents.Miscellaneous.First());
-                secondCave.Width = Convert.ToInt32(selectedCave.Contents.Miscellaneous.Skip(1).First());
+                var secondCave = new Area
+                {
+                    Type = AreaTypeConstants.Cave,
+                    Length = Convert.ToInt32(selectedCave.Contents.Miscellaneous.First()),
+                    Width = Convert.ToInt32(selectedCave.Contents.Miscellaneous.Skip(1).First())
+                };
                 secondCave.Contents.Miscellaneous = selectedCave.Contents.Miscellaneous.Skip(2);
 
                 caves.Add(secondCave);
 
-                selectedCave.Contents.Miscellaneous = Enumerable.Empty<string>();
+                selectedCave.Contents.Miscellaneous = [];
                 selectedCave.Descriptions = selectedCave.Descriptions.Except([DescriptionConstants.DoubleCavern]);
             }
 
@@ -64,7 +55,7 @@ namespace DnDGen.DungeonGen.Generators.AreaGenerators
                     foreach (var section in sections)
                     {
                         if (string.IsNullOrEmpty(section) == false)
-                            cave.Contents.Miscellaneous = cave.Contents.Miscellaneous.Union(new[] { section });
+                            cave.Contents.Miscellaneous = cave.Contents.Miscellaneous.Union([section]);
 
                         if (section == ContentsTypeConstants.Encounter)
                         {

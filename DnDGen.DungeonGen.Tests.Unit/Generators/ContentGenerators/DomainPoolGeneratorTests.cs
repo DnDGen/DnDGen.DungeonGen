@@ -4,7 +4,7 @@ using DnDGen.DungeonGen.Models;
 using DnDGen.DungeonGen.Tables;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.EncounterGen.Models;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using DnDGen.TreasureGen;
 using DnDGen.TreasureGen.Generators;
