@@ -5,32 +5,19 @@ using DnDGen.DungeonGen.Models;
 using DnDGen.DungeonGen.Selectors;
 using DnDGen.DungeonGen.Tables;
 using DnDGen.EncounterGen.Generators;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DnDGen.DungeonGen.Generators.AreaGenerators
 {
-    internal class ChamberGenerator : AreaGenerator
+    internal class ChamberGenerator(
+        IAreaPercentileSelector areaPercentileSelector,
+        AreaGeneratorFactory areaGeneratorFactory,
+        JustInTimeFactory justInTimeFactory,
+        ContentsGenerator contentsGenerator) : AreaGenerator
     {
         public string AreaType => AreaTypeConstants.Chamber;
-
-        private readonly IAreaPercentileSelector areaPercentileSelector;
-        private readonly JustInTimeFactory justInTimeFactory;
-        private readonly ContentsGenerator contentsGenerator;
-        private readonly AreaGeneratorFactory areaGeneratorFactory;
-
-        public ChamberGenerator(
-            IAreaPercentileSelector areaPercentileSelector,
-            AreaGeneratorFactory areaGeneratorFactory,
-            JustInTimeFactory justInTimeFactory,
-            ContentsGenerator contentsGenerator)
-        {
-            this.areaPercentileSelector = areaPercentileSelector;
-            this.areaGeneratorFactory = areaGeneratorFactory;
-            this.justInTimeFactory = justInTimeFactory;
-            this.contentsGenerator = contentsGenerator;
-        }
 
         public IEnumerable<Area> Generate(int dungeonLevel, EncounterSpecifications environment)
         {

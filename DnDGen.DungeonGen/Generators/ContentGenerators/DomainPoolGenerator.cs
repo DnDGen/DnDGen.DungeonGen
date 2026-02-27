@@ -1,23 +1,14 @@
 ﻿using DnDGen.DungeonGen.Models;
 using DnDGen.DungeonGen.Tables;
 using DnDGen.EncounterGen.Generators;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using DnDGen.TreasureGen.Generators;
 
 namespace DnDGen.DungeonGen.Generators.ContentGenerators
 {
-    internal class DomainPoolGenerator : PoolGenerator
+    internal class DomainPoolGenerator(IPercentileSelector percentileSelector, JustInTimeFactory justInTimeFactory) : PoolGenerator
     {
-        private readonly IPercentileSelector percentileSelector;
-        private readonly JustInTimeFactory justInTimeFactory;
-
-        public DomainPoolGenerator(IPercentileSelector percentileSelector, JustInTimeFactory justInTimeFactory)
-        {
-            this.percentileSelector = percentileSelector;
-            this.justInTimeFactory = justInTimeFactory;
-        }
-
         public Pool Generate(EncounterSpecifications environment)
         {
             var selectedPool = percentileSelector.SelectFrom(Config.Name, TableNameConstants.Pools);
@@ -41,8 +32,10 @@ namespace DnDGen.DungeonGen.Generators.ContentGenerators
 
                 if (section == ContentsTypeConstants.Treasure)
                 {
-                    pool.Treasure = new DungeonTreasure();
-                    pool.Treasure.Container = percentileSelector.SelectFrom(Config.Name, TableNameConstants.TreasureContainers);
+                    pool.Treasure = new DungeonTreasure
+                    {
+                        Container = percentileSelector.SelectFrom(Config.Name, TableNameConstants.TreasureContainers)
+                    };
 
                     var treasureGenerator = justInTimeFactory.Build<ITreasureGenerator>();
                     pool.Treasure.Treasure = treasureGenerator.GenerateAtLevel(environment.Level);

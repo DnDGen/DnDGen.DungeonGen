@@ -2,7 +2,7 @@
 using DnDGen.DungeonGen.Models;
 using DnDGen.DungeonGen.Selectors;
 using DnDGen.DungeonGen.Tables;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using DnDGen.Infrastructure.Selectors.Percentiles;
 using DnDGen.TreasureGen;
 using DnDGen.TreasureGen.Generators;
@@ -53,7 +53,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.ContentGenerators
         [Test]
         public void GenerateContents()
         {
-            selectedContents.Contents.Miscellaneous = new[] { "stuff" };
+            selectedContents.Contents.Miscellaneous = ["stuff"];
 
             var contents = contentsGenerator.Generate(9266);
             Assert.That(contents.IsEmpty, Is.False);
@@ -140,7 +140,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.ContentGenerators
         [Test]
         public void GenerateUncontainedTreasure()
         {
-            selectedContents.Contents.Miscellaneous = new[] { ContentsTypeConstants.Treasure };
+            selectedContents.Contents.Miscellaneous = [ContentsTypeConstants.Treasure];
 
             var generatedTreasure = new Treasure();
             mockTreasureGenerator.Setup(g => g.GenerateAtLevel(9266)).Returns(generatedTreasure);
@@ -161,7 +161,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.ContentGenerators
         [Test]
         public void GenerateContainedTreasure()
         {
-            selectedContents.Contents.Miscellaneous = new[] { ContentsTypeConstants.Treasure };
+            selectedContents.Contents.Miscellaneous = [ContentsTypeConstants.Treasure];
 
             var generatedTreasure = new Treasure();
             mockTreasureGenerator.Setup(g => g.GenerateAtLevel(9266)).Returns(generatedTreasure);
@@ -182,7 +182,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.ContentGenerators
         [Test]
         public void GenerateHiddenTreasure()
         {
-            selectedContents.Contents.Miscellaneous = new[] { ContentsTypeConstants.Treasure };
+            selectedContents.Contents.Miscellaneous = [ContentsTypeConstants.Treasure];
 
             var generatedTreasure = new Treasure();
             mockTreasureGenerator.Setup(g => g.GenerateAtLevel(9266)).Returns(generatedTreasure);
@@ -203,7 +203,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.ContentGenerators
         [Test]
         public void GenerateHiddenContainedTreasure()
         {
-            selectedContents.Contents.Miscellaneous = new[] { ContentsTypeConstants.Treasure };
+            selectedContents.Contents.Miscellaneous = [ContentsTypeConstants.Treasure];
 
             var generatedTreasure = new Treasure();
             mockTreasureGenerator.Setup(g => g.GenerateAtLevel(9266)).Returns(generatedTreasure);

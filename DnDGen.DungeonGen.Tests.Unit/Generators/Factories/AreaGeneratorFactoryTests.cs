@@ -1,7 +1,7 @@
 ﻿using DnDGen.DungeonGen.Generators.AreaGenerators;
 using DnDGen.DungeonGen.Generators.Factories;
 using DnDGen.DungeonGen.Models;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using Moq;
 using NUnit.Framework;
 

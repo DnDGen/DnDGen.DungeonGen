@@ -7,7 +7,7 @@ using DnDGen.DungeonGen.Selectors;
 using DnDGen.DungeonGen.Tables;
 using DnDGen.EncounterGen.Generators;
 using DnDGen.EncounterGen.Models;
-using DnDGen.Infrastructure.Generators;
+using DnDGen.Infrastructure.Factories;
 using Moq;
 using NUnit.Framework;
 using System.Linq;
@@ -43,9 +43,11 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
                 mockContentsGenerator.Object);
 
             specifications = new EncounterSpecifications();
-            selectedChamber = new Area();
-            selectedChamber.Length = 9266;
-            selectedChamber.Width = 90210;
+            selectedChamber = new Area
+            {
+                Length = 9266,
+                Width = 90210
+            };
 
             mockAreaGeneratorFactory.Setup(f => f.Build(AreaTypeConstants.Special)).Returns(mockSpecialAreaGenerator.Object);
             mockAreaPercentileSelector.Setup(s => s.SelectFrom(TableNameConstants.Chambers)).Returns(selectedChamber);
@@ -79,7 +81,7 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             var firstExit = new Area();
             var secondExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(42, specifications, 9266, 90210)).Returns(new[] { firstExit, secondExit });
+            mockExitGenerator.Setup(g => g.Generate(42, specifications, 9266, 90210)).Returns([firstExit, secondExit]);
 
             var chambers = chamberGenerator.Generate(42, specifications);
             Assert.That(chambers, Contains.Item(selectedChamber));
@@ -92,11 +94,13 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             specifications.Level = 600;
 
-            var generatedContents = new Contents();
-            generatedContents.Encounters = [new Encounter(), new Encounter()];
-            generatedContents.Miscellaneous = ["thing 1", "thing 2"];
-            generatedContents.Traps = [new Trap(), new Trap()];
-            generatedContents.Treasures = [new DungeonTreasure(), new DungeonTreasure()];
+            var generatedContents = new Contents
+            {
+                Encounters = [new Encounter(), new Encounter()],
+                Miscellaneous = ["thing 1", "thing 2"],
+                Traps = [new Trap(), new Trap()],
+                Treasures = [new DungeonTreasure(), new DungeonTreasure()]
+            };
 
             mockContentsGenerator.Setup(g => g.Generate(600)).Returns(generatedContents);
 
@@ -132,23 +136,27 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             selectedChamber.Type = AreaTypeConstants.Special;
             var firstSpecialArea = new Area();
-            firstSpecialArea.Contents.Encounters = new[] { new Encounter() };
-            firstSpecialArea.Contents.Traps = new[] { new Trap() };
+            firstSpecialArea.Contents.Encounters = [new Encounter()];
+            firstSpecialArea.Contents.Traps = [new Trap()];
 
             var secondSpecialArea = new Area();
-            secondSpecialArea.Contents.Miscellaneous = new[] { "thing 1", "thing 2" };
-            secondSpecialArea.Descriptions = new[] { "a cave" };
-            secondSpecialArea.Contents.Treasures = new[] { new DungeonTreasure() };
+            secondSpecialArea.Contents.Miscellaneous = ["thing 1", "thing 2"];
+            secondSpecialArea.Descriptions = ["a cave"];
+            secondSpecialArea.Contents.Treasures = [new DungeonTreasure()];
             secondSpecialArea.Contents.Pool = new Pool();
 
-            var firstContents = new Contents();
-            firstContents.Miscellaneous = new[] { "new stuff" };
-            firstContents.Encounters = new[] { new Encounter() };
+            var firstContents = new Contents
+            {
+                Miscellaneous = ["new stuff"],
+                Encounters = [new Encounter()]
+            };
 
-            var secondContents = new Contents();
-            secondContents.Miscellaneous = new[] { "other new stuff" };
-            secondContents.Treasures = new[] { new DungeonTreasure() };
-            secondContents.Traps = new[] { new Trap() };
+            var secondContents = new Contents
+            {
+                Miscellaneous = ["other new stuff"],
+                Treasures = [new DungeonTreasure()],
+                Traps = [new Trap()]
+            };
 
             //INFO: We do the order backwards, becuase the internals will iterate backwards through the list
             mockContentsGenerator.SetupSequence(g => g.Generate(600)).Returns(secondContents).Returns(firstContents);
@@ -186,13 +194,17 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
         {
             selectedChamber.Type = AreaTypeConstants.Special;
 
-            var firstSpecialArea = new Area();
-            firstSpecialArea.Length = 9266;
-            firstSpecialArea.Width = 90210;
+            var firstSpecialArea = new Area
+            {
+                Length = 9266,
+                Width = 90210
+            };
 
-            var secondSpecialArea = new Area();
-            secondSpecialArea.Length = 1234;
-            secondSpecialArea.Width = 1337;
+            var secondSpecialArea = new Area
+            {
+                Length = 1234,
+                Width = 1337
+            };
 
             var specialAreas = new[] { firstSpecialArea, secondSpecialArea };
 
@@ -200,11 +212,11 @@ namespace DnDGen.DungeonGen.Tests.Unit.Generators.AreaGenerators
 
             var firstExit = new Area();
             var secondExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(42, specifications, 9266, 90210)).Returns(new[] { firstExit, secondExit });
+            mockExitGenerator.Setup(g => g.Generate(42, specifications, 9266, 90210)).Returns([firstExit, secondExit]);
 
             var thirdExit = new Area();
             var fourthExit = new Area();
-            mockExitGenerator.Setup(g => g.Generate(42, specifications, 1234, 1337)).Returns(new[] { thirdExit, fourthExit });
+            mockExitGenerator.Setup(g => g.Generate(42, specifications, 1234, 1337)).Returns([thirdExit, fourthExit]);
 
             var chambers = chamberGenerator.Generate(42, specifications).ToArray();
             Assert.That(chambers[0], Is.EqualTo(firstSpecialArea));
